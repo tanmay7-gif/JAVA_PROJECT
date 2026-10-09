@@ -53,7 +53,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
   const navLinks = role === 'ADMIN' ? adminTabs : userTabs;
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-emerald-100/70 bg-white/90 backdrop-blur-md shadow-soft-sm">
+    <header className="sticky top-0 z-40 w-full border-b border-sky-100 bg-white/95 backdrop-blur-md shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 gap-4">
           {/* Brand Logo Link */}
@@ -61,16 +61,16 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
             to={role === 'ADMIN' ? '/admin/dashboard' : '/dashboard'}
             className="flex items-center gap-2.5 cursor-pointer select-none group"
           >
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-500 via-teal-500 to-mint-400 p-0.5 shadow-md shadow-emerald-500/20 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 via-sky-600 to-cyan-400 p-0.5 shadow-md shadow-sky-500/20 flex items-center justify-center group-hover:scale-105 transition-transform">
               <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
-                <Flame className="w-5 h-5 text-emerald-500 fill-emerald-500/20 animate-pulse" />
+                <Flame className="w-5 h-5 text-sky-500 fill-sky-500/20" />
               </div>
             </div>
             <div>
-              <span className="text-xl font-bold bg-gradient-to-r from-gray-900 via-emerald-800 to-teal-700 bg-clip-text text-transparent">
+              <span className="text-xl font-bold bg-gradient-to-r from-slate-900 via-sky-900 to-sky-700 bg-clip-text text-transparent">
                 FitPulse
               </span>
-              <span className="text-[10px] block font-semibold uppercase tracking-wider text-emerald-600 -mt-1">
+              <span className="text-[10px] block font-semibold uppercase tracking-wider text-sky-600 -mt-1">
                 Clinical Wellness OS
               </span>
             </div>
@@ -92,13 +92,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
                   to={tab.path}
                   className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                     isActive
-                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/80 shadow-soft-sm'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/70'
+                      ? 'bg-sky-50 text-sky-700 border border-sky-200/80 shadow-sm font-bold'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-sky-50/50'
                   }`}
                 >
                   <Icon
                     className={`w-3.5 h-3.5 ${
-                      isActive ? 'text-emerald-600' : 'text-gray-400'
+                      isActive ? 'text-sky-600' : 'text-slate-400'
                     }`}
                   />
                   <span>{tab.label}</span>
@@ -113,7 +113,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
             {role === 'USER' && (
               <button
                 onClick={onOpenLogWorkout}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-xs font-bold shadow-md shadow-emerald-500/20 hover:from-emerald-600 hover:to-teal-700 transition-all active:scale-95"
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold shadow-sm shadow-sky-200 hover:shadow-md transition-all active:scale-95"
               >
                 <PlusCircle className="w-4 h-4" />
                 <span className="hidden sm:inline">Log Workout</span>
@@ -121,14 +121,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
             )}
 
             {/* Quick Demo Switcher Widget */}
-            <div className="hidden lg:flex items-center bg-[#F3F6F3] border border-emerald-100 rounded-xl p-1 text-xs">
-              <span className="text-[11px] text-gray-500 px-2 font-medium">Demo:</span>
+            <div className="hidden lg:flex items-center bg-slate-100/80 border border-slate-200 rounded-xl p-1 text-xs">
+              <span className="text-[11px] text-slate-500 px-2 font-medium">Demo:</span>
               <button
                 onClick={() => handleRoleSwitch('USER')}
                 className={`px-2.5 py-1 rounded-lg font-semibold transition-all ${
                   role === 'USER'
-                    ? 'bg-white text-emerald-700 shadow-sm border border-emerald-200/60'
-                    : 'text-gray-500 hover:text-gray-900'
+                    ? 'bg-white text-sky-700 shadow-sm border border-sky-200/60 font-bold'
+                    : 'text-slate-500 hover:text-slate-900'
                 }`}
               >
                 Athlete
@@ -137,8 +137,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
                 onClick={() => handleRoleSwitch('ADMIN')}
                 className={`px-2.5 py-1 rounded-lg font-semibold transition-all ${
                   role === 'ADMIN'
-                    ? 'bg-white text-teal-700 shadow-sm border border-emerald-200/60'
-                    : 'text-gray-500 hover:text-gray-900'
+                    ? 'bg-white text-sky-700 shadow-sm border border-sky-200/60 font-bold'
+                    : 'text-slate-500 hover:text-slate-900'
                 }`}
               >
                 Admin
@@ -147,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
 
             {/* User Profile Pill */}
             {user ? (
-              <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
+              <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
                 <Link to="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                   <img
                     src={
@@ -157,17 +157,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
                       )}`
                     }
                     alt={user.name}
-                    className="w-8 h-8 rounded-full border border-emerald-200 object-cover shadow-sm"
+                    className="w-8 h-8 rounded-full border border-sky-200 object-cover shadow-sm"
                   />
                   <div className="hidden xl:block text-left">
-                    <div className="text-xs font-bold text-gray-900 leading-none">
+                    <div className="text-xs font-bold text-slate-900 leading-none">
                       {user.name}
                     </div>
                     <span
-                      className={`inline-block text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md mt-0.5 ${
+                      className={`inline-block text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-md mt-0.5 border ${
                         role === 'ADMIN'
-                          ? 'bg-teal-50 text-teal-700 border border-teal-200'
-                          : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                          ? 'bg-violet-50 text-violet-700 border-violet-200'
+                          : 'bg-sky-50 text-sky-700 border-sky-200'
                       }`}
                     >
                       {role}
@@ -177,7 +177,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
                 <button
                   onClick={logout}
                   title="Sign out"
-                  className="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition-colors ml-1"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors ml-1"
                 >
                   <LogOut className="w-4 h-4" />
                 </button>
@@ -187,7 +187,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
         </div>
 
         {/* Mobile secondary tab strip */}
-        <div className="flex md:hidden items-center gap-1 overflow-x-auto py-2 border-t border-emerald-100/60">
+        <div className="flex md:hidden items-center gap-1 overflow-x-auto py-2 border-t border-sky-100">
           {navLinks.map((tab) => {
             const Icon = tab.icon;
             const isActive = location.pathname === tab.path;
@@ -197,8 +197,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenLogWorkout }) => {
                 to={tab.path}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap ${
                   isActive
-                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-sky-50 text-sky-700 border border-sky-200 font-bold'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />

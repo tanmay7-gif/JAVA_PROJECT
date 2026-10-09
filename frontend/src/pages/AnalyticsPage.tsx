@@ -153,31 +153,31 @@ export const AnalyticsPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Header & Controls Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-sky-100 pb-5">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-400 text-[10px] font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(6,182,212,0.15)]">
-            <Sparkles className="w-3 h-3 text-cyan-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-700 text-[10px] font-bold uppercase tracking-wider shadow-sm">
+            <Sparkles className="w-3 h-3 text-sky-500" />
             3D Biometric Telemetry & Analytics Laboratory
           </div>
-          <h1 className="text-2xl font-black text-white tracking-tight mt-1.5">
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight mt-1.5">
             Biometric Performance Matrix
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-500 mt-0.5">
             Interactive WebGL 3D volumetric metrics, energy burn acceleration, and multi-discipline distribution.
           </p>
         </div>
 
         {/* Time Window Selectors */}
         <div className="flex items-center gap-2 self-start md:self-auto">
-          <div className="flex items-center bg-[#0B131E]/90 p-1 rounded-xl border border-slate-700/60 shadow-inner">
+          <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
             {(['Week', 'Month', 'Year', 'All-Time'] as TimeWindow[]).map((w) => (
               <button
                 key={w}
                 onClick={() => setTimeWindow(w)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   timeWindow === w
-                    ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-md shadow-cyan-500/25'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                    ? 'bg-sky-500 text-white shadow-sm shadow-sky-500/25'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
                 }`}
               >
                 {w}
@@ -187,7 +187,7 @@ export const AnalyticsPage: React.FC = () => {
 
           <button
             onClick={() => showToast('Exporting clinical biometric telemetry report (CSV)...', 'info')}
-            className="p-2 rounded-xl bg-[#131C2E] border border-slate-700/60 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 shadow-sm transition-all"
+            className="p-2 rounded-xl bg-white border border-slate-200 hover:bg-sky-50 text-slate-700 hover:text-sky-600 shadow-sm transition-all"
             title="Export Report"
           >
             <Download className="w-4 h-4" />
@@ -198,86 +198,86 @@ export const AnalyticsPage: React.FC = () => {
       {/* KPI Cards Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Weekly Active Volume */}
-        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 hover:border-slate-700/80 transition-all">
+        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all text-slate-800">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
               Active Duration
             </span>
-            <div className="w-8 h-8 rounded-xl bg-teal-950/60 border border-teal-500/30 flex items-center justify-center text-teal-400 shadow-[0_0_10px_rgba(20,184,166,0.2)]">
+            <div className="w-8 h-8 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600 shadow-sm">
               <Clock className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-white">
+            <span className="text-2xl sm:text-3xl font-black text-slate-900">
               {summary.weeklyWorkoutHours}
             </span>
-            <span className="text-xs font-semibold text-slate-400">hours (7d)</span>
+            <span className="text-xs font-semibold text-slate-500">hours (7d)</span>
           </div>
-          <p className="text-[11px] text-emerald-400 font-semibold mt-2 flex items-center gap-1">
+          <p className="text-[11px] text-emerald-600 font-semibold mt-2 flex items-center gap-1">
             <TrendingUp className="w-3 h-3" />
             Monthly: {summary.monthlyWorkoutHours} hrs
           </p>
         </div>
 
         {/* Energy Output */}
-        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 hover:border-slate-700/80 transition-all">
+        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all text-slate-800">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
               Metabolic Output
             </span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-950/60 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+            <div className="w-8 h-8 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 shadow-sm">
               <Flame className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-white">
+            <span className="text-2xl sm:text-3xl font-black text-slate-900">
               {summary.weeklyCaloriesBurned.toLocaleString()}
             </span>
-            <span className="text-xs font-semibold text-slate-400">kcal (7d)</span>
+            <span className="text-xs font-semibold text-slate-500">kcal (7d)</span>
           </div>
-          <p className="text-[11px] text-slate-400 mt-2">
+          <p className="text-[11px] text-slate-500 mt-2">
             Monthly: {summary.monthlyCaloriesBurned.toLocaleString()} kcal
           </p>
         </div>
 
         {/* Efficiency Index */}
-        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 hover:border-slate-700/80 transition-all">
+        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all text-slate-800">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
               Burn Velocity
             </span>
-            <div className="w-8 h-8 rounded-xl bg-amber-950/60 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+            <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
               <Zap className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-white">
+            <span className="text-2xl sm:text-3xl font-black text-slate-900">
               {burnVelocity}
             </span>
-            <span className="text-xs font-semibold text-slate-400">kcal / min</span>
+            <span className="text-xs font-semibold text-slate-500">kcal / min</span>
           </div>
-          <p className="text-[11px] text-emerald-400 font-semibold mt-2">
+          <p className="text-[11px] text-emerald-600 font-semibold mt-2">
             {burnVelocity > 0 ? 'Active metabolic burn rate' : 'No active volume'}
           </p>
         </div>
 
         {/* Lifetime Logged */}
-        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 hover:border-slate-700/80 transition-all">
+        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all text-slate-800">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
               Audited Sessions
             </span>
-            <div className="w-8 h-8 rounded-xl bg-cyan-950/60 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
+            <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shadow-sm">
               <Layers className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-white">
+            <span className="text-2xl sm:text-3xl font-black text-slate-900">
               {summary.totalLifetimeWorkouts}
             </span>
-            <span className="text-xs font-semibold text-slate-400">sessions</span>
+            <span className="text-xs font-semibold text-slate-500">sessions</span>
           </div>
-          <p className="text-[11px] text-slate-400 mt-2 truncate">
+          <p className="text-[11px] text-slate-500 mt-2 truncate">
             {summary.totalLifetimeHours} lifetime hrs • {summary.totalLifetimeCalories.toLocaleString()} kcal
           </p>
         </div>
@@ -286,135 +286,135 @@ export const AnalyticsPage: React.FC = () => {
       {/* Progress Tracking Matrices: Weekly/Monthly Activity, Goal Progress, Challenge Progress */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Weekly & Monthly Activity Card */}
-        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 flex flex-col justify-between">
+        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm text-slate-800 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-cyan-400" /> Activity Horizons
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-sky-500" /> Activity Horizons
               </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
                 Live Data
               </span>
             </div>
-            <h4 className="text-sm font-black text-white">Weekly vs Monthly Activity</h4>
+            <h4 className="text-sm font-black text-slate-900">Weekly vs Monthly Activity</h4>
             <div className="mt-3 space-y-3">
-              <div className="bg-[#0B131E]/70 p-3 rounded-xl border border-slate-800/80">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-200">
+              <div className="bg-sky-50/60 p-3 rounded-xl border border-sky-100/80">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                   <span>Last 7 Days (Weekly)</span>
-                  <span className="text-cyan-400 font-extrabold">{summary.weeklyWorkoutsCount} workouts</span>
+                  <span className="text-sky-700 font-extrabold">{summary.weeklyWorkoutsCount} workouts</span>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1">
+                <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1">
                   <span>{summary.weeklyWorkoutHours} hrs duration</span>
                   <span>{summary.weeklyCaloriesBurned.toLocaleString()} kcal</span>
                 </div>
               </div>
 
-              <div className="bg-[#0B131E]/70 p-3 rounded-xl border border-slate-800/80">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-200">
+              <div className="bg-sky-50/60 p-3 rounded-xl border border-sky-100/80">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
                   <span>Last 30 Days (Monthly)</span>
-                  <span className="text-teal-400 font-extrabold">{summary.monthlyWorkoutsCount} workouts</span>
+                  <span className="text-teal-700 font-extrabold">{summary.monthlyWorkoutsCount} workouts</span>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1">
+                <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1">
                   <span>{summary.monthlyWorkoutHours} hrs duration</span>
                   <span>{summary.monthlyCaloriesBurned.toLocaleString()} kcal</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="pt-3 mt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+          <div className="pt-3 mt-3 border-t border-sky-100 text-[11px] text-slate-500 flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
             <span>Audited directly against database workout logs</span>
           </div>
         </div>
 
         {/* Goal Progress Card */}
-        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 flex flex-col justify-between">
+        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm text-slate-800 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                <Target className="w-3.5 h-3.5 text-emerald-400" /> Goal Mastery
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <Target className="w-3.5 h-3.5 text-emerald-600" /> Goal Mastery
               </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
                 {data?.goalProgress?.activeGoals ?? 0} Active
               </span>
             </div>
-            <h4 className="text-sm font-black text-white">Fitness Goals Progress</h4>
+            <h4 className="text-sm font-black text-slate-900">Fitness Goals Progress</h4>
             <div className="mt-3 space-y-3">
               <div className="flex items-baseline justify-between">
-                <span className="text-2xl font-black text-white">
+                <span className="text-2xl font-black text-slate-900">
                   {Math.round(data?.goalProgress?.averageCompletionPercentage ?? 0)}%
                 </span>
-                <span className="text-xs text-slate-400 font-semibold">Avg Completion</span>
+                <span className="text-xs text-slate-500 font-semibold">Avg Completion</span>
               </div>
               
-              {/* Progress Bar with High-Frequency Neon Glow */}
-              <div className="w-full bg-[#0B131E] rounded-full h-2.5 overflow-hidden border border-slate-800">
+              {/* Progress Bar with High-Frequency Glow */}
+              <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200">
                 <div
-                  className="bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 h-2.5 rounded-full transition-all duration-700 shadow-[0_0_12px_rgba(6,182,212,0.4)]"
+                  className="bg-gradient-to-r from-sky-400 via-sky-500 to-emerald-500 h-2.5 rounded-full transition-all duration-700 shadow-sm"
                   style={{ width: `${Math.min(100, Math.max(0, data?.goalProgress?.averageCompletionPercentage ?? 0))}%` }}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-center pt-1">
-                <div className="p-2 rounded-xl bg-[#0B131E]/70 border border-slate-800">
-                  <div className="text-xs font-black text-cyan-400">{data?.goalProgress?.activeGoals ?? 0}</div>
-                  <div className="text-[10px] text-slate-400 font-semibold">Active Goals</div>
+                <div className="p-2 rounded-xl bg-sky-50/60 border border-sky-100/80">
+                  <div className="text-xs font-black text-sky-700">{data?.goalProgress?.activeGoals ?? 0}</div>
+                  <div className="text-[10px] text-slate-500 font-semibold">Active Goals</div>
                 </div>
-                <div className="p-2 rounded-xl bg-[#0B131E]/70 border border-slate-800">
-                  <div className="text-xs font-black text-emerald-400">{data?.goalProgress?.completedGoals ?? 0}</div>
-                  <div className="text-[10px] text-slate-400 font-semibold">Completed</div>
+                <div className="p-2 rounded-xl bg-sky-50/60 border border-sky-100/80">
+                  <div className="text-xs font-black text-emerald-700">{data?.goalProgress?.completedGoals ?? 0}</div>
+                  <div className="text-[10px] text-slate-500 font-semibold">Completed</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="pt-3 mt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1">
-            <Info className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="pt-3 mt-3 border-t border-sky-100 text-[11px] text-slate-500 flex items-center gap-1">
+            <Info className="w-3.5 h-3.5 text-sky-500" />
             <span>Target milestones calibrated in Athlete Profile</span>
           </div>
         </div>
 
         {/* Challenge Progress Card */}
-        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 flex flex-col justify-between">
+        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm text-slate-800 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
-                <Trophy className="w-3.5 h-3.5 text-amber-400" /> Arena Progress
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                <Trophy className="w-3.5 h-3.5 text-amber-500" /> Arena Progress
               </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
                 {data?.challengeProgress?.enrolledChallenges ?? 0} Enrolled
               </span>
             </div>
-            <h4 className="text-sm font-black text-white">Challenges & Arena Completion</h4>
+            <h4 className="text-sm font-black text-slate-900">Challenges & Arena Completion</h4>
             <div className="mt-3 space-y-3">
               <div className="flex items-baseline justify-between">
-                <span className="text-2xl font-black text-white">
+                <span className="text-2xl font-black text-slate-900">
                   {Math.round(data?.challengeProgress?.completionRate ?? 0)}%
                 </span>
-                <span className="text-xs text-slate-400 font-semibold">Completion Rate</span>
+                <span className="text-xs text-slate-500 font-semibold">Completion Rate</span>
               </div>
 
               {/* Progress Bar with High-Frequency Amber Glow */}
-              <div className="w-full bg-[#0B131E] rounded-full h-2.5 overflow-hidden border border-slate-800">
+              <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200">
                 <div
-                  className="bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 h-2.5 rounded-full transition-all duration-700 shadow-[0_0_12px_rgba(245,158,11,0.4)]"
+                  className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 h-2.5 rounded-full transition-all duration-700 shadow-sm"
                   style={{ width: `${Math.min(100, Math.max(0, data?.challengeProgress?.completionRate ?? 0))}%` }}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-center pt-1">
-                <div className="p-2 rounded-xl bg-[#0B131E]/70 border border-slate-800">
-                  <div className="text-xs font-black text-amber-400">{data?.challengeProgress?.enrolledChallenges ?? 0}</div>
-                  <div className="text-[10px] text-slate-400 font-semibold">Total Joined</div>
+                <div className="p-2 rounded-xl bg-sky-50/60 border border-sky-100/80">
+                  <div className="text-xs font-black text-amber-600">{data?.challengeProgress?.enrolledChallenges ?? 0}</div>
+                  <div className="text-[10px] text-slate-500 font-semibold">Total Joined</div>
                 </div>
-                <div className="p-2 rounded-xl bg-[#0B131E]/70 border border-slate-800">
-                  <div className="text-xs font-black text-emerald-400">{data?.challengeProgress?.completedChallenges ?? 0}</div>
-                  <div className="text-[10px] text-slate-400 font-semibold">Completed</div>
+                <div className="p-2 rounded-xl bg-sky-50/60 border border-sky-100/80">
+                  <div className="text-xs font-black text-emerald-600">{data?.challengeProgress?.completedChallenges ?? 0}</div>
+                  <div className="text-[10px] text-slate-500 font-semibold">Completed</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="pt-3 mt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
+          <div className="pt-3 mt-3 border-t border-sky-100 text-[11px] text-slate-500 flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5 text-amber-500" />
             <span>Badge rewards deposited into athletic trophy case</span>
           </div>
         </div>
@@ -423,25 +423,25 @@ export const AnalyticsPage: React.FC = () => {
       {/* Primary 3D Visualizations Dual Laboratory */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* 3D Volumetric Bar Chart (7 cols) */}
-        <div className="lg:col-span-7 bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-xl text-slate-100 flex flex-col justify-between">
+        <div className="lg:col-span-7 bg-white border border-sky-100 rounded-2xl p-6 shadow-sm text-slate-800 flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between mb-3">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-cyan-950/60 text-cyan-400 text-[10px] font-bold uppercase tracking-wider border border-cyan-500/30">
-                  <Activity className="w-3 h-3 text-cyan-400" />
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-sky-50 text-sky-700 text-[10px] font-bold uppercase tracking-wider border border-sky-200">
+                  <Activity className="w-3 h-3 text-sky-500" />
                   3D Volumetric Telemetry
                 </div>
-                <h3 className="text-base font-bold text-white mt-1">
+                <h3 className="text-base font-bold text-slate-900 mt-1">
                   Daily Volume & Caloric Load
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500">
                   Interactive 3D raycast bars with extruded bevel rims. Hover to inspect metrics.
                 </p>
               </div>
 
               <div className="text-right">
-                <span className="text-[10px] font-semibold text-slate-400 block">Active Mode</span>
-                <span className="text-xs font-bold text-cyan-400 capitalize">
+                <span className="text-[10px] font-semibold text-slate-500 block">Active Mode</span>
+                <span className="text-xs font-bold text-sky-600 capitalize">
                   {activeBarMetric}
                 </span>
               </div>
@@ -456,28 +456,28 @@ export const AnalyticsPage: React.FC = () => {
             />
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between">
+          <div className="mt-4 pt-3 border-t border-sky-100 text-[11px] text-slate-500 flex items-center justify-between">
             <span className="flex items-center gap-1">
-              <Info className="w-3.5 h-3.5 text-cyan-400" />
+              <Info className="w-3.5 h-3.5 text-sky-500" />
               Dynamic height transitions calibrated to daily totals
             </span>
-            <span className="text-cyan-400 font-bold">WebGL Shaded</span>
+            <span className="text-sky-600 font-bold">WebGL Shaded</span>
           </div>
         </div>
 
         {/* Discipline Distribution: 3D WebGL / 2D Recharts with Compact Active State (5 cols) */}
-        <div className="lg:col-span-5 bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-xl text-slate-100 flex flex-col justify-between relative">
+        <div className="lg:col-span-5 bg-white border border-sky-100 rounded-2xl p-6 shadow-sm text-slate-800 flex flex-col justify-between relative">
           <div>
             <div className="flex items-start justify-between mb-3">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-950/60 text-emerald-400 text-[10px] font-bold uppercase tracking-wider border border-emerald-500/30">
-                  <Layers className="w-3 h-3 text-emerald-400" />
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-sky-50 text-sky-700 text-[10px] font-bold uppercase tracking-wider border border-sky-200">
+                  <Layers className="w-3 h-3 text-sky-500" />
                   Discipline Distribution
                 </div>
-                <h3 className="text-base font-bold text-white mt-1">
+                <h3 className="text-base font-bold text-slate-900 mt-1">
                   Biomechanical Focus
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-500">
                   {disciplineViewMode === '3D'
                     ? 'Interactive WebGL cylinders. Click slice to inspect details.'
                     : 'Precision Recharts donut. Click slice to inspect compact details.'}
@@ -485,13 +485,13 @@ export const AnalyticsPage: React.FC = () => {
               </div>
 
               {/* View Switcher: 3D WebGL vs 2D Precision Donut */}
-              <div className="flex items-center bg-[#070D18] p-0.5 rounded-lg border border-slate-700/60 text-[10px]">
+              <div className="flex items-center bg-slate-100 p-0.5 rounded-lg border border-slate-200 text-[10px]">
                 <button
                   onClick={() => setDisciplineViewMode('3D')}
                   className={`px-2 py-0.5 rounded-md font-bold transition-all ${
                     disciplineViewMode === '3D'
-                      ? 'bg-slate-800 text-emerald-300 shadow-sm border border-emerald-500/30'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-white text-sky-700 shadow-sm border border-slate-200'
+                      : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   3D WebGL
@@ -500,8 +500,8 @@ export const AnalyticsPage: React.FC = () => {
                   onClick={() => setDisciplineViewMode('2D')}
                   className={`px-2 py-0.5 rounded-md font-bold transition-all ${
                     disciplineViewMode === '2D'
-                      ? 'bg-slate-800 text-cyan-300 shadow-sm border border-cyan-500/30'
-                      : 'text-slate-400 hover:text-slate-200'
+                      ? 'bg-white text-sky-700 shadow-sm border border-slate-200'
+                      : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   2D Donut
@@ -549,7 +549,7 @@ export const AnalyticsPage: React.FC = () => {
                           <Cell
                             key={`cell-${entry.name}`}
                             fill={entry.color}
-                            stroke="#0B131E"
+                            stroke="#FFFFFF"
                             strokeWidth={2}
                           />
                         ))}
@@ -577,9 +577,9 @@ export const AnalyticsPage: React.FC = () => {
             )}
           </div>
 
-          <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between">
+          <div className="mt-4 pt-3 border-t border-sky-100 text-[11px] text-slate-500 flex items-center justify-between">
             <span>{disciplineViewMode === '3D' ? 'Lift: +0.12 Y-offset' : 'Bound: +2.5px ring'}</span>
-            <span className="text-emerald-400 font-bold">
+            <span className="text-sky-600 font-bold">
               {disciplineViewMode === '3D' ? 'Chamfered Cylinders' : 'Compact Active Sector'}
             </span>
           </div>
@@ -587,22 +587,18 @@ export const AnalyticsPage: React.FC = () => {
       </div>
 
       {/* Secondary 2D Curved Volumetric Area Trend Line with High-Frequency 3D Shading */}
-      <div className="bg-[#131C2E]/85 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-2xl relative overflow-hidden text-slate-100">
-        {/* Subtle background glow spheres */}
-        <div className="absolute -top-24 -right-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
+      <div className="bg-white border border-sky-100 rounded-2xl p-6 shadow-sm relative overflow-hidden text-slate-800">
         <div className="flex items-center justify-between mb-4 relative z-10">
           <div>
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-cyan-400" />
+            <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-sky-500" />
               Volumetric Energy Expenditure Curve
             </h3>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 mt-0.5">
               High-frequency multi-stop gradient telemetry detailing continuous energy pacing across selected time-window.
             </p>
           </div>
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.15)]">
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200 shadow-sm">
             {timeWindow} Window
           </span>
         </div>
@@ -614,43 +610,36 @@ export const AnalyticsPage: React.FC = () => {
               margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
             >
               <defs>
-                {/* Vibrant High-Frequency Multi-Stop Linear Gradient */}
-                <linearGradient id="neonCyanEmeraldGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#06B6D4" stopOpacity={0.85} />
-                  <stop offset="35%" stopColor="#10B981" stopOpacity={0.45} />
-                  <stop offset="75%" stopColor="#059669" stopOpacity={0.12} />
-                  <stop offset="100%" stopColor="#0B131E" stopOpacity={0.0} />
+                {/* Clean Clinical Sky Blue Multi-Stop Linear Gradient */}
+                <linearGradient id="clinicalSkyGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#0EA5E9" stopOpacity={0.25} />
+                  <stop offset="65%" stopColor="#38BDF8" stopOpacity={0.08} />
+                  <stop offset="100%" stopColor="#0EA5E9" stopOpacity={0.0} />
                 </linearGradient>
-
-                {/* SVG Filter for Glowing Extruded Stroke */}
-                <filter id="neonGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
-                  <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#06B6D4" floodOpacity="0.5" />
-                </filter>
               </defs>
 
-              <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" opacity={0.7} vertical={false} />
-              <XAxis dataKey="date" stroke="#64748B" fontSize={11} tickLine={false} axisLine={{ stroke: '#334155' }} />
-              <YAxis stroke="#64748B" fontSize={11} tickLine={false} axisLine={{ stroke: '#334155' }} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#E2E8F0" opacity={0.8} vertical={false} />
+              <XAxis dataKey="date" stroke="#64748B" fontSize={11} tickLine={false} axisLine={{ stroke: '#CBD5E1' }} />
+              <YAxis stroke="#64748B" fontSize={11} tickLine={false} axisLine={{ stroke: '#CBD5E1' }} />
               
               {/* Compact Tooltip Chip with coordinate offset */}
               <Tooltip
                 content={<CompactChartTooltip unit="kcal" />}
                 offset={12}
-                cursor={{ stroke: 'rgba(6, 182, 212, 0.45)', strokeWidth: 1.5, strokeDasharray: '4 4' }}
+                cursor={{ stroke: 'rgba(14, 165, 233, 0.45)', strokeWidth: 1.5, strokeDasharray: '4 4' }}
               />
 
               <Area
                 type="monotone"
                 dataKey="calories"
                 name="Caloric Burn"
-                stroke="#06B6D4"
+                stroke="#0284C7"
                 strokeWidth={3}
                 fillOpacity={1}
-                fill="url(#neonCyanEmeraldGradient)"
-                filter="url(#neonGlowFilter)"
+                fill="url(#clinicalSkyGradient)"
                 activeDot={{
                   r: 6,
-                  fill: '#06B6D4',
+                  fill: '#0284C7',
                   stroke: '#FFFFFF',
                   strokeWidth: 2,
                 }}

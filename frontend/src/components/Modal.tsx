@@ -31,15 +31,15 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/40 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className={`w-full ${maxWidth} bg-white border border-emerald-100 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]`}
+        className={`w-full ${maxWidth} bg-white border border-sky-100 rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 bg-[#FAFCFA]">
-          <h3 className="text-base font-bold text-gray-900 tracking-wide">{title}</h3>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-sky-100 bg-sky-50/40">
+          <h3 className="text-base font-bold text-slate-900 tracking-wide">{title}</h3>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-sky-50 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>

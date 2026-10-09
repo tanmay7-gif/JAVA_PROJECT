@@ -35,9 +35,9 @@ const ProtectedUserRoute: React.FC<{ children: React.ReactNode }> = ({ children 
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#F8FAF8] flex flex-col items-center justify-center gap-3 text-emerald-800">
-        <div className="w-10 h-10 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs font-bold tracking-wider uppercase text-emerald-600">
+      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center gap-3 text-sky-900">
+        <div className="w-10 h-10 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-bold tracking-wider uppercase text-sky-600">
           Calibrating Telemetry Access...
         </p>
       </div>
@@ -57,9 +57,9 @@ const ProtectedAdminRoute: React.FC<{ children: React.ReactNode }> = ({ children
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#F8FAF8] flex flex-col items-center justify-center gap-3 text-emerald-800">
-        <div className="w-10 h-10 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs font-bold tracking-wider uppercase text-emerald-600">
+      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center gap-3 text-sky-900">
+        <div className="w-10 h-10 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-bold tracking-wider uppercase text-sky-600">
           Verifying Cryptographic Credentials...
         </p>
       </div>
@@ -117,9 +117,9 @@ const AppShell: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#F8FAF8] flex flex-col items-center justify-center gap-3 text-emerald-800">
-        <div className="w-10 h-10 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs font-bold tracking-wider uppercase text-emerald-600">
+      <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center gap-3 text-sky-900">
+        <div className="w-10 h-10 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-bold tracking-wider uppercase text-sky-600">
           Initializing Clinical Health OS...
         </p>
       </div>
@@ -159,11 +159,9 @@ const AppShell: React.FC = () => {
   return (
     <div
       className={
-        isAthleteRoute
-          ? 'min-h-screen bg-[#0B131E] text-slate-100 flex flex-col'
-          : isAdminRoute
-          ? 'min-h-screen bg-[#080D17] text-slate-100 flex flex-col'
-          : 'min-h-screen bg-[#F8FAF8] text-gray-900 flex flex-col selection:bg-emerald-500 selection:text-white'
+        isAthleteRoute || isAdminRoute
+          ? 'min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col selection:bg-sky-500 selection:text-white'
+          : 'min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col selection:bg-sky-500 selection:text-white'
       }
     >
       {/* Persistent Light-Glass Navigation Header (hidden on athlete telemetry & admin routes) */}

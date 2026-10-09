@@ -279,17 +279,17 @@ export const Arena: React.FC = () => {
     <div className="w-full bg-slate-50 min-h-screen text-slate-800 p-4 sm:p-6 lg:p-8 font-sans space-y-8 animate-in fade-in duration-300">
       {/* Toast Banner */}
       {activeToast && (
-        <div className="fixed top-6 right-6 z-50 bg-slate-900 text-white text-xs font-mono font-bold px-4 py-3 rounded-2xl shadow-xl border border-emerald-500/40 flex items-center gap-2 animate-in slide-in-from-top duration-300">
-          <Sparkles className="w-4 h-4 text-emerald-400" />
+        <div className="fixed top-6 right-6 z-50 bg-white text-slate-800 text-xs font-mono font-bold px-4 py-3 rounded-2xl shadow-xl border border-sky-200 flex items-center gap-2 animate-in slide-in-from-top duration-300">
+          <Sparkles className="w-4 h-4 text-sky-500" />
           <span>{activeToast}</span>
         </div>
       )}
 
       {/* Arena Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200/80 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-sky-100 pb-5">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold uppercase tracking-wider mb-2">
-            <Trophy className="w-3.5 h-3.5 text-emerald-600" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200 text-sky-800 text-[10px] font-bold uppercase tracking-wider mb-2">
+            <Trophy className="w-3.5 h-3.5 text-sky-600" />
             FitPulse Gamified Arena & Badges
           </div>
           <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-display">
@@ -306,7 +306,7 @@ export const Arena: React.FC = () => {
             onClick={() => setActiveTab('challenges')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'challenges'
-                ? 'bg-emerald-600 text-white shadow-sm'
+                ? 'bg-sky-600 text-white shadow-sm'
                 : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
@@ -317,7 +317,7 @@ export const Arena: React.FC = () => {
             onClick={() => setActiveTab('history')}
             className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 ${
               activeTab === 'history'
-                ? 'bg-emerald-600 text-white shadow-sm'
+                ? 'bg-sky-600 text-white shadow-sm'
                 : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
@@ -336,7 +336,7 @@ export const Arena: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <Target className="w-5 h-5 text-emerald-600" />
+                  <Target className="w-5 h-5 text-sky-600" />
                   <h2 className="text-lg font-extrabold text-slate-900 font-display">
                     Official Community Challenges
                   </h2>
@@ -347,7 +347,7 @@ export const Arena: React.FC = () => {
               </div>
 
               {isLoading ? (
-                <div className="p-12 text-center text-xs font-bold text-emerald-600">
+                <div className="p-12 text-center text-xs font-bold text-sky-600">
                   Loading athletic arena challenges...
                 </div>
               ) : challenges.length === 0 ? (
@@ -375,8 +375,8 @@ export const Arena: React.FC = () => {
                           isFullyCompleted
                             ? 'border-emerald-300 ring-2 ring-emerald-500/10'
                             : isEnrolled
-                            ? 'border-emerald-200 bg-emerald-50/10'
-                            : 'border-slate-200/80'
+                            ? 'border-sky-200 bg-sky-50/20'
+                            : 'border-sky-100 hover:border-sky-200'
                         }`}
                       >
                         {/* Header */}
@@ -405,7 +405,7 @@ export const Arena: React.FC = () => {
                               <span className="text-slate-600 font-semibold">
                                 {currentProg} / {c.target_value} target
                               </span>
-                              <span className="font-extrabold text-emerald-600">{percent}%</span>
+                              <span className="font-extrabold text-sky-600">{percent}%</span>
                             </div>
 
                             <div className="w-full h-3 rounded-full bg-slate-100 p-0.5 overflow-hidden border border-slate-200/60">
@@ -413,7 +413,7 @@ export const Arena: React.FC = () => {
                                 className={`h-full rounded-full transition-all duration-500 ${
                                   isFullyCompleted
                                     ? 'bg-gradient-to-r from-emerald-500 to-teal-400 shadow-sm'
-                                    : 'bg-emerald-500'
+                                    : 'bg-sky-500'
                                 }`}
                                 style={{ width: `${percent}%` }}
                               />
@@ -426,7 +426,7 @@ export const Arena: React.FC = () => {
                           {!isEnrolled ? (
                             <button
                               onClick={() => handleJoinChallenge(c)}
-                              className="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-mono font-bold text-xs uppercase tracking-wider shadow-sm transition-all flex items-center justify-center gap-1.5"
+                              className="w-full py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-mono font-bold text-xs uppercase tracking-wider shadow-sm transition-all flex items-center justify-center gap-1.5"
                             >
                               <Plus className="w-4 h-4" />
                               <span>Join Challenge</span>
@@ -460,7 +460,7 @@ export const Arena: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <History className="w-5 h-5 text-emerald-600" />
+                  <History className="w-5 h-5 text-sky-600" />
                   <h2 className="text-lg font-extrabold text-slate-900 font-display">
                     Participation & Completion History
                   </h2>
@@ -487,7 +487,7 @@ export const Arena: React.FC = () => {
                     return (
                       <div
                         key={h.id}
-                        className="p-4 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                        className="p-4 rounded-2xl bg-white border border-sky-100 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4"
                       >
                         <div className="flex items-center gap-3.5">
                           <div
@@ -537,7 +537,7 @@ export const Arena: React.FC = () => {
                   Enamel Achievement Badges
                 </h2>
               </div>
-              <span className="text-xs font-mono font-bold text-emerald-600">
+              <span className="text-xs font-mono font-bold text-sky-600">
                 {totalUnlockedBadges} of {badges.length} Unlocked
               </span>
             </div>
@@ -548,7 +548,7 @@ export const Arena: React.FC = () => {
                   key={badge.id}
                   className={`bg-white border rounded-2xl p-4 flex flex-col items-center text-center space-y-3 shadow-sm transition-all relative overflow-hidden ${
                     badge.unlocked
-                      ? 'border-slate-200 hover:shadow-md'
+                      ? 'border-sky-100 hover:border-sky-200 hover:shadow-md'
                       : 'border-dashed border-slate-300 opacity-60 bg-slate-50/50'
                   }`}
                 >
@@ -588,7 +588,7 @@ export const Arena: React.FC = () => {
 
         {/* Right Column: Sticky User XP & Tier Sidebar */}
         <div className="lg:sticky lg:top-8 space-y-4">
-          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-sm space-y-5">
+          <div className="bg-white border border-sky-100 rounded-2xl p-6 shadow-sm space-y-5">
             {/* Athlete Tier Badge */}
             <div className="flex items-center gap-3 pb-4 border-b border-slate-100">
               <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-300 flex items-center justify-center text-amber-600 shadow-sm shrink-0">
@@ -655,7 +655,7 @@ export const Arena: React.FC = () => {
               </div>
 
               <div className="p-2 rounded-xl bg-slate-50 border border-slate-200/60">
-                <span className="text-lg font-black text-emerald-600 block tabular-nums">
+                <span className="text-lg font-black text-sky-600 block tabular-nums">
                   {totalUnlockedBadges}
                 </span>
                 <span className="text-[9px] text-slate-400 uppercase font-bold block">

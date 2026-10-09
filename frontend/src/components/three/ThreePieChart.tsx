@@ -101,24 +101,24 @@ const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
         {/* Compact Tooltip Pill right above slice when hovered */}
         {isHovered && (
           <Html position={[0, height + 0.18, 0]} center distanceFactor={7}>
-            <div className="rounded-lg border border-slate-700/80 bg-[#0c1424]/95 p-2 px-2.5 shadow-xl backdrop-blur-md max-w-[170px] text-left pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100">
+            <div className="rounded-lg border border-sky-200 bg-white/95 p-2 px-2.5 shadow-md backdrop-blur-md max-w-[170px] text-left pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100">
               <div className="flex items-center justify-between gap-2.5 mb-1">
-                <span className="text-[9px] font-semibold uppercase tracking-wider text-slate-400">
+                <span className="text-[9px] font-semibold uppercase tracking-wider text-sky-700">
                   DISCIPLINE
                 </span>
-                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
                   {slice.value}%
                 </span>
               </div>
               <div className="flex items-center justify-between gap-2.5">
-                <span className="flex items-center gap-1.5 text-[11px] text-slate-300 min-w-0">
+                <span className="flex items-center gap-1.5 text-[11px] text-slate-700 min-w-0">
                   <span
-                    className="h-1.5 w-1.5 rounded-full shrink-0 shadow-[0_0_6px_currentColor]"
+                    className="h-1.5 w-1.5 rounded-full shrink-0 shadow-sm"
                     style={{ backgroundColor: slice.color }}
                   />
-                  <span className="font-semibold text-white truncate max-w-[75px]">{slice.name}</span>
+                  <span className="font-semibold text-slate-900 truncate max-w-[75px]">{slice.name}</span>
                 </span>
-                <span className="text-[10px] font-medium text-slate-300 whitespace-nowrap shrink-0">
+                <span className="text-[10px] font-medium text-slate-500 whitespace-nowrap shrink-0">
                   {slice.sessionsCount}{' '}
                   {slice.sessionsCount === 1 ? 'session' : 'sessions'}
                 </span>
@@ -161,12 +161,12 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
 
   if (!data || data.length === 0 || totalValue === 0) {
     return (
-      <div className={`relative w-full ${heightClass} flex flex-col items-center justify-center border border-dashed border-slate-800 rounded-2xl bg-[#0B131E]/40 p-6 text-center`}>
-        <div className="w-12 h-12 rounded-2xl bg-[#131E2D] shadow-inner border border-slate-700/60 flex items-center justify-center text-cyan-400 mb-3">
+      <div className={`relative w-full ${heightClass} flex flex-col items-center justify-center border border-dashed border-sky-200 rounded-2xl bg-sky-50/40 p-6 text-center`}>
+        <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-sky-100 flex items-center justify-center text-sky-500 mb-3">
           <Layers className="w-6 h-6" />
         </div>
-        <p className="text-sm font-bold text-slate-200">No Discipline Telemetry Yet</p>
-        <p className="text-xs text-slate-400 mt-1 max-w-xs leading-relaxed">
+        <p className="text-sm font-bold text-slate-800">No Discipline Telemetry Yet</p>
+        <p className="text-xs text-slate-500 mt-1 max-w-xs leading-relaxed">
           Log workout sessions across Cardio, Strength, or HIIT to generate real 3D volumetric category distribution.
         </p>
       </div>
@@ -200,25 +200,25 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
     <div className={`relative w-full ${heightClass} flex flex-col justify-between`}>
       {/* Compact Discipline Readout Widget */}
       {activeSlice && (
-        <div className="absolute top-4 left-4 z-10 rounded-xl border border-slate-700/80 bg-[#0c1424]/85 p-2.5 px-3 max-w-[210px] shadow-lg backdrop-blur-md pointer-events-none">
+        <div className="absolute top-4 left-4 z-10 rounded-xl border border-sky-200 bg-white/95 p-2.5 px-3 max-w-[210px] shadow-sm backdrop-blur-md pointer-events-none">
           <div className="flex flex-col gap-1.5 min-w-[140px]">
             <div className="flex items-center justify-between gap-3">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-sky-700">
                 DISCIPLINE
               </span>
-              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
                 {activeSlice.value}%
               </span>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <div className="flex items-center gap-1.5 text-xs font-bold text-white min-w-0">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-slate-900 min-w-0">
                 <span
-                  className="w-2 h-2 rounded-full shrink-0 shadow-[0_0_6px_currentColor]"
+                  className="w-2 h-2 rounded-full shrink-0 shadow-sm"
                   style={{ backgroundColor: activeSlice.color }}
                 />
                 <span className="truncate max-w-[75px]">{activeSlice.name}</span>
               </div>
-              <span className="text-xs font-medium text-slate-300 whitespace-nowrap shrink-0">
+              <span className="text-xs font-medium text-slate-600 whitespace-nowrap shrink-0">
                 {activeSlice.sessionsCount} {activeSlice.sessionsCount === 1 ? 'session' : 'sessions'}
               </span>
             </div>
@@ -230,7 +230,7 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
       <div className="absolute inset-0">
         <Suspense
           fallback={
-            <div className="w-full h-full flex items-center justify-center text-xs text-cyan-400 font-semibold animate-pulse">
+            <div className="w-full h-full flex items-center justify-center text-xs text-sky-600 font-semibold animate-pulse">
               Synthesizing 3D Extruded Donut Geometry...
             </div>
           }
@@ -240,10 +240,10 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
             gl={{ antialias: true, alpha: true }}
             dpr={[1, 2]}
           >
-            <ambientLight intensity={0.8} />
+            <ambientLight intensity={1.1} />
             <directionalLight position={[4, 5, 4]} intensity={1.5} color="#FFFFFF" />
-            <directionalLight position={[-3, 2, -2]} intensity={0.7} color="#22D3EE" />
-            <pointLight position={[0, -1, 1]} intensity={0.4} color="#10B981" />
+            <directionalLight position={[-3, 2, -2]} intensity={0.6} color="#BAE6FD" />
+            <pointLight position={[0, -1, 1]} intensity={0.4} color="#0EA5E9" />
 
             <Float speed={1.2} rotationIntensity={0.12} floatIntensity={0.18}>
               <group position={[0, -0.2, 0]}>
@@ -264,30 +264,30 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
                   />
                 ))}
 
-                {/* Inner Dark Telemetry Core Disc (creates Donut hole effect) */}
+                {/* Inner Light Telemetry Core Disc (creates Donut hole effect) */}
                 <mesh position={[0, 0.05, 0]}>
                   <cylinderGeometry args={[0.62, 0.62, 0.48, 32]} />
                   <meshStandardMaterial
-                    color="#0B131E"
+                    color="#FFFFFF"
                     roughness={0.2}
-                    metalness={0.4}
+                    metalness={0.1}
                   />
                 </mesh>
 
                 {/* Glowing Core Rim Ring */}
                 <mesh position={[0, 0.295, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                   <ringGeometry args={[0.59, 0.62, 48]} />
-                  <meshBasicMaterial color="#06B6D4" transparent opacity={0.6} />
+                  <meshBasicMaterial color="#BAE6FD" transparent opacity={0.8} />
                 </mesh>
 
                 {/* Pedestal Ground Ring */}
                 <mesh position={[0, -0.26, 0]}>
                   <cylinderGeometry args={[1.65, 1.7, 0.04, 36]} />
-                  <meshStandardMaterial color="#070D18" roughness={0.5} metalness={0.2} />
+                  <meshStandardMaterial color="#F1F5F9" roughness={0.5} metalness={0.1} />
                 </mesh>
                 <mesh position={[0, -0.238, 0]} rotation={[-Math.PI / 2, 0, 0]}>
                   <ringGeometry args={[1.63, 1.66, 48]} />
-                  <meshBasicMaterial color="#06B6D4" transparent opacity={0.3} />
+                  <meshBasicMaterial color="#BAE6FD" transparent opacity={0.5} />
                 </mesh>
               </group>
             </Float>
@@ -317,16 +317,16 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
               onMouseLeave={() => setInternalHoveredSlice(null)}
               className={`px-2 py-0.5 rounded-lg text-[10px] font-semibold transition-all flex items-center gap-1.5 ${
                 isSelected
-                  ? 'bg-slate-800 text-white border border-cyan-400/50 shadow-sm'
-                  : 'bg-[#0B131E]/80 hover:bg-[#131E2D] text-slate-300 border border-slate-800/80 shadow-sm'
+                  ? 'bg-sky-500 text-white border border-sky-500 shadow-sm'
+                  : 'bg-white hover:bg-sky-50 text-slate-700 border border-sky-100 shadow-sm'
               }`}
             >
               <span
-                className="w-1.5 h-1.5 rounded-full inline-block shadow-[0_0_5px_currentColor]"
+                className="w-1.5 h-1.5 rounded-full inline-block shadow-sm"
                 style={{ backgroundColor: cat.color }}
               />
               <span>{cat.name}</span>
-              <span className="text-[9px] text-slate-400 ml-0.5 font-normal">{cat.value}%</span>
+              <span className={`text-[9px] ml-0.5 font-normal ${isSelected ? 'text-sky-100' : 'text-slate-500'}`}>{cat.value}%</span>
             </button>
           );
         })}

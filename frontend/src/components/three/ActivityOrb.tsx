@@ -94,7 +94,7 @@ export const ActivityOrb: React.FC<ActivityOrbProps> = ({
       <div className="absolute inset-0">
         <Suspense
           fallback={
-            <div className="w-full h-full flex items-center justify-center text-xs text-emerald-400 font-medium animate-pulse">
+            <div className="w-full h-full flex items-center justify-center text-xs text-sky-600 font-medium animate-pulse">
               Initializing 3D Telemetry Core...
             </div>
           }

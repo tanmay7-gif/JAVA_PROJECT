@@ -51,7 +51,7 @@ export const CompactActivePieShape: React.FC<CompactActiveShapeProps> = (props) 
             x={cx}
             y={cy - 4}
             textAnchor="middle"
-            className="fill-slate-400 text-[9px] font-semibold uppercase tracking-wider select-none pointer-events-none"
+            className="fill-slate-500 text-[9px] font-semibold uppercase tracking-wider select-none pointer-events-none"
           >
             {label}
           </text>
@@ -59,7 +59,7 @@ export const CompactActivePieShape: React.FC<CompactActiveShapeProps> = (props) 
             x={cx}
             y={cy + 9}
             textAnchor="middle"
-            className="fill-white text-[11px] font-bold select-none pointer-events-none"
+            className="fill-slate-900 text-[11px] font-bold select-none pointer-events-none"
           >
             {displayVal}
           </text>
@@ -75,7 +75,7 @@ export const CompactActivePieShape: React.FC<CompactActiveShapeProps> = (props) 
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
-        stroke="#0B131E"
+        stroke="#FFFFFF"
         strokeWidth={2}
       />
 

@@ -429,25 +429,25 @@ export const LiveWorkoutTracker: React.FC = () => {
   const totalSetsCount = routineState.exercises.reduce((acc, ex) => acc + ex.sets.length, 0);
 
   return (
-    <div className="w-full bg-[#0D0F12] text-zinc-100 min-h-screen p-4 sm:p-6 lg:p-8 font-sans space-y-6 select-none border border-zinc-900 rounded-3xl">
+    <div className="w-full bg-white text-slate-800 min-h-screen p-4 sm:p-6 lg:p-8 font-sans space-y-6 select-none border border-sky-100 rounded-3xl shadow-sm">
       {/* 1. Interactive 2-Tier Preference Switcher Strip */}
-      <div className="bg-[#14171C] border border-zinc-800 rounded-2xl p-3 sm:p-4 space-y-3 shadow-sm">
+      <div className="bg-sky-50/50 border border-sky-100 rounded-2xl p-3 sm:p-4 space-y-3 shadow-sm">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-mono font-bold uppercase tracking-wider text-zinc-400 flex items-center gap-1.5">
-            <Target className="w-4 h-4 text-emerald-400" /> Tailor Workout Session Routine
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
+            <Target className="w-4 h-4 text-sky-600" /> Tailor Workout Session Routine
           </span>
-          <span className="text-[11px] font-mono text-emerald-400 font-bold">Live Auto-Recalculate</span>
+          <span className="text-[11px] font-mono text-sky-600 font-bold">Live Auto-Recalculate</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* Goal Switcher */}
-          <div className="flex items-center bg-[#0D0F12] border border-zinc-800 p-1 rounded-xl">
+          <div className="flex items-center bg-white border border-sky-200/70 p-1 rounded-xl shadow-xs">
             <button
               onClick={() => setGoal('HYPERTROPHY')}
               className={`flex-1 py-2 px-3 rounded-lg text-xs font-mono font-bold transition-all ${
                 goal === 'HYPERTROPHY'
-                  ? 'bg-white text-black shadow-sm'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'bg-sky-500 text-white shadow-sm shadow-sky-200'
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-sky-50/50'
               }`}
             >
               Hypertrophy & Muscle Gain
@@ -456,8 +456,8 @@ export const LiveWorkoutTracker: React.FC = () => {
               onClick={() => setGoal('FAT_LOSS')}
               className={`flex-1 py-2 px-3 rounded-lg text-xs font-mono font-bold transition-all ${
                 goal === 'FAT_LOSS'
-                  ? 'bg-white text-black shadow-sm'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'bg-sky-500 text-white shadow-sm shadow-sky-200'
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-sky-50/50'
               }`}
             >
               Fat Loss & Endurance
@@ -465,13 +465,13 @@ export const LiveWorkoutTracker: React.FC = () => {
           </div>
 
           {/* Location Switcher */}
-          <div className="flex items-center bg-[#0D0F12] border border-zinc-800 p-1 rounded-xl">
+          <div className="flex items-center bg-white border border-sky-200/70 p-1 rounded-xl shadow-xs">
             <button
               onClick={() => setLocation('INDOOR')}
               className={`flex-1 py-2 px-3 rounded-lg text-xs font-mono font-bold transition-all ${
                 location === 'INDOOR'
-                  ? 'bg-white text-black shadow-sm'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'bg-sky-500 text-white shadow-sm shadow-sky-200'
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-sky-50/50'
               }`}
             >
               Indoor / Gym Equipment
@@ -480,8 +480,8 @@ export const LiveWorkoutTracker: React.FC = () => {
               onClick={() => setLocation('OUTDOOR')}
               className={`flex-1 py-2 px-3 rounded-lg text-xs font-mono font-bold transition-all ${
                 location === 'OUTDOOR'
-                  ? 'bg-white text-black shadow-sm'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'bg-sky-500 text-white shadow-sm shadow-sky-200'
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-sky-50/50'
               }`}
             >
               Outdoor / Calisthenics
@@ -491,41 +491,41 @@ export const LiveWorkoutTracker: React.FC = () => {
       </div>
 
       {/* 2. Tailored Workout Routine Header */}
-      <div className="bg-[#14171C] border border-zinc-800 rounded-3xl p-6 space-y-4">
+      <div className="bg-white border border-sky-100 rounded-3xl p-6 space-y-4 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono font-bold uppercase tracking-wider">
+              <span className="px-2.5 py-0.5 rounded bg-sky-50 border border-sky-200 text-sky-700 text-[10px] font-mono font-bold uppercase tracking-wider">
                 Tailored Active Routine
               </span>
-              <span className="text-zinc-500 text-xs font-mono">
+              <span className="text-slate-500 text-xs font-mono">
                 {goal} • {location}
               </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight font-display">
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-900 uppercase tracking-tight font-display">
               {routineState.title}
             </h2>
-            <p className="text-xs text-zinc-400 mt-1 max-w-2xl leading-relaxed">
+            <p className="text-xs text-slate-600 mt-1 max-w-2xl leading-relaxed">
               {routineState.description}
             </p>
           </div>
 
           {/* Real-time Session Volume & Set Completion Readout */}
-          <div className="bg-[#0D0F12] border border-zinc-800 p-4 rounded-2xl flex items-center gap-6 shrink-0">
+          <div className="bg-sky-50/60 border border-sky-100 p-4 rounded-2xl flex items-center gap-6 shrink-0">
             <div>
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
+              <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">
                 Session Volume
               </span>
-              <span className="text-2xl font-black font-mono text-emerald-400 tabular-nums">
-                {totalVolumeKg.toLocaleString()} <span className="text-xs text-zinc-400">kg</span>
+              <span className="text-2xl font-black font-mono text-sky-600 tabular-nums">
+                {totalVolumeKg.toLocaleString()} <span className="text-xs text-slate-500">kg</span>
               </span>
             </div>
 
-            <div className="border-l border-zinc-800 pl-6">
-              <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider block">
+            <div className="border-l border-sky-200 pl-6">
+              <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wider block">
                 Sets Done
               </span>
-              <span className="text-2xl font-black font-mono text-white tabular-nums">
+              <span className="text-2xl font-black font-mono text-slate-900 tabular-nums">
                 {completedSetsCount} / {totalSetsCount}
               </span>
             </div>
@@ -533,23 +533,23 @@ export const LiveWorkoutTracker: React.FC = () => {
         </div>
 
         {/* Session Telemetry Chips */}
-        <div className="flex flex-wrap items-center gap-2.5 pt-2 border-t border-zinc-800/80">
-          <span className="px-3 py-1.5 rounded-xl bg-[#0D0F12] border border-zinc-800 text-xs font-mono text-zinc-300 flex items-center gap-1.5">
-            <Clock className="w-3.5 h-3.5 text-emerald-400" /> {routineState.estimatedDuration}
+        <div className="flex flex-wrap items-center gap-2.5 pt-2 border-t border-sky-100">
+          <span className="px-3 py-1.5 rounded-xl bg-sky-50/70 border border-sky-100 text-xs font-mono text-slate-700 flex items-center gap-1.5">
+            <Clock className="w-3.5 h-3.5 text-sky-600" /> {routineState.estimatedDuration}
           </span>
-          <span className="px-3 py-1.5 rounded-xl bg-[#0D0F12] border border-zinc-800 text-xs font-mono text-zinc-300 flex items-center gap-1.5">
-            <Flame className="w-3.5 h-3.5 text-amber-400" /> {routineState.targetIntensity}
+          <span className="px-3 py-1.5 rounded-xl bg-sky-50/70 border border-sky-100 text-xs font-mono text-slate-700 flex items-center gap-1.5">
+            <Flame className="w-3.5 h-3.5 text-amber-500" /> {routineState.targetIntensity}
           </span>
-          <span className="px-3 py-1.5 rounded-xl bg-[#0D0F12] border border-zinc-800 text-xs font-mono text-zinc-300 flex items-center gap-1.5">
-            <Dumbbell className="w-3.5 h-3.5 text-sky-400" /> {routineState.equipmentRequired}
+          <span className="px-3 py-1.5 rounded-xl bg-sky-50/70 border border-sky-100 text-xs font-mono text-slate-700 flex items-center gap-1.5">
+            <Dumbbell className="w-3.5 h-3.5 text-sky-500" /> {routineState.equipmentRequired}
           </span>
         </div>
 
         {/* Weekly Consistency 7-Day Streak Strip */}
-        <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#0D0F12] p-3 rounded-2xl border border-zinc-800">
+        <div className="pt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-sky-50/40 p-3 rounded-2xl border border-sky-100">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-400" />
-            <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
+            <Sparkles className="w-4 h-4 text-amber-500" />
+            <span className="text-xs font-mono font-bold text-slate-800 uppercase tracking-wider">
               Weekly Consistency Streak
             </span>
           </div>
@@ -562,15 +562,15 @@ export const LiveWorkoutTracker: React.FC = () => {
                   key={idx}
                   className={`w-8 h-8 rounded-xl flex items-center justify-center font-mono font-bold text-xs border ${
                     isCompleted
-                      ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-400'
-                      : 'bg-zinc-900 border-zinc-800 text-zinc-600'
+                      ? 'bg-sky-100 border-sky-300 text-sky-700 font-bold'
+                      : 'bg-slate-100 border-slate-200 text-slate-400'
                   }`}
                 >
-                  {isCompleted ? <Check className="w-3.5 h-3.5" /> : day}
+                  {isCompleted ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : day}
                 </div>
               );
             })}
-            <span className="text-xs font-mono font-bold text-amber-400 ml-2">🔥 5-Day Streak</span>
+            <span className="text-xs font-mono font-bold text-amber-600 ml-2">🔥 5-Day Streak</span>
           </div>
         </div>
       </div>
@@ -580,25 +580,25 @@ export const LiveWorkoutTracker: React.FC = () => {
         {routineState.exercises.map((exercise) => (
           <div
             key={exercise.id}
-            className="bg-[#14171C] border border-zinc-800 rounded-3xl p-5 sm:p-6 space-y-4 shadow-sm"
+            className="bg-white border border-sky-100 rounded-3xl p-5 sm:p-6 space-y-4 shadow-sm hover:shadow-md transition-shadow"
           >
             {/* Exercise Title Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-800/80">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-sky-100">
               <div>
                 <div className="flex items-center gap-2 mb-1">
-                  <span className="px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 text-[10px] font-mono font-bold uppercase">
+                  <span className="px-2 py-0.5 rounded bg-sky-50 border border-sky-200 text-sky-700 text-[10px] font-mono font-bold uppercase">
                     {exercise.targetMuscle}
                   </span>
-                  <span className="text-xs font-mono text-zinc-500">{exercise.cadence}</span>
+                  <span className="text-xs font-mono text-slate-500">{exercise.cadence}</span>
                 </div>
-                <h3 className="text-lg sm:text-xl font-black text-white font-display">
+                <h3 className="text-lg sm:text-xl font-black text-slate-900 font-display">
                   {exercise.name}
                 </h3>
               </div>
 
               <button
                 onClick={() => setActiveTechniqueExercise(exercise)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#0D0F12] hover:bg-zinc-800 text-emerald-400 border border-zinc-700 text-xs font-mono font-bold transition-all self-start sm:self-auto active:scale-95"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-xs font-mono font-bold transition-all self-start sm:self-auto active:scale-95 shadow-xs"
               >
                 <Info className="w-3.5 h-3.5" />
                 <span>Technique Cues</span>
@@ -609,7 +609,7 @@ export const LiveWorkoutTracker: React.FC = () => {
             <div className="overflow-x-auto">
               <table className="w-full text-left font-mono text-xs">
                 <thead>
-                  <tr className="text-zinc-500 uppercase tracking-wider border-b border-zinc-800/60 text-[10px]">
+                  <tr className="bg-sky-50/70 text-sky-900 uppercase tracking-wider border-b border-sky-100 text-[10px]">
                     <th className="py-2.5 px-3">Set #</th>
                     <th className="py-2.5 px-3">Prev Record</th>
                     <th className="py-2.5 px-3">Weight (kg)</th>
@@ -617,25 +617,25 @@ export const LiveWorkoutTracker: React.FC = () => {
                     <th className="py-2.5 px-3 text-right">Complete</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800/40">
+                <tbody className="divide-y divide-sky-100">
                   {exercise.sets.map((set, idx) => (
                     <tr
                       key={idx}
                       className={`transition-colors ${
                         set.completed
-                          ? 'bg-emerald-500/10 text-emerald-400 line-through'
-                          : 'hover:bg-[#0D0F12]/50 text-zinc-200'
+                          ? 'bg-sky-50/80 text-sky-700 line-through'
+                          : 'hover:bg-sky-50/40 text-slate-700'
                       }`}
                     >
-                      <td className="py-3 px-3 font-bold text-zinc-400">Set {set.setNumber}</td>
-                      <td className="py-3 px-3 text-zinc-500 tabular-nums">{set.prevRecord}</td>
+                      <td className="py-3 px-3 font-bold text-slate-600">Set {set.setNumber}</td>
+                      <td className="py-3 px-3 text-slate-500 tabular-nums">{set.prevRecord}</td>
                       <td className="py-3 px-3">
-                        <span className="px-2 py-1 bg-[#0D0F12] border border-zinc-800 rounded-md font-bold tabular-nums">
+                        <span className="px-2 py-1 bg-slate-50 border border-sky-100 rounded-md font-bold tabular-nums text-slate-800">
                           {set.weightKg} kg
                         </span>
                       </td>
                       <td className="py-3 px-3">
-                        <span className="px-2 py-1 bg-[#0D0F12] border border-zinc-800 rounded-md font-bold tabular-nums">
+                        <span className="px-2 py-1 bg-slate-50 border border-sky-100 rounded-md font-bold tabular-nums text-slate-800">
                           {set.reps} reps
                         </span>
                       </td>
@@ -644,8 +644,8 @@ export const LiveWorkoutTracker: React.FC = () => {
                           onClick={() => handleToggleSet(exercise.id, idx)}
                           className={`w-7 h-7 rounded-lg border flex items-center justify-center ml-auto transition-all active:scale-95 ${
                             set.completed
-                              ? 'bg-emerald-500 border-emerald-400 text-black shadow-sm'
-                              : 'bg-[#0D0F12] border-zinc-700 text-zinc-500 hover:text-white'
+                              ? 'bg-sky-500 border-sky-400 text-white shadow-sm'
+                              : 'bg-white border-slate-300 text-slate-400 hover:text-sky-600 hover:border-sky-300'
                           }`}
                         >
                           <Check className="w-4 h-4 stroke-[3]" />
@@ -662,51 +662,51 @@ export const LiveWorkoutTracker: React.FC = () => {
 
       {/* 4. Floating Auto-Rest Countdown Drawer */}
       {restTimerSeconds !== null && restTimerSeconds >= 0 && (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-[#14171C]/95 backdrop-blur-md border border-emerald-500/50 shadow-2xl rounded-2xl p-4 px-6 flex items-center gap-4 animate-in slide-in-from-bottom duration-300">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-white/95 backdrop-blur-md border border-sky-200 shadow-xl rounded-2xl p-4 px-6 flex items-center gap-4 animate-in slide-in-from-bottom duration-300">
           <div className="flex items-center gap-3">
             <div className="relative w-10 h-10 flex items-center justify-center">
               <svg viewBox="0 0 36 36" className="w-full h-full transform -rotate-90">
                 <path
                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                   fill="none"
-                  stroke="#27272A"
+                  stroke="#E2E8F0"
                   strokeWidth="3.5"
                 />
                 <path
                   d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                   fill="none"
-                  stroke="#10B981"
+                  stroke="#0284C7"
                   strokeWidth="3.5"
                   strokeDasharray="100, 100"
                   strokeDashoffset={100 - (restTimerSeconds / 60) * 100}
                   strokeLinecap="round"
                 />
               </svg>
-              <span className="absolute font-mono font-bold text-xs text-white tabular-nums">
+              <span className="absolute font-mono font-bold text-xs text-slate-900 tabular-nums">
                 {restTimerSeconds}s
               </span>
             </div>
 
             <div>
-              <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest block">
+              <span className="text-[10px] font-mono text-slate-500 uppercase tracking-widest block">
                 Auto-Rest Countdown
               </span>
-              <span className="text-xs font-mono font-bold text-emerald-400">
+              <span className="text-xs font-mono font-bold text-sky-600">
                 {restTimerSeconds === 0 ? 'Rest Complete! Ready for Next Set' : 'Recovery Phase'}
               </span>
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5 border-l border-zinc-800 pl-4">
+          <div className="flex items-center gap-1.5 border-l border-slate-200 pl-4">
             <button
               onClick={() => setRestTimerSeconds((prev) => (prev ? prev + 30 : 30))}
-              className="px-2.5 py-1 rounded-lg bg-[#0D0F12] hover:bg-zinc-800 text-zinc-300 border border-zinc-700 text-xs font-mono font-bold transition-all"
+              className="px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-xs font-mono font-bold transition-all"
             >
               +30s
             </button>
             <button
               onClick={() => setRestTimerSeconds((prev) => (prev && prev > 15 ? prev - 15 : 0))}
-              className="px-2.5 py-1 rounded-lg bg-[#0D0F12] hover:bg-zinc-800 text-zinc-300 border border-zinc-700 text-xs font-mono font-bold transition-all"
+              className="px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-xs font-mono font-bold transition-all"
             >
               -15s
             </button>
@@ -715,7 +715,7 @@ export const LiveWorkoutTracker: React.FC = () => {
                 setRestTimerSeconds(null);
                 setRestTimerActive(false);
               }}
-              className="px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-600 text-black text-xs font-mono font-bold transition-all ml-1"
+              className="px-2.5 py-1 rounded-lg bg-sky-500 hover:bg-sky-600 text-white text-xs font-mono font-bold transition-all ml-1 shadow-sm"
             >
               Skip Rest
             </button>
@@ -725,36 +725,36 @@ export const LiveWorkoutTracker: React.FC = () => {
 
       {/* 5. Form Cue & Technique Modal */}
       {activeTechniqueExercise && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#14171C] border border-zinc-800 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white border border-sky-100 rounded-3xl max-w-lg w-full p-6 space-y-5 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
             <button
               onClick={() => setActiveTechniqueExercise(null)}
-              className="absolute top-5 right-5 p-1 rounded-xl bg-[#0D0F12] border border-zinc-800 text-zinc-400 hover:text-white"
+              className="absolute top-5 right-5 p-1 rounded-xl bg-slate-100 border border-slate-200 text-slate-500 hover:text-slate-800"
             >
               <X className="w-5 h-5" />
             </button>
 
             <div>
-              <span className="text-[10px] font-mono text-emerald-400 font-bold uppercase tracking-wider">
+              <span className="text-[10px] font-mono text-sky-600 font-bold uppercase tracking-wider">
                 Execution Technique Guide
               </span>
-              <h3 className="text-xl font-black text-white font-display mt-0.5">
+              <h3 className="text-xl font-black text-slate-900 font-display mt-0.5">
                 {activeTechniqueExercise.name}
               </h3>
-              <span className="text-xs text-zinc-400 font-mono block mt-1">
+              <span className="text-xs text-slate-500 font-mono block mt-1">
                 Target: {activeTechniqueExercise.targetMuscle} • {activeTechniqueExercise.cadence}
               </span>
             </div>
 
             {/* Cues List */}
             <div className="space-y-3">
-              <h4 className="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" /> 3 High-Impact Execution Cues
+              <h4 className="text-xs font-mono font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-sky-600" /> 3 High-Impact Execution Cues
               </h4>
               <ul className="space-y-2">
                 {activeTechniqueExercise.techniqueCues.map((cue, idx) => (
-                  <li key={idx} className="p-3 rounded-xl bg-[#0D0F12] border border-zinc-800 text-xs text-zinc-200 leading-relaxed flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-md bg-emerald-500/10 text-emerald-400 font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  <li key={idx} className="p-3 rounded-xl bg-sky-50/60 border border-sky-100 text-xs text-slate-700 leading-relaxed flex items-start gap-2">
+                    <span className="w-5 h-5 rounded-md bg-sky-100 text-sky-700 font-mono font-bold flex items-center justify-center shrink-0 mt-0.5">
                       {idx + 1}
                     </span>
                     <span>{cue}</span>
@@ -764,11 +764,11 @@ export const LiveWorkoutTracker: React.FC = () => {
             </div>
 
             {/* Common Errors */}
-            <div className="space-y-2 pt-2 border-t border-zinc-800">
-              <h4 className="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider">
+            <div className="space-y-2 pt-2 border-t border-slate-200">
+              <h4 className="text-xs font-mono font-bold text-rose-500 uppercase tracking-wider">
                 Common Errors to Avoid
               </h4>
-              <ul className="space-y-1.5 text-xs text-zinc-400">
+              <ul className="space-y-1.5 text-xs text-slate-600">
                 {activeTechniqueExercise.commonErrors.map((err, idx) => (
                   <li key={idx} className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
@@ -780,7 +780,7 @@ export const LiveWorkoutTracker: React.FC = () => {
 
             <button
               onClick={() => setActiveTechniqueExercise(null)}
-              className="w-full py-3 rounded-2xl bg-white hover:bg-zinc-200 text-black font-mono font-bold text-xs uppercase tracking-wider transition-all"
+              className="w-full py-3 rounded-2xl bg-sky-500 hover:bg-sky-600 text-white font-mono font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-sky-200"
             >
               Got it, Resume Workout
             </button>

@@ -156,7 +156,7 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
 
         {/* Workout Discipline */}
         <div>
-          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
             Primary Discipline
           </label>
           <div className="grid grid-cols-4 gap-2">
@@ -167,11 +167,11 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
                 onClick={() => setType(t)}
                 className={`py-2 px-3 rounded-xl text-xs font-semibold border transition-all flex items-center justify-center gap-1.5 ${
                   type === t
-                    ? 'bg-emerald-50 border-emerald-500 text-emerald-800 shadow-sm'
-                    : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                    ? 'bg-sky-50 border-sky-500 text-sky-800 shadow-sm font-bold'
+                    : 'bg-white border-slate-200 text-slate-600 hover:bg-sky-50/50'
                 }`}
               >
-                {type === t && <Check className="w-3 h-3 text-emerald-600" />}
+                {type === t && <Check className="w-3 h-3 text-sky-600" />}
                 {t}
               </button>
             ))}
@@ -181,9 +181,9 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
         {/* Duration & Intensity */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
               <span className="flex items-center gap-1.5">
-                <Clock className="w-3.5 h-3.5 text-emerald-600" />
+                <Clock className="w-3.5 h-3.5 text-sky-500" />
                 Duration (Minutes)
               </span>
             </label>
@@ -193,13 +193,13 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
               max="1440"
               value={duration}
               onChange={(e) => setDuration(Math.max(1, parseInt(e.target.value) || 0))}
-              className="w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-emerald-400/40 focus:border-emerald-500"
+              className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
               required
             />
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
               <span className="flex items-center gap-1.5">
                 <Zap className="w-3.5 h-3.5 text-amber-500" />
                 Effort / Intensity
@@ -207,9 +207,9 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
             </label>
             <div className="grid grid-cols-3 gap-1.5">
               {(['LOW', 'MEDIUM', 'HIGH'] as Intensity[]).map((level) => {
-                let activeClass = 'bg-emerald-50 text-emerald-800 border-emerald-400 font-bold';
-                if (level === 'MEDIUM') activeClass = 'bg-amber-50 text-amber-800 border-amber-400 font-bold';
-                if (level === 'HIGH') activeClass = 'bg-rose-50 text-rose-800 border-rose-400 font-bold';
+                let activeClass = 'bg-sky-50 text-sky-800 border-sky-300 font-bold';
+                if (level === 'MEDIUM') activeClass = 'bg-amber-50 text-amber-800 border-amber-300 font-bold';
+                if (level === 'HIGH') activeClass = 'bg-rose-50 text-rose-800 border-rose-300 font-bold';
 
                 return (
                   <button
@@ -219,7 +219,7 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
                     className={`py-2 rounded-xl text-xs border transition-all ${
                       intensity === level
                         ? `${activeClass} shadow-sm`
-                        : 'bg-white border-gray-200 text-gray-500 hover:text-gray-900'
+                        : 'bg-white border-slate-200 text-slate-500 hover:text-slate-900'
                     }`}
                   >
                     {level}
@@ -231,18 +231,18 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
         </div>
 
         {/* Energy Burn with Smart MET Preview */}
-        <div className="p-4 rounded-xl bg-[#F8FAF8] border border-emerald-100">
+        <div className="p-4 rounded-xl bg-sky-50/60 border border-sky-100/80">
           <div className="flex items-center justify-between mb-2">
-            <label className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
-              <Flame className="w-3.5 h-3.5 text-emerald-600" />
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+              <Flame className="w-3.5 h-3.5 text-sky-500" />
               Calculated Energy Burn (kcal)
             </label>
-            <label className="flex items-center gap-2 cursor-pointer text-xs text-gray-500">
+            <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-500">
               <input
                 type="checkbox"
                 checked={isManualCalories}
                 onChange={(e) => setIsManualCalories(e.target.checked)}
-                className="rounded border-gray-300 text-emerald-600 focus:ring-0"
+                className="rounded border-slate-300 text-sky-600 focus:ring-0"
               />
               Manual overwrite
             </label>
@@ -258,12 +258,12 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
               onChange={(e) => setCaloriesBurned(Math.max(0, parseInt(e.target.value) || 0))}
               className={`w-full px-3.5 py-2.5 rounded-xl text-base font-bold transition-colors ${
                 isManualCalories
-                  ? 'bg-white border border-gray-300 text-gray-900 focus:outline-none focus:border-emerald-500'
-                  : 'bg-white/80 border border-emerald-200/80 text-emerald-700 cursor-not-allowed'
+                  ? 'bg-white border border-slate-300 text-slate-900 focus:outline-none focus:border-sky-500'
+                  : 'bg-white/80 border border-sky-200/80 text-sky-700 cursor-not-allowed'
               }`}
               required
             />
-            <span className="text-xs text-gray-500 whitespace-nowrap font-medium">
+            <span className="text-xs text-slate-500 whitespace-nowrap font-medium">
               {isManualCalories ? 'Custom Entry' : 'Smart MET Telemetry'}
             </span>
           </div>
@@ -271,9 +271,9 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
 
         {/* Date and Time */}
         <div>
-          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
             <span className="flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5 text-emerald-600" />
+              <Calendar className="w-3.5 h-3.5 text-sky-500" />
               Session Timestamp
             </span>
           </label>
@@ -281,16 +281,16 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
             type="datetime-local"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+            className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
             required
           />
         </div>
 
         {/* Notes */}
         <div>
-          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">
+          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
             <span className="flex items-center gap-1.5">
-              <FileText className="w-3.5 h-3.5 text-gray-400" />
+              <FileText className="w-3.5 h-3.5 text-slate-400" />
               Clinical Notes & Biometrics (Target Muscle, Heart Rate, Sets)
             </span>
           </label>
@@ -299,23 +299,23 @@ export const WorkoutModal: React.FC<WorkoutModalProps> = ({
             placeholder="Target muscle focus, perceived exertion (RPE), warmup routine..."
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
-            className="w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-emerald-500 resize-none"
+            className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:border-sky-500 resize-none"
           />
         </div>
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-gray-200">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+            className="px-4 py-2 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSubmitting}
-            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm font-bold shadow-md shadow-emerald-500/25 hover:from-emerald-600 hover:to-teal-700 transition-all disabled:opacity-50"
+            className="flex items-center gap-2 px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-sm font-bold shadow-sm shadow-sky-200 transition-all disabled:opacity-50"
           >
             {isSubmitting ? (
               <span className="inline-block animate-spin mr-1">◌</span>

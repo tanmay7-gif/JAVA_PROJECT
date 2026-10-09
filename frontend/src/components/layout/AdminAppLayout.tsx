@@ -88,32 +88,32 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
   const adminName = user?.name ? user.name.split(' ')[0] + ' ' + (user.name.split(' ')[1]?.[0] || 'V') + '.' : 'Marcus V.';
 
   return (
-    <div className="w-full min-h-screen bg-[#080D17] text-slate-100 flex flex-row font-sans selection:bg-cyan-500 selection:text-white relative overflow-x-hidden">
-      {/* Background Concentric Radar Arcs Watermark (Bottom-Left) with Violet Accent */}
-      <div className="fixed -bottom-40 -left-40 w-[540px] h-[540px] pointer-events-none opacity-20 z-0">
+    <div className="w-full min-h-screen bg-[#F8FAFC] text-slate-800 flex flex-row font-sans selection:bg-sky-500 selection:text-white relative overflow-x-hidden">
+      {/* Background Concentric Radar Arcs Watermark (Bottom-Left) */}
+      <div className="fixed -bottom-40 -left-40 w-[540px] h-[540px] pointer-events-none opacity-40 z-0">
         <svg viewBox="0 0 500 500" className="w-full h-full">
-          <circle cx="250" cy="250" r="80" fill="none" stroke="#2D1F47" strokeWidth="1" strokeDasharray="4 4" />
-          <circle cx="250" cy="250" r="140" fill="none" stroke="#1D2A47" strokeWidth="1" />
-          <circle cx="250" cy="250" r="200" fill="none" stroke="#1A2038" strokeWidth="1" strokeDasharray="3 3" />
-          <circle cx="250" cy="250" r="260" fill="none" stroke="#12172A" strokeWidth="1.5" />
-          <line x1="250" y1="10" x2="250" y2="490" stroke="#1A2038" strokeWidth="1" opacity="0.3" />
-          <line x1="10" y1="250" x2="490" y2="250" stroke="#1A2038" strokeWidth="1" opacity="0.3" />
+          <circle cx="250" cy="250" r="80" fill="none" stroke="#E0F2FE" strokeWidth="1" strokeDasharray="4 4" />
+          <circle cx="250" cy="250" r="140" fill="none" stroke="#BAE6FD" strokeWidth="1" />
+          <circle cx="250" cy="250" r="200" fill="none" stroke="#E0F2FE" strokeWidth="1" strokeDasharray="3 3" />
+          <circle cx="250" cy="250" r="260" fill="none" stroke="#BAE6FD" strokeWidth="1.5" />
+          <line x1="250" y1="10" x2="250" y2="490" stroke="#E0F2FE" strokeWidth="1" opacity="0.6" />
+          <line x1="10" y1="250" x2="490" y2="250" stroke="#E0F2FE" strokeWidth="1" opacity="0.6" />
         </svg>
       </div>
 
       {/* ============================================================== */}
       {/* ZONE 1: VERTICAL ADMIN NAVIGATION RAIL                         */}
       {/* ============================================================== */}
-      <aside className="w-20 md:w-24 shrink-0 min-h-screen bg-[#080D17]/95 backdrop-blur-2xl border-r border-slate-800/70 flex flex-col items-center justify-between py-6 px-2 z-40 select-none sticky top-0 h-screen">
+      <aside className="w-20 md:w-24 shrink-0 min-h-screen bg-white/95 backdrop-blur-2xl border-r border-sky-100 shadow-sm flex flex-col items-center justify-between py-6 px-2 z-40 select-none sticky top-0 h-screen">
         {/* Brand Shield at Top */}
         <div
           className="flex flex-col items-center gap-1.5 group cursor-pointer"
           onClick={() => onTabChange('overview')}
           title="FitPulse Admin Security Core"
         >
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-violet-500 via-cyan-500 to-emerald-400 p-0.5 shadow-lg shadow-violet-500/20 flex items-center justify-center group-hover:scale-105 transition-transform">
-            <div className="w-full h-full bg-[#080D17] rounded-[14px] flex items-center justify-center">
-              <ShieldCheck className="w-5 h-5 text-cyan-400" />
+          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-400 via-sky-500 to-indigo-400 p-0.5 shadow-md shadow-sky-500/20 flex items-center justify-center group-hover:scale-105 transition-transform">
+            <div className="w-full h-full bg-white rounded-[14px] flex items-center justify-center">
+              <ShieldCheck className="w-5 h-5 text-sky-500" />
             </div>
           </div>
         </div>
@@ -125,8 +125,8 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
             onClick={() => onTabChange('overview')}
             className={`w-14 sm:w-16 p-2.5 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all ${
               activeTab === 'overview'
-                ? 'bg-[#0E2838] text-[#38BDF8] border border-cyan-500/40 shadow-lg shadow-cyan-500/20'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/25'
+                : 'text-slate-400 hover:text-sky-600 hover:bg-sky-50'
             }`}
             title="Overview Telemetry"
           >
@@ -139,8 +139,8 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
             onClick={() => onTabChange('users')}
             className={`w-14 sm:w-16 p-2.5 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all ${
               activeTab === 'users'
-                ? 'bg-[#0E2838] text-[#38BDF8] border border-cyan-500/40 shadow-lg shadow-cyan-500/20'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/25'
+                : 'text-slate-400 hover:text-sky-600 hover:bg-sky-50'
             }`}
             title="User Directory & Roles"
           >
@@ -153,8 +153,8 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
             onClick={() => onTabChange('challenges')}
             className={`w-14 sm:w-16 p-2.5 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all ${
               activeTab === 'challenges'
-                ? 'bg-[#0E2838] text-[#38BDF8] border border-cyan-500/40 shadow-lg shadow-cyan-500/20'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/25'
+                : 'text-slate-400 hover:text-sky-600 hover:bg-sky-50'
             }`}
             title="Challenge Quests"
           >
@@ -167,8 +167,8 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
             onClick={() => onTabChange('moderation')}
             className={`w-14 sm:w-16 p-2.5 rounded-2xl flex flex-col items-center justify-center gap-1 relative transition-all ${
               activeTab === 'moderation'
-                ? 'bg-[#0E2838] text-[#38BDF8] border border-cyan-500/40 shadow-lg shadow-cyan-500/20'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/25'
+                : 'text-slate-400 hover:text-sky-600 hover:bg-sky-50'
             }`}
             title="Content Moderation"
           >
@@ -184,8 +184,8 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
             onClick={() => onTabChange('activity')}
             className={`w-14 sm:w-16 p-2.5 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all ${
               activeTab === 'activity'
-                ? 'bg-[#0E2838] text-[#38BDF8] border border-cyan-500/40 shadow-lg shadow-cyan-500/20'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/25'
+                : 'text-slate-400 hover:text-sky-600 hover:bg-sky-50'
             }`}
             title="Security Audit Logs"
           >
@@ -198,8 +198,8 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
             onClick={() => onTabChange('settings')}
             className={`w-14 sm:w-16 p-2.5 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all ${
               activeTab === 'settings'
-                ? 'bg-[#0E2838] text-[#38BDF8] border border-cyan-500/40 shadow-lg shadow-cyan-500/20'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+                ? 'bg-sky-500 text-white shadow-md shadow-sky-500/25'
+                : 'text-slate-400 hover:text-sky-600 hover:bg-sky-50'
             }`}
             title="System Operations & Settings"
           >
@@ -210,7 +210,7 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
           {/* Switch to Athlete Dashboard */}
           <button
             onClick={() => navigate('/dashboard')}
-            className="w-14 sm:w-16 p-2.5 rounded-2xl flex flex-col items-center justify-center gap-1 text-emerald-400 hover:bg-emerald-500/10 transition-all border border-emerald-500/20 mt-2"
+            className="w-14 sm:w-16 p-2.5 rounded-2xl flex flex-col items-center justify-center gap-1 text-sky-600 hover:bg-sky-50 transition-all border border-sky-200 mt-2"
             title="View Athlete Dashboard"
           >
             <Eye className="w-4 h-4" />
@@ -222,7 +222,7 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
         <button
           onClick={handleSignOut}
           title="Sign Out"
-          className="p-3 rounded-2xl text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all active:scale-95"
+          className="p-3 rounded-2xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 transition-all active:scale-95"
         >
           <LogOut className="w-5 h-5" />
         </button>
@@ -232,7 +232,7 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
       {/* ZONE 2: PERSISTENT CONTEXTUAL ADMIN LEFT TELEMETRY DECK         */}
       {/* ============================================================== */}
       {/* Desktop Persistent Left Column */}
-      <aside className="hidden lg:flex w-80 md:w-88 xl:w-96 shrink-0 border-r border-slate-800/70 p-4 lg:p-6 flex-col overflow-y-auto max-h-screen sticky top-0 z-20 bg-[#080D17]/40 backdrop-blur-xl">
+      <aside className="hidden lg:flex w-80 md:w-88 xl:w-96 shrink-0 border-r border-sky-100 p-4 lg:p-6 flex-col overflow-y-auto max-h-screen sticky top-0 z-20 bg-white/80 backdrop-blur-xl">
         <AdminLeftTelemetryDeck
           activeTab={activeTab}
           stats={stats}
@@ -246,17 +246,17 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
       {isDeckMobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden flex">
           <div
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm"
+            className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm"
             onClick={() => setIsDeckMobileOpen(false)}
           />
-          <div className="relative w-80 max-w-[85vw] bg-[#080D17] border-r border-slate-800 p-4 overflow-y-auto h-full z-10">
-            <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-800">
-              <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+          <div className="relative w-80 max-w-[85vw] bg-white border-r border-sky-100 p-4 overflow-y-auto h-full z-10 shadow-2xl">
+            <div className="flex items-center justify-between pb-3 mb-2 border-b border-sky-100">
+              <span className="text-xs font-bold text-sky-900 uppercase tracking-wider">
                 Admin Telemetry Deck
               </span>
               <button
                 onClick={() => setIsDeckMobileOpen(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-white"
+                className="p-1 rounded-lg text-slate-400 hover:text-slate-700"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -289,36 +289,36 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
             {/* Mobile Telemetry Deck Toggle */}
             <button
               onClick={() => setIsDeckMobileOpen(true)}
-              className="lg:hidden p-2 rounded-xl bg-[#131C2E] border border-slate-700/60 text-cyan-400 hover:text-cyan-300"
+              className="lg:hidden p-2 rounded-xl bg-white border border-sky-200 text-sky-600 hover:text-sky-700 shadow-sm"
               title="Open Admin Deck"
             >
               <SlidersHorizontal className="w-4 h-4" />
             </button>
 
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-500 via-cyan-500 to-emerald-400 p-0.5 shadow-md shadow-violet-500/20 flex items-center justify-center">
-                <div className="w-full h-full bg-[#080D17] rounded-[9px] flex items-center justify-center">
-                  <ShieldCheck className="w-4 h-4 text-cyan-400" />
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-sky-400 via-sky-500 to-indigo-400 p-0.5 shadow-sm shadow-sky-500/20 flex items-center justify-center">
+                <div className="w-full h-full bg-white rounded-[9px] flex items-center justify-center">
+                  <ShieldCheck className="w-4 h-4 text-sky-500" />
                 </div>
               </div>
               <div className="flex items-baseline gap-2 flex-wrap">
-                <span className="text-lg font-black tracking-tight text-white hidden sm:inline">
+                <span className="text-lg font-black tracking-tight text-slate-900 hidden sm:inline">
                   FitPulse Admin
                 </span>
-                <span className="text-[10px] font-mono font-bold text-violet-400 bg-violet-500/10 border border-violet-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span className="text-[10px] font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full flex items-center gap-1">
                   <Lock className="w-3 h-3" /> RESTRICTED RBAC
                 </span>
-                <span className="text-xs font-semibold text-cyan-400/90 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-0.5 rounded-full hidden md:inline">
+                <span className="text-xs font-semibold text-sky-700 bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-full hidden md:inline">
                   {tabLabel}
                 </span>
                 {isTrialAccount ? (
-                  <span className="text-[11px] font-bold text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                  <span className="text-[11px] font-bold text-amber-800 bg-amber-50 border border-amber-200 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
                     Admin Demo Trial
                   </span>
                 ) : (
-                  <span className="text-[11px] font-bold text-cyan-300 bg-cyan-500/15 border border-cyan-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
-                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                  <span className="text-[11px] font-bold text-sky-800 bg-sky-50 border border-sky-200 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-sky-500" />
                     Live Admin Account
                   </span>
                 )}
@@ -329,7 +329,7 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
           {/* Right Section: Date Capsule Pill, Bell, Profile Chip */}
           <div className="flex items-center gap-3">
             {/* Date Capsule Pill */}
-            <div className="hidden sm:block bg-[#131C2E]/85 backdrop-blur-md border border-slate-700/60 rounded-xl px-4 py-2 text-xs font-semibold text-slate-300 shadow-sm">
+            <div className="hidden sm:block bg-sky-50 border border-sky-200 rounded-xl px-4 py-2 text-xs font-semibold text-sky-800 shadow-sm">
               {formattedDate}
             </div>
 
@@ -337,31 +337,31 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
             <div className="relative">
               <button
                 onClick={() => setIsNotifOpen((prev) => !prev)}
-                className="w-9 h-9 rounded-xl bg-[#131C2E]/85 backdrop-blur-md border border-slate-700/60 flex items-center justify-center text-slate-300 hover:text-white transition-all active:scale-95"
+                className="w-9 h-9 rounded-xl bg-white border border-sky-100 shadow-sm flex items-center justify-center text-slate-600 hover:text-sky-600 hover:border-sky-300 transition-all active:scale-95"
                 title="System Notifications"
               >
                 <Bell className="w-4 h-4" />
                 {stats.pendingContent > 0 && (
-                  <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-amber-400 ring-2 ring-[#080D17]" />
+                  <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-amber-400 ring-2 ring-white" />
                 )}
               </button>
 
               {/* Notification Drawer */}
               {isNotifOpen && (
-                <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-[#131C2E] border border-slate-700/80 shadow-2xl p-4 z-50 text-xs space-y-2">
-                  <div className="flex items-center justify-between font-bold text-slate-200 pb-2 border-b border-slate-700/50">
+                <div className="absolute right-0 mt-2 w-72 rounded-2xl bg-white border border-sky-100 shadow-xl p-4 z-50 text-xs space-y-2">
+                  <div className="flex items-center justify-between font-bold text-slate-800 pb-2 border-b border-sky-100">
                     <span>Administrative Alerts</span>
-                    <span className="text-[10px] text-cyan-400 font-mono">AUDITED</span>
+                    <span className="text-[10px] text-sky-600 font-mono font-bold bg-sky-50 px-1.5 py-0.5 rounded border border-sky-200">AUDITED</span>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-[#0B131E] border border-slate-800 text-slate-300">
-                    <p className="font-semibold text-amber-300">Moderation Backlog</p>
-                    <p className="text-[11px] text-slate-400 mt-0.5">
+                  <div className="p-2.5 rounded-xl bg-sky-50/60 border border-sky-100 text-slate-700">
+                    <p className="font-semibold text-amber-800">Moderation Backlog</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">
                       {stats.pendingContent} guides awaiting administrative review.
                     </p>
                   </div>
-                  <div className="p-2.5 rounded-xl bg-[#0B131E] border border-slate-800 text-slate-300">
-                    <p className="font-semibold text-emerald-300">RBAC Telemetry</p>
-                    <p className="text-[11px] text-slate-400 mt-0.5">
+                  <div className="p-2.5 rounded-xl bg-sky-50/60 border border-sky-100 text-slate-700">
+                    <p className="font-semibold text-emerald-800">RBAC Telemetry</p>
+                    <p className="text-[11px] text-slate-500 mt-0.5">
                       Cryptographic token verification running normal.
                     </p>
                   </div>
@@ -373,7 +373,7 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
             <div className="relative">
               <button
                 onClick={() => setIsProfileOpen((prev) => !prev)}
-                className="bg-[#131C2E]/85 backdrop-blur-md border border-slate-700/60 rounded-xl pl-1.5 pr-3 py-1 flex items-center gap-2.5 text-xs font-semibold text-slate-200 hover:border-slate-600 transition-all cursor-pointer"
+                className="bg-white border border-sky-100 shadow-sm rounded-xl pl-1.5 pr-3 py-1 flex items-center gap-2.5 text-xs font-semibold text-slate-700 hover:border-sky-300 transition-all cursor-pointer"
               >
                 <img
                   src={
@@ -381,19 +381,19 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
                     `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80`
                   }
                   alt={user?.name || 'Admin'}
-                  className="w-7 h-7 rounded-full object-cover border border-violet-500/40"
+                  className="w-7 h-7 rounded-full object-cover border border-sky-300"
                 />
-                <span className="font-bold text-slate-100 hidden sm:inline">{adminName}</span>
+                <span className="font-bold text-slate-900 hidden sm:inline">{adminName}</span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
               </button>
 
               {/* Profile Dropdown Menu */}
               {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-52 rounded-2xl bg-[#131C2E] border border-slate-700/80 shadow-2xl p-2 z-50 text-xs space-y-1">
-                  <div className="px-3 py-2 border-b border-slate-700/50">
-                    <p className="font-bold text-white">{user?.name || 'Administrator'}</p>
-                    <p className="text-[11px] text-slate-400 truncate">{user?.email}</p>
-                    <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-violet-500/20 text-violet-300 font-bold text-[10px]">
+                <div className="absolute right-0 mt-2 w-52 rounded-2xl bg-white border border-sky-100 shadow-xl p-2 z-50 text-xs space-y-1">
+                  <div className="px-3 py-2 border-b border-sky-100">
+                    <p className="font-bold text-slate-900">{user?.name || 'Administrator'}</p>
+                    <p className="text-[11px] text-slate-500 truncate">{user?.email}</p>
+                    <span className="inline-block mt-1 px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold text-[10px]">
                       Administrator (RBAC Level 1)
                     </span>
                   </div>
@@ -403,7 +403,7 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
                       setIsProfileOpen(false);
                       navigate('/dashboard');
                     }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-emerald-300 hover:bg-emerald-500/10 flex items-center gap-2 font-medium"
+                    className="w-full text-left px-3 py-2 rounded-xl text-sky-700 hover:bg-sky-50 flex items-center gap-2 font-medium"
                   >
                     <Eye className="w-4 h-4" />
                     Switch to Athlete View
@@ -414,7 +414,7 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
                       setIsProfileOpen(false);
                       onTabChange('settings');
                     }}
-                    className="w-full text-left px-3 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/70 flex items-center gap-2 font-medium"
+                    className="w-full text-left px-3 py-2 rounded-xl text-slate-700 hover:text-sky-700 hover:bg-sky-50 flex items-center gap-2 font-medium"
                   >
                     <Sliders className="w-4 h-4 text-slate-400" />
                     System Settings
@@ -422,7 +422,7 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
 
                   <button
                     onClick={handleSignOut}
-                    className="w-full text-left px-3 py-2 rounded-xl text-rose-400 hover:bg-rose-500/10 flex items-center gap-2 font-medium pt-1.5 border-t border-slate-700/50"
+                    className="w-full text-left px-3 py-2 rounded-xl text-rose-600 hover:bg-rose-50 flex items-center gap-2 font-medium pt-1.5 border-t border-sky-100"
                   >
                     <LogOut className="w-4 h-4" />
                     Sign Out

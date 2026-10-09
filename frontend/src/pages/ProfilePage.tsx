@@ -248,15 +248,15 @@ export const ProfilePage: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Header */}
-      <div className="border-b border-emerald-100 pb-5">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-[10px] font-bold uppercase tracking-wider mb-2">
-          <Sparkles className="w-3 h-3 text-emerald-600" />
+      <div className="border-b border-sky-100 pb-5">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50 border border-sky-200/80 text-sky-800 text-[10px] font-bold uppercase tracking-wider mb-2">
+          <Sparkles className="w-3 h-3 text-sky-600" />
           Interactive 3D Physical Rig & Profile Architecture
         </div>
-        <h1 className="text-2xl font-black text-gray-900 tracking-tight">
+        <h1 className="text-2xl font-black text-slate-900 tracking-tight">
           Athlete Profile & Biometric Persona
         </h1>
-        <p className="text-xs text-gray-500 mt-0.5">
+        <p className="text-xs text-slate-500 mt-0.5">
           Rotate your personal 3D avatar rig, audit muscle recovery hotspots, and manage account credentials.
         </p>
       </div>
@@ -281,25 +281,25 @@ export const ProfilePage: React.FC = () => {
                   )}`
                 }
                 alt={name}
-                className="w-12 h-12 rounded-full border-2 border-emerald-200 object-cover shadow-sm"
+                className="w-12 h-12 rounded-full border-2 border-sky-200 object-cover shadow-sm"
               />
               <div>
-                <h4 className="text-sm font-bold text-gray-900">{name || 'Athlete'}</h4>
-                <p className="text-[11px] text-gray-500">{email}</p>
+                <h4 className="text-sm font-bold text-slate-900">{name || 'Athlete'}</h4>
+                <p className="text-[11px] text-slate-500">{email}</p>
                 <div className="flex items-center gap-1.5 mt-1">
-                  <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-700 border border-emerald-200">
+                  <span className="px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider bg-sky-50 text-sky-700 border border-sky-200">
                     {user?.role} Tier
                   </span>
-                  <span className="text-[10px] text-gray-400 font-semibold">• Joined 2026</span>
+                  <span className="text-[10px] text-slate-400 font-semibold">• Joined 2026</span>
                 </div>
               </div>
             </div>
 
             <div className="text-right">
-              <span className="text-[10px] font-semibold text-gray-400 block uppercase">
+              <span className="text-[10px] font-semibold text-slate-400 block uppercase">
                 Active Protocol
               </span>
-              <span className="text-xs font-bold text-emerald-700">Hypertrophy V4</span>
+              <span className="text-xs font-bold text-sky-700">Hypertrophy V4</span>
             </div>
           </div>
         </div>
@@ -307,13 +307,13 @@ export const ProfilePage: React.FC = () => {
         {/* Right Column: Tabbed Settings Panels (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Clinical Navigation Tabs */}
-          <div className="flex items-center gap-1.5 p-1 bg-white border border-emerald-100/90 rounded-2xl shadow-sm overflow-x-auto">
+          <div className="flex items-center gap-1.5 p-1 bg-white border border-sky-100 rounded-2xl shadow-sm overflow-x-auto">
             <button
               onClick={() => setActiveTab('details')}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                 activeTab === 'details'
-                  ? 'bg-emerald-500 text-white shadow-sm shadow-emerald-500/25'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  ? 'bg-sky-500 text-white shadow-sm shadow-sky-200'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-sky-50/50'
               }`}
             >
               <UserIcon className="w-3.5 h-3.5" />
@@ -324,8 +324,8 @@ export const ProfilePage: React.FC = () => {
               onClick={() => setActiveTab('goals')}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                 activeTab === 'goals'
-                  ? 'bg-emerald-500 text-white shadow-sm shadow-emerald-500/25'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  ? 'bg-sky-500 text-white shadow-sm shadow-sky-200'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-sky-50/50'
               }`}
             >
               <Target className="w-3.5 h-3.5" />
@@ -336,8 +336,8 @@ export const ProfilePage: React.FC = () => {
               onClick={() => setActiveTab('security')}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                 activeTab === 'security'
-                  ? 'bg-emerald-500 text-white shadow-sm shadow-emerald-500/25'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  ? 'bg-sky-500 text-white shadow-sm shadow-sky-200'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-sky-50/50'
               }`}
             >
               <Lock className="w-3.5 h-3.5" />
@@ -348,8 +348,8 @@ export const ProfilePage: React.FC = () => {
               onClick={() => setActiveTab('notifications')}
               className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
                 activeTab === 'notifications'
-                  ? 'bg-emerald-500 text-white shadow-sm shadow-emerald-500/25'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  ? 'bg-sky-500 text-white shadow-sm shadow-sky-200'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-sky-50/50'
               }`}
             >
               <Bell className="w-3.5 h-3.5" />
@@ -362,17 +362,17 @@ export const ProfilePage: React.FC = () => {
             <div className="clinical-card p-6 space-y-6 animate-in fade-in duration-200">
               <div className="flex items-center justify-between border-b border-gray-100 pb-3">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900">Personal Information</h3>
-                  <p className="text-xs text-gray-500">Update your clinical identity and public profile</p>
+                  <h3 className="text-base font-bold text-slate-900">Personal Information</h3>
+                  <p className="text-xs text-slate-500">Update your clinical identity and public profile</p>
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2 py-0.5 rounded border border-sky-200">
                   Verified ID
                 </span>
               </div>
 
               <form onSubmit={handleUpdateProfile} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Display Name
                   </label>
                   <input
@@ -380,30 +380,30 @@ export const ProfilePage: React.FC = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Enter athlete display name..."
-                    className="w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500 shadow-sm"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500 shadow-sm"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="athlete@domain.com"
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500 shadow-sm"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500 shadow-sm"
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Avatar Image URL
                   </label>
                   <input
@@ -411,15 +411,15 @@ export const ProfilePage: React.FC = () => {
                     value={profileImage}
                     onChange={(e) => setProfileImage(e.target.value)}
                     placeholder="https://images.unsplash.com/... or DiceBear seed URL"
-                    className="w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500 shadow-sm"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500 shadow-sm"
                   />
-                  <p className="text-[11px] text-gray-400 mt-1">
-                    Bordered cleanly in mint-200 across all leaderboard and session views.
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    Bordered cleanly in sky-200 across all leaderboard and session views.
                   </p>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Clinical Bio / Athletic Focus
                   </label>
                   <textarea
@@ -427,14 +427,14 @@ export const ProfilePage: React.FC = () => {
                     value={bio}
                     onChange={(e) => setBio(e.target.value)}
                     placeholder="Detail your conditioning targets, injuries, or athletic focus..."
-                    className="w-full px-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500 resize-none shadow-sm"
+                    className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500 resize-none shadow-sm"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSavingProfile}
-                  className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xs font-bold shadow-md shadow-emerald-500/20 transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold shadow-md shadow-sky-200 transition-all flex items-center justify-center gap-2"
                 >
                   <Save className="w-4 h-4" />
                   {isSavingProfile ? 'Saving Changes...' : 'Save Profile Changes'}
@@ -449,19 +449,19 @@ export const ProfilePage: React.FC = () => {
               {/* Goals Header Card */}
               <div className="clinical-card p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100 mb-1">
-                    <Target className="w-3 h-3 text-emerald-600" />
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-sky-50 text-sky-800 text-[10px] font-bold uppercase tracking-wider border border-sky-100 mb-1">
+                    <Target className="w-3 h-3 text-sky-600" />
                     Fitness Goals Engine
                   </div>
-                  <h3 className="text-lg font-black text-gray-900">Personal Fitness Goals & Benchmarks</h3>
-                  <p className="text-xs text-gray-500 mt-0.5">
+                  <h3 className="text-lg font-black text-slate-900">Personal Fitness Goals & Benchmarks</h3>
+                  <p className="text-xs text-slate-500 mt-0.5">
                     Track targets, deadlines, live metrics, and real completion percentages.
                   </p>
                 </div>
 
                 <button
                   onClick={() => setIsCreateModalOpen(true)}
-                  className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xs font-bold shadow-md shadow-emerald-500/20 transition-all flex items-center gap-2 self-start sm:self-auto shrink-0"
+                  className="px-4 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold shadow-md shadow-sky-200 transition-all flex items-center gap-2 self-start sm:self-auto shrink-0"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Create New Goal</span>
@@ -470,25 +470,25 @@ export const ProfilePage: React.FC = () => {
 
               {/* Goals Summary Bar */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="p-3.5 rounded-2xl bg-white border border-gray-100 shadow-sm text-center">
-                  <span className="text-[10px] font-bold uppercase text-gray-400">Total Goals</span>
-                  <div className="text-xl font-black text-gray-900 mt-0.5">{goals.length}</div>
+                <div className="p-3.5 rounded-2xl bg-white border border-sky-100 shadow-sm text-center">
+                  <span className="text-[10px] font-bold uppercase text-slate-400">Total Goals</span>
+                  <div className="text-xl font-black text-slate-900 mt-0.5">{goals.length}</div>
                 </div>
-                <div className="p-3.5 rounded-2xl bg-white border border-gray-100 shadow-sm text-center">
-                  <span className="text-[10px] font-bold uppercase text-gray-400">Active</span>
-                  <div className="text-xl font-black text-emerald-600 mt-0.5">
+                <div className="p-3.5 rounded-2xl bg-white border border-sky-100 shadow-sm text-center">
+                  <span className="text-[10px] font-bold uppercase text-slate-400">Active</span>
+                  <div className="text-xl font-black text-sky-600 mt-0.5">
                     {goals.filter((g) => g.status === 'ACTIVE').length}
                   </div>
                 </div>
-                <div className="p-3.5 rounded-2xl bg-white border border-gray-100 shadow-sm text-center">
-                  <span className="text-[10px] font-bold uppercase text-gray-400">Completed</span>
+                <div className="p-3.5 rounded-2xl bg-white border border-sky-100 shadow-sm text-center">
+                  <span className="text-[10px] font-bold uppercase text-slate-400">Completed</span>
                   <div className="text-xl font-black text-teal-600 mt-0.5">
                     {goals.filter((g) => g.status === 'COMPLETED').length}
                   </div>
                 </div>
-                <div className="p-3.5 rounded-2xl bg-white border border-gray-100 shadow-sm text-center">
-                  <span className="text-[10px] font-bold uppercase text-gray-400">Avg Progress</span>
-                  <div className="text-xl font-black text-gray-900 mt-0.5">
+                <div className="p-3.5 rounded-2xl bg-white border border-sky-100 shadow-sm text-center">
+                  <span className="text-[10px] font-bold uppercase text-slate-400">Avg Progress</span>
+                  <div className="text-xl font-black text-slate-900 mt-0.5">
                     {goals.length > 0
                       ? Math.round(
                           goals.reduce((acc, g) => acc + (g.progress_percentage ?? 0), 0) /
@@ -502,19 +502,19 @@ export const ProfilePage: React.FC = () => {
 
               {/* Goals List */}
               {isGoalsLoading ? (
-                <div className="p-12 text-center text-xs font-bold text-emerald-600">
+                <div className="p-12 text-center text-xs font-bold text-sky-600">
                   Loading goals telemetry...
                 </div>
               ) : goals.length === 0 ? (
                 <div className="clinical-card p-12 text-center border-dashed">
-                  <Target className="w-10 h-10 text-emerald-500 mx-auto mb-3" />
-                  <h4 className="text-base font-bold text-gray-900">No Goals Created Yet</h4>
-                  <p className="text-xs text-gray-500 max-w-sm mx-auto mt-1 mb-5">
+                  <Target className="w-10 h-10 text-sky-500 mx-auto mb-3" />
+                  <h4 className="text-base font-bold text-slate-900">No Goals Created Yet</h4>
+                  <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-5">
                     Define structured milestones for workout volume, distance, calories, or weight to power your performance analytics.
                   </p>
                   <button
                     onClick={() => setIsCreateModalOpen(true)}
-                    className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-500/20 inline-flex items-center gap-2"
+                    className="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold shadow-md shadow-sky-200 inline-flex items-center gap-2"
                   >
                     <Plus className="w-4 h-4" /> Create Your First Goal
                   </button>
@@ -532,8 +532,8 @@ export const ProfilePage: React.FC = () => {
                         key={goal.id}
                         className={`clinical-card p-5 space-y-4 border transition-all ${
                           isCompleted
-                            ? 'border-emerald-300 ring-2 ring-emerald-500/10'
-                            : 'border-gray-100 hover:border-emerald-200'
+                            ? 'border-sky-300 ring-2 ring-sky-500/20 shadow-sm'
+                            : 'border-slate-150 hover:border-sky-200'
                         }`}
                       >
                         {/* Card Header */}
@@ -546,30 +546,30 @@ export const ProfilePage: React.FC = () => {
                               <span
                                 className={`px-2 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${
                                   goal.status === 'COMPLETED'
-                                    ? 'bg-teal-50 text-teal-700 border border-teal-200'
+                                    ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                                     : goal.status === 'PAUSED'
                                     ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                                    : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+                                    : 'bg-sky-50 text-sky-700 border border-sky-200'
                                 }`}
                               >
                                 {goal.status}
                               </span>
                             </div>
-                            <h4 className="text-base font-bold text-gray-900">{goal.title}</h4>
+                            <h4 className="text-base font-bold text-slate-900">{goal.title}</h4>
                           </div>
 
                           <div className="flex items-center gap-1.5 shrink-0">
                             <button
                               onClick={() => handleStartEdit(goal)}
                               title="Edit Goal"
-                              className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-500 hover:text-emerald-700 transition-colors"
+                              className="p-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-sky-700 transition-colors"
                             >
                               <Pencil className="w-3.5 h-3.5" />
                             </button>
                             <button
                               onClick={() => handleDeleteGoal(goal.id)}
                               title="Delete Goal"
-                              className="p-1.5 rounded-lg bg-gray-50 hover:bg-rose-50 text-gray-400 hover:text-rose-600 transition-colors"
+                              className="p-1.5 rounded-lg bg-slate-50 hover:bg-rose-50 text-slate-400 hover:text-rose-600 transition-colors"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
                             </button>
@@ -579,28 +579,24 @@ export const ProfilePage: React.FC = () => {
                         {/* Progress Values & Bar */}
                         <div className="space-y-2">
                           <div className="flex items-baseline justify-between text-xs font-bold">
-                            <span className="text-gray-900">
-                              {currVal} / {targetVal} <span className="text-gray-500 font-normal">{goal.unit}</span>
+                            <span className="text-slate-900">
+                              {currVal} / {targetVal} <span className="text-slate-500 font-normal">{goal.unit}</span>
                             </span>
-                            <span className="text-emerald-700">{pct}%</span>
+                            <span className="text-sky-700">{pct}%</span>
                           </div>
 
-                          <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                          <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
                             <div
-                              className={`h-2.5 rounded-full transition-all duration-500 ${
-                                isCompleted
-                                  ? 'bg-gradient-to-r from-teal-500 to-emerald-500'
-                                  : 'bg-gradient-to-r from-emerald-500 to-teal-500'
-                              }`}
+                              className="h-2.5 rounded-full transition-all duration-500 bg-gradient-to-r from-sky-400 to-sky-600"
                               style={{ width: `${pct}%` }}
                             />
                           </div>
                         </div>
 
                         {/* Deadline & Quick Action Bar */}
-                        <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-500">
+                        <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
                           <span className="flex items-center gap-1 font-medium">
-                            <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                            <Calendar className="w-3.5 h-3.5 text-slate-400" />
                             {goal.target_date || (goal as any).targetDate
                               ? `Deadline: ${new Date(goal.target_date || (goal as any).targetDate).toLocaleDateString()}`
                               : 'No deadline'}
@@ -608,7 +604,7 @@ export const ProfilePage: React.FC = () => {
 
                           <button
                             onClick={() => handleQuickIncrement(goal, goal.unit === 'km' ? 2.5 : 1)}
-                            className="px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold transition-all flex items-center gap-1"
+                            className="px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 text-xs font-bold transition-all flex items-center gap-1"
                           >
                             <Plus className="w-3 h-3" />
                             <span>Log +{goal.unit === 'km' ? 2.5 : 1} {goal.unit}</span>
@@ -623,15 +619,15 @@ export const ProfilePage: React.FC = () => {
               {/* Create Goal Modal */}
               {isCreateModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-                  <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-6">
-                    <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+                  <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-sky-100 space-y-6">
+                    <div className="flex items-center justify-between border-b border-sky-100 pb-4">
                       <div>
-                        <h3 className="text-lg font-black text-gray-900">Create Fitness Goal</h3>
-                        <p className="text-xs text-gray-500">Establish a measurable athletic milestone</p>
+                        <h3 className="text-lg font-black text-slate-900">Create Fitness Goal</h3>
+                        <p className="text-xs text-slate-500">Establish a measurable athletic milestone</p>
                       </div>
                       <button
                         onClick={() => setIsCreateModalOpen(false)}
-                        className="p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100"
+                        className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -639,7 +635,7 @@ export const ProfilePage: React.FC = () => {
 
                     <form onSubmit={handleCreateGoal} className="space-y-4">
                       <div>
-                        <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                           Goal Title
                         </label>
                         <input
@@ -648,19 +644,19 @@ export const ProfilePage: React.FC = () => {
                           value={newTitle}
                           onChange={(e) => setNewTitle(e.target.value)}
                           placeholder="e.g. Run 50 km this month"
-                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                         />
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             Category / Type
                           </label>
                           <select
                             value={newType}
                             onChange={(e) => setNewType(e.target.value)}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                           >
                             <option value="DISTANCE">Distance</option>
                             <option value="WORKOUT_COUNT">Sessions Count</option>
@@ -671,7 +667,7 @@ export const ProfilePage: React.FC = () => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             Unit
                           </label>
                           <input
@@ -680,14 +676,14 @@ export const ProfilePage: React.FC = () => {
                             value={newUnit}
                             onChange={(e) => setNewUnit(e.target.value)}
                             placeholder="km, workouts, kcal..."
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                           />
                         </div>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             Target Value
                           </label>
                           <input
@@ -697,12 +693,12 @@ export const ProfilePage: React.FC = () => {
                             required
                             value={newTargetValue}
                             onChange={(e) => setNewTargetValue(parseFloat(e.target.value) || 0)}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             Starting Value
                           </label>
                           <input
@@ -711,20 +707,20 @@ export const ProfilePage: React.FC = () => {
                             min="0"
                             value={newCurrentValue}
                             onChange={(e) => setNewCurrentValue(parseFloat(e.target.value) || 0)}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                           Target Deadline
                         </label>
                         <input
                           type="date"
                           value={newTargetDate}
                           onChange={(e) => setNewTargetDate(e.target.value)}
-                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                         />
                       </div>
 
@@ -732,14 +728,14 @@ export const ProfilePage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setIsCreateModalOpen(false)}
-                          className="px-4 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-50"
+                          className="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50"
                         >
                           Cancel
                         </button>
                         <button
                           type="submit"
                           disabled={isSubmittingGoal}
-                          className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-500/20"
+                          className="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold shadow-md shadow-sky-200"
                         >
                           {isSubmittingGoal ? 'Creating...' : 'Create Goal'}
                         </button>
@@ -752,15 +748,15 @@ export const ProfilePage: React.FC = () => {
               {/* Edit Goal Modal */}
               {editingGoal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-                  <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-slate-100 space-y-6">
-                    <div className="flex items-center justify-between border-b border-gray-100 pb-4">
+                  <div className="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-sky-100 space-y-6">
+                    <div className="flex items-center justify-between border-b border-sky-100 pb-4">
                       <div>
-                        <h3 className="text-lg font-black text-gray-900">Update Fitness Goal</h3>
-                        <p className="text-xs text-gray-500">Edit values, status, or deadline</p>
+                        <h3 className="text-lg font-black text-slate-900">Update Fitness Goal</h3>
+                        <p className="text-xs text-slate-500">Edit values, status, or deadline</p>
                       </div>
                       <button
                         onClick={() => setEditingGoal(null)}
-                        className="p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100"
+                        className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -768,7 +764,7 @@ export const ProfilePage: React.FC = () => {
 
                     <form onSubmit={handleUpdateGoal} className="space-y-4">
                       <div>
-                        <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                           Goal Title
                         </label>
                         <input
@@ -776,19 +772,19 @@ export const ProfilePage: React.FC = () => {
                           required
                           value={editTitle}
                           onChange={(e) => setEditTitle(e.target.value)}
-                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                         />
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             Status
                           </label>
                           <select
                             value={editStatus}
                             onChange={(e) => setEditStatus(e.target.value)}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                           >
                             <option value="ACTIVE">ACTIVE</option>
                             <option value="COMPLETED">COMPLETED</option>
@@ -798,7 +794,7 @@ export const ProfilePage: React.FC = () => {
                         </div>
 
                         <div>
-                          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             Unit
                           </label>
                           <input
@@ -806,14 +802,14 @@ export const ProfilePage: React.FC = () => {
                             required
                             value={editUnit}
                             onChange={(e) => setEditUnit(e.target.value)}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                           />
                         </div>
                       </div>
 
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             Target Value
                           </label>
                           <input
@@ -823,12 +819,12 @@ export const ProfilePage: React.FC = () => {
                             required
                             value={editTargetValue}
                             onChange={(e) => setEditTargetValue(parseFloat(e.target.value) || 0)}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                           />
                         </div>
 
                         <div>
-                          <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                          <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                             Current Value
                           </label>
                           <input
@@ -837,20 +833,20 @@ export const ProfilePage: React.FC = () => {
                             min="0"
                             value={editCurrentValue}
                             onChange={(e) => setEditCurrentValue(parseFloat(e.target.value) || 0)}
-                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                            className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                        <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                           Target Deadline
                         </label>
                         <input
                           type="date"
                           value={editTargetDate ? editTargetDate.split('T')[0] : ''}
                           onChange={(e) => setEditTargetDate(e.target.value)}
-                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500"
+                          className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500"
                         />
                       </div>
 
@@ -858,13 +854,13 @@ export const ProfilePage: React.FC = () => {
                         <button
                           type="button"
                           onClick={() => setEditingGoal(null)}
-                          className="px-4 py-2.5 rounded-xl border border-gray-200 text-xs font-bold text-gray-600 hover:bg-gray-50"
+                          className="px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-600 hover:bg-slate-50"
                         >
                           Cancel
                         </button>
                         <button
                           type="submit"
-                          className="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md shadow-emerald-500/20"
+                          className="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold shadow-md shadow-sky-200"
                         >
                           Save Changes
                         </button>
@@ -880,66 +876,66 @@ export const ProfilePage: React.FC = () => {
           {/* TAB 3: Security & Credentials Panel */}
           {activeTab === 'security' && (
             <div className="clinical-card p-6 space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <div className="flex items-center justify-between border-b border-sky-100 pb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600">
+                  <div className="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600">
                     <KeyRound className="w-4 h-4" />
                   </div>
                   <div>
-                    <h3 className="text-base font-bold text-gray-900">Security Credentials</h3>
-                    <p className="text-xs text-gray-500">Update account password with bcrypt validation</p>
+                    <h3 className="text-base font-bold text-slate-900">Security Credentials</h3>
+                    <p className="text-xs text-slate-500">Update account password with bcrypt validation</p>
                   </div>
                 </div>
-                <Shield className="w-4 h-4 text-emerald-600" />
+                <Shield className="w-4 h-4 text-sky-600" />
               </div>
 
               <form onSubmit={handleChangePassword} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Current Password
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="password"
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
                       placeholder="Enter current password..."
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500 shadow-sm"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500 shadow-sm"
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     New Password
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="password"
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Minimum 6 characters..."
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500 shadow-sm"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500 shadow-sm"
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
+                  <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                     Confirm New Password
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                     <input
                       type="password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Re-enter new password..."
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-emerald-500 shadow-sm"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-200 rounded-xl text-sm text-slate-900 focus:outline-none focus:border-sky-500 shadow-sm"
                       required
                     />
                   </div>
@@ -948,7 +944,7 @@ export const ProfilePage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isChangingPassword}
-                  className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold shadow-md shadow-sky-200 transition-all flex items-center justify-center gap-2"
                 >
                   <Shield className="w-4 h-4" />
                   {isChangingPassword ? 'Verifying...' : 'Update Password Safeguard'}
@@ -960,12 +956,12 @@ export const ProfilePage: React.FC = () => {
           {/* TAB 4: Notification Preferences Panel */}
           {activeTab === 'notifications' && (
             <div className="clinical-card p-6 space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between border-b border-gray-100 pb-3">
+              <div className="flex items-center justify-between border-b border-sky-100 pb-3">
                 <div>
-                  <h3 className="text-base font-bold text-gray-900">Telemetry Notification Preferences</h3>
-                  <p className="text-xs text-gray-500">Control automated alerts and challenge milestone triggers</p>
+                  <h3 className="text-base font-bold text-slate-900">Telemetry Notification Preferences</h3>
+                  <p className="text-xs text-slate-500">Control automated alerts and challenge milestone triggers</p>
                 </div>
-                <Bell className="w-5 h-5 text-emerald-600" />
+                <Bell className="w-5 h-5 text-sky-600" />
               </div>
 
               <div className="space-y-4">
@@ -1002,16 +998,16 @@ export const ProfilePage: React.FC = () => {
                         }));
                         showToast(`Preference for "${item.title}" updated`, 'info');
                       }}
-                      className="p-4 rounded-xl border border-emerald-100/80 bg-[#FAFCFA] hover:bg-emerald-50/30 transition-colors flex items-center justify-between gap-4 cursor-pointer"
+                      className="p-4 rounded-xl border border-sky-100 bg-sky-50/30 hover:bg-sky-50/60 transition-colors flex items-center justify-between gap-4 cursor-pointer"
                     >
                       <div>
-                        <h4 className="text-sm font-bold text-gray-900">{item.title}</h4>
-                        <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
+                        <h4 className="text-sm font-bold text-slate-900">{item.title}</h4>
+                        <p className="text-xs text-slate-500 mt-0.5">{item.description}</p>
                       </div>
 
                       <div
                         className={`w-11 h-6 rounded-full transition-colors relative flex items-center px-0.5 ${
-                          isChecked ? 'bg-emerald-500' : 'bg-gray-200'
+                          isChecked ? 'bg-sky-500' : 'bg-slate-200'
                         }`}
                       >
                         <div
