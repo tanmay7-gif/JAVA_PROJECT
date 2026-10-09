@@ -5,6 +5,8 @@ import { useToast } from '../context/ToastContext';
 import { ThreeBarChart } from '../components/three/ThreeBarChart';
 import { ThreePieChart, PieCategorySlice } from '../components/three/ThreePieChart';
 import { CompactChartTooltip } from '../components/analytics/CompactChartTooltip';
+import { renderCompactActivePieShape } from '../components/analytics/CompactActivePieShape';
+import { CompactSlicePopover } from '../components/analytics/CompactSlicePopover';
 import {
   Flame,
   Clock,
@@ -24,6 +26,9 @@ import {
   ResponsiveContainer,
   AreaChart,
   Area,
+  PieChart,
+  Pie,
+  Cell,
   XAxis,
   YAxis,
   Tooltip,
@@ -38,6 +43,9 @@ export const AnalyticsPage: React.FC = () => {
   const [data, setData] = useState<AnalyticsSummary | null>(null);
   const [timeWindow, setTimeWindow] = useState<TimeWindow>('Week');
   const [activeBarMetric, setActiveBarMetric] = useState<ActiveMetric>('calories');
+  const [disciplineViewMode, setDisciplineViewMode] = useState<'3D' | '2D'>('3D');
+  const [selectedDisciplineSlice, setSelectedDisciplineSlice] = useState<PieCategorySlice | null>(null);
+  const [activeDisciplineIndex, setActiveDisciplineIndex] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -91,7 +99,7 @@ export const AnalyticsPage: React.FC = () => {
     });
   }, [data]);
 
-  // Transform backend workout type breakdown for 3D Pie Chart with high-frequency neon colors
+  // Transform backend workout type breakdown for 3D/2D Pie Chart with high-frequency neon colors
   const formattedPieData: PieCategorySlice[] = React.useMemo(() => {
     if (!data?.typeBreakdown || data.typeBreakdown.length === 0) {
       return [];
@@ -456,31 +464,123 @@ export const AnalyticsPage: React.FC = () => {
           </div>
         </div>
 
-        {/* 3D Extruded Donut / Pie Chart (5 cols) */}
-        <div className="lg:col-span-5 bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-xl text-slate-100 flex flex-col justify-between">
+        {/* Discipline Distribution: 3D WebGL / 2D Recharts with Compact Active State (5 cols) */}
+        <div className="lg:col-span-5 bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-xl text-slate-100 flex flex-col justify-between relative">
           <div>
             <div className="flex items-start justify-between mb-3">
               <div>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-950/60 text-emerald-400 text-[10px] font-bold uppercase tracking-wider border border-emerald-500/30">
                   <Layers className="w-3 h-3 text-emerald-400" />
-                  3D Extruded Geometry
+                  Discipline Distribution
                 </div>
                 <h3 className="text-base font-bold text-white mt-1">
-                  Discipline Distribution
+                  Biomechanical Focus
                 </h3>
                 <p className="text-xs text-slate-400">
-                  Hover slices to raise on Y-axis with emissive specular radiance.
+                  {disciplineViewMode === '3D'
+                    ? 'Interactive WebGL cylinders. Click slice to inspect details.'
+                    : 'Precision Recharts donut. Click slice to inspect compact details.'}
                 </p>
+              </div>
+
+              {/* View Switcher: 3D WebGL vs 2D Precision Donut */}
+              <div className="flex items-center bg-[#070D18] p-0.5 rounded-lg border border-slate-700/60 text-[10px]">
+                <button
+                  onClick={() => setDisciplineViewMode('3D')}
+                  className={`px-2 py-0.5 rounded-md font-bold transition-all ${
+                    disciplineViewMode === '3D'
+                      ? 'bg-slate-800 text-emerald-300 shadow-sm border border-emerald-500/30'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  3D WebGL
+                </button>
+                <button
+                  onClick={() => setDisciplineViewMode('2D')}
+                  className={`px-2 py-0.5 rounded-md font-bold transition-all ${
+                    disciplineViewMode === '2D'
+                      ? 'bg-slate-800 text-cyan-300 shadow-sm border border-cyan-500/30'
+                      : 'text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  2D Donut
+                </button>
               </div>
             </div>
 
-            {/* 3D Extruded Pie Component */}
-            <ThreePieChart data={formattedPieData} heightClass="h-80" />
+            {/* Chart Area */}
+            {disciplineViewMode === '3D' ? (
+              <ThreePieChart
+                data={formattedPieData}
+                selectedSliceName={selectedDisciplineSlice?.name || null}
+                onSliceSelect={(slice) => {
+                  setSelectedDisciplineSlice(slice);
+                  if (!slice) setActiveDisciplineIndex(null);
+                }}
+                heightClass="h-80"
+              />
+            ) : (
+              <div className="h-80 w-full flex flex-col items-center justify-center relative">
+                {formattedPieData.length === 0 ? (
+                  <p className="text-xs text-slate-400">No discipline data recorded yet</p>
+                ) : (
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={formattedPieData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={56}
+                        outerRadius={84}
+                        paddingAngle={4}
+                        dataKey="sessionsCount"
+                        nameKey="name"
+                        activeIndex={activeDisciplineIndex !== null ? activeDisciplineIndex : undefined}
+                        activeShape={renderCompactActivePieShape}
+                        onClick={(_, index) => {
+                          const nextIdx = activeDisciplineIndex === index ? null : index;
+                          setActiveDisciplineIndex(nextIdx);
+                          setSelectedDisciplineSlice(nextIdx !== null ? formattedPieData[nextIdx] : null);
+                        }}
+                        cursor="pointer"
+                      >
+                        {formattedPieData.map((entry) => (
+                          <Cell
+                            key={`cell-${entry.name}`}
+                            fill={entry.color}
+                            stroke="#0B131E"
+                            strokeWidth={2}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip content={<CompactChartTooltip unit="sessions" />} offset={12} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
+              </div>
+            )}
+
+            {/* Compact Slice Click Popover Card (Constrained to max-w-[210px], never oversized) */}
+            {selectedDisciplineSlice && (
+              <div className="mt-3 flex justify-center">
+                <CompactSlicePopover
+                  slice={selectedDisciplineSlice}
+                  onClose={() => {
+                    setSelectedDisciplineSlice(null);
+                    setActiveDisciplineIndex(null);
+                  }}
+                  title="Discipline Breakdown"
+                  metricLabel="Logged Sessions"
+                />
+              </div>
+            )}
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between">
-            <span>Hover lift: +0.38 Y-offset</span>
-            <span className="text-emerald-400 font-bold">Chamfered Cylinders</span>
+            <span>{disciplineViewMode === '3D' ? 'Lift: +0.12 Y-offset' : 'Bound: +2.5px ring'}</span>
+            <span className="text-emerald-400 font-bold">
+              {disciplineViewMode === '3D' ? 'Chamfered Cylinders' : 'Compact Active Sector'}
+            </span>
           </div>
         </div>
       </div>

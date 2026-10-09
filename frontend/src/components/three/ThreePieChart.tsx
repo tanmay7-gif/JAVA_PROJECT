@@ -22,6 +22,7 @@ interface ExtrudedSliceMeshProps {
   height?: number;
   isHovered: boolean;
   onHover: (name: string | null) => void;
+  onSelect?: (slice: PieCategorySlice) => void;
 }
 
 const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
@@ -32,18 +33,19 @@ const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
   height = 0.45,
   isHovered,
   onHover,
+  onSelect,
 }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const midAngle = thetaStart + thetaLength / 2;
 
-  // Compute slight outwards push direction when hovered
-  const pushX = Math.cos(midAngle) * 0.16;
-  const pushZ = -Math.sin(midAngle) * 0.16;
+  // Minimal controlled outward displacement (0.05 instead of 0.16) to avoid over-expansion
+  const pushX = Math.cos(midAngle) * 0.05;
+  const pushZ = -Math.sin(midAngle) * 0.05;
 
   useFrame((_, delta) => {
     if (meshRef.current) {
-      // Smooth lerp for y-elevation and outward displacement
-      const targetY = isHovered ? 0.38 : 0;
+      // Controlled subtle elevation (0.12 instead of 0.38)
+      const targetY = isHovered ? 0.12 : 0;
       const targetX = isHovered ? pushX : 0;
       const targetZ = isHovered ? pushZ : 0;
 
@@ -60,6 +62,7 @@ const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
         onClick={(e) => {
           e.stopPropagation();
           onHover(isHovered ? null : slice.name);
+          if (onSelect) onSelect(slice);
         }}
         onPointerOver={(e) => {
           e.stopPropagation();
@@ -75,7 +78,7 @@ const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
         <cylinderGeometry
           args={[
             radius, // top radius
-            radius * 1.02, // subtle chamfered base
+            radius * 1.015, // subtle chamfered base
             height,
             32,
             1,
@@ -87,8 +90,8 @@ const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
         <meshPhysicalMaterial
           color={slice.color}
           emissive={slice.emissiveColor}
-          emissiveIntensity={isHovered ? 1.0 : 0.25}
-          roughness={0.12}
+          emissiveIntensity={isHovered ? 0.95 : 0.25}
+          roughness={0.14}
           metalness={0.25}
           clearcoat={1.0}
           clearcoatRoughness={0.08}
@@ -97,7 +100,7 @@ const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
 
         {/* Compact Tooltip Pill right above slice when hovered */}
         {isHovered && (
-          <Html position={[0, height + 0.35, 0]} center distanceFactor={7}>
+          <Html position={[0, height + 0.18, 0]} center distanceFactor={7}>
             <div className="rounded-lg border border-slate-700/80 bg-[#0b101c]/95 p-2 px-3 shadow-2xl backdrop-blur-md max-w-[210px] text-left pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100">
               <div className="flex items-center justify-between gap-3 mb-1">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
@@ -131,13 +134,26 @@ const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
 interface ThreePieChartProps {
   data?: PieCategorySlice[];
   heightClass?: string;
+  selectedSliceName?: string | null;
+  onSliceSelect?: (slice: PieCategorySlice | null) => void;
 }
 
 export const ThreePieChart: React.FC<ThreePieChartProps> = ({
   data = DEFAULT_CATEGORIES,
   heightClass = 'h-72',
+  selectedSliceName,
+  onSliceSelect,
 }) => {
-  const [hoveredSlice, setHoveredSlice] = useState<string | null>(null);
+  const [internalHoveredSlice, setInternalHoveredSlice] = useState<string | null>(null);
+
+  const hoveredSlice = selectedSliceName !== undefined ? selectedSliceName : internalHoveredSlice;
+  const setHoveredSlice = (name: string | null) => {
+    setInternalHoveredSlice(name);
+    if (onSliceSelect) {
+      const match = data.find((d) => d.name === name) || null;
+      onSliceSelect(match);
+    }
+  };
 
   const totalValue = useMemo(() => {
     return data.reduce((sum, item) => sum + item.value, 0);
@@ -193,7 +209,7 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
             <directionalLight position={[-3, 2, -2]} intensity={0.7} color="#22D3EE" />
             <pointLight position={[0, -1, 1]} intensity={0.4} color="#10B981" />
 
-            <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.2}>
+            <Float speed={1.2} rotationIntensity={0.12} floatIntensity={0.18}>
               <group position={[0, -0.2, 0]}>
                 {/* Slices */}
                 {sliceAngles.map(({ slice, thetaStart, thetaLength }) => (
@@ -204,6 +220,11 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
                     thetaLength={thetaLength}
                     isHovered={hoveredSlice === slice.name}
                     onHover={setHoveredSlice}
+                    onSelect={(s) => {
+                      if (onSliceSelect) {
+                        onSliceSelect(hoveredSlice === s.name ? null : s);
+                      }
+                    }}
                   />
                 ))}
 
@@ -250,15 +271,16 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
       {/* Floating Interactive Badge Legend */}
       <div className="relative z-10 mt-auto pb-1 flex items-center justify-center gap-1.5 flex-wrap pointer-events-auto">
         {data.map((cat) => {
-          const isHovered = hoveredSlice === cat.name;
+          const isSelected = hoveredSlice === cat.name;
           return (
             <button
               key={cat.name}
               type="button"
-              onMouseEnter={() => setHoveredSlice(cat.name)}
-              onMouseLeave={() => setHoveredSlice(null)}
+              onClick={() => setHoveredSlice(isSelected ? null : cat.name)}
+              onMouseEnter={() => setInternalHoveredSlice(cat.name)}
+              onMouseLeave={() => setInternalHoveredSlice(null)}
               className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1.5 ${
-                isHovered
+                isSelected
                   ? 'bg-slate-800 text-white border border-cyan-400/60 ring-1 ring-cyan-400/50 shadow-[0_0_12px_rgba(6,182,212,0.25)] scale-105'
                   : 'bg-[#0B131E]/80 hover:bg-[#131E2D] text-slate-300 border border-slate-800/80 shadow-sm'
               }`}

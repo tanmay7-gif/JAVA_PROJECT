@@ -3,6 +3,8 @@ import { AnalyticsSummary } from '../../types';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import { CompactChartTooltip } from '../analytics/CompactChartTooltip';
+import { renderCompactActivePieShape } from '../analytics/CompactActivePieShape';
+import { CompactSlicePopover } from '../analytics/CompactSlicePopover';
 import {
   Flame,
   Clock,
@@ -43,6 +45,7 @@ export const WorkoutAnalyticsCharts: React.FC<WorkoutAnalyticsChartsProps> = ({
   const { showToast } = useToast();
   const [data, setData] = useState<AnalyticsSummary | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [activeIntensityIndex, setActiveIntensityIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchAnalytics = async () => {
@@ -305,6 +308,12 @@ export const WorkoutAnalyticsCharts: React.FC<WorkoutAnalyticsChartsProps> = ({
                     outerRadius={72}
                     paddingAngle={4}
                     dataKey="value"
+                    activeIndex={activeIntensityIndex !== null ? activeIntensityIndex : undefined}
+                    activeShape={renderCompactActivePieShape}
+                    onClick={(_, index) => {
+                      setActiveIntensityIndex((prev) => (prev === index ? null : index));
+                    }}
+                    cursor="pointer"
                   >
                     {intensityBreakdown.map((entry) => (
                       <Cell
@@ -331,6 +340,19 @@ export const WorkoutAnalyticsCharts: React.FC<WorkoutAnalyticsChartsProps> = ({
               </ResponsiveContainer>
             )}
           </div>
+
+          {/* Compact Click State Popover Chip */}
+          {activeIntensityIndex !== null && intensityBreakdown[activeIntensityIndex] && (
+            <div className="mt-3 flex justify-center">
+              <CompactSlicePopover
+                slice={intensityBreakdown[activeIntensityIndex]}
+                onClose={() => setActiveIntensityIndex(null)}
+                title="Intensity Detail"
+                metricLabel="Logged Sessions"
+                unit="sessions"
+              />
+            </div>
+          )}
         </div>
 
         {/* Discipline / Type Progress Bars */}
