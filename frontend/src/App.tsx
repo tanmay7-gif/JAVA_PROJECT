@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
   useNavigate,
+  useLocation,
 } from 'react-router-dom';
 import { ToastProvider } from './context/ToastContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -78,9 +79,12 @@ const ProtectedAdminRoute: React.FC<{ children: React.ReactNode }> = ({ children
 const AppShell: React.FC = () => {
   const { user, role, isLoading } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isWorkoutModalOpen, setIsWorkoutModalOpen] = useState<boolean>(false);
   const [editingWorkout, setEditingWorkout] = useState<WorkoutLog | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
+
+  const isAthleteDashboard = location.pathname === '/dashboard';
 
   if (isLoading) {
     return (
@@ -124,12 +128,24 @@ const AppShell: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAF8] text-gray-900 flex flex-col selection:bg-emerald-500 selection:text-white">
-      {/* Persistent Light-Glass Navigation Header */}
-      {user && <Navbar onOpenLogWorkout={handleOpenLogWorkout} />}
+    <div
+      className={
+        isAthleteDashboard
+          ? 'min-h-screen bg-[#0B131E] text-slate-100 flex flex-col'
+          : 'min-h-screen bg-[#F8FAF8] text-gray-900 flex flex-col selection:bg-emerald-500 selection:text-white'
+      }
+    >
+      {/* Persistent Light-Glass Navigation Header (hidden on standalone Biomechanics Dashboard view) */}
+      {user && !isAthleteDashboard && <Navbar onOpenLogWorkout={handleOpenLogWorkout} />}
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main
+        className={
+          isAthleteDashboard
+            ? 'w-full flex-1'
+            : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8'
+        }
+      >
         <Routes>
           {/* Public Root Route */}
           <Route

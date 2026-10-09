@@ -13,12 +13,10 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   refreshTrigger = 0,
 }) => {
   return (
-    <div className="space-y-6 animate-in fade-in duration-300">
-      <AthleteBiomechanicsDashboard
-        onOpenLogWorkout={onOpenLogWorkout}
-        onNavigateTab={onNavigateTab}
-        refreshTrigger={refreshTrigger}
-      />
-    </div>
+    <AthleteBiomechanicsDashboard
+      onOpenLogWorkout={onOpenLogWorkout}
+      onNavigateTab={onNavigateTab}
+      refreshTrigger={refreshTrigger}
+    />
   );
 };

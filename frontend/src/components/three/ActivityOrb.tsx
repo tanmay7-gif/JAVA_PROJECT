@@ -6,6 +6,7 @@ import * as THREE from 'three';
 interface ActivityOrbProps {
   completionPercentage?: number; // 0 to 100
   streakDays?: number;
+  showCenterBadge?: boolean;
 }
 
 // Inner 3D Animated Fluid Mesh
@@ -85,14 +86,15 @@ const FluidOrbMesh: React.FC<{ completionPercentage: number }> = ({ completionPe
 export const ActivityOrb: React.FC<ActivityOrbProps> = ({
   completionPercentage = 68,
   streakDays = 5,
+  showCenterBadge = true,
 }) => {
   return (
-    <div className="relative w-full h-full min-h-[260px] flex items-center justify-center">
+    <div className="relative w-full h-full min-h-[220px] flex items-center justify-center">
       {/* 3D Canvas */}
       <div className="absolute inset-0">
         <Suspense
           fallback={
-            <div className="w-full h-full flex items-center justify-center text-xs text-emerald-600 font-medium animate-pulse">
+            <div className="w-full h-full flex items-center justify-center text-xs text-emerald-400 font-medium animate-pulse">
               Initializing 3D Telemetry Core...
             </div>
           }
@@ -124,18 +126,20 @@ export const ActivityOrb: React.FC<ActivityOrbProps> = ({
       </div>
 
       {/* Floating Center Telemetry HUD overlay */}
-      <div className="relative z-10 pointer-events-none text-center select-none backdrop-blur-sm bg-white/70 px-4 py-2 rounded-2xl border border-emerald-100/80 shadow-soft-sm">
-        <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 flex items-center justify-center gap-1">
-          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
-          Metabolic Core
+      {showCenterBadge && (
+        <div className="relative z-10 pointer-events-none text-center select-none backdrop-blur-sm bg-white/70 px-4 py-2 rounded-2xl border border-emerald-100/80 shadow-soft-sm">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-emerald-600 flex items-center justify-center gap-1">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block" />
+            Metabolic Core
+          </div>
+          <div className="text-2xl font-black text-gray-900 mt-0.5">
+            {completionPercentage}%
+          </div>
+          <div className="text-[10px] font-semibold text-gray-500">
+            {streakDays}-Day Momentum Streak
+          </div>
         </div>
-        <div className="text-2xl font-black text-gray-900 mt-0.5">
-          {completionPercentage}%
-        </div>
-        <div className="text-[10px] font-semibold text-gray-500">
-          {streakDays}-Day Momentum Streak
-        </div>
-      </div>
+      )}
     </div>
   );
 };
