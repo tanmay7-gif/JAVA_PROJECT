@@ -619,81 +619,89 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
             {/* Top 4 KPI Metrics */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {/* Registered Athletes */}
-              <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-sky-50/80 border border-sky-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-sky-300 transition-all">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Registered Athletes</span>
-                  <Users className="w-4 h-4 text-sky-600" />
+                  <span className="text-xs font-bold text-sky-850 uppercase tracking-wider">Registered Athletes</span>
+                  <div className="w-9 h-9 rounded-xl bg-sky-500 text-white flex items-center justify-center shadow-md shadow-sky-200">
+                    <Users className="w-4 h-4" />
+                  </div>
                 </div>
                 <div className="text-2xl font-bold text-slate-900 mt-2 font-mono tabular-nums">
                   {telemetryStats.totalUsers}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[11px] text-sky-600 font-semibold">
+                  <span className="text-[11px] text-sky-700 font-bold">
                     {telemetryStats.activeAthletes} Active
                   </span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-[11px] text-slate-500">
+                  <span className="text-[11px] text-slate-600">
                     +{isTrialAccount ? 48 : (platformStats?.users?.growthLast30Days ?? 0)} this month
                   </span>
                 </div>
               </div>
 
               {/* Total Workouts */}
-              <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-orange-50/80 border border-orange-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-orange-300 transition-all">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Workouts</span>
-                  <Zap className="w-4 h-4 text-amber-500" />
+                  <span className="text-xs font-bold text-orange-850 uppercase tracking-wider">Total Workouts</span>
+                  <div className="w-9 h-9 rounded-xl bg-orange-500 text-white flex items-center justify-center shadow-md shadow-orange-200">
+                    <Zap className="w-4 h-4" />
+                  </div>
                 </div>
                 <div className="text-2xl font-bold text-slate-900 mt-2 font-mono tabular-nums">
                   {telemetryStats.totalWorkouts}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[11px] text-amber-600 font-semibold flex items-center gap-0.5">
+                  <span className="text-[11px] text-orange-700 font-bold flex items-center gap-0.5">
                     <Flame className="w-3 h-3" />
                     {(isTrialAccount ? trialAdminData.totalKcalBurnedPlatform : (platformStats?.workouts?.totalCalories ?? 0)).toLocaleString()} kcal
                   </span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-[11px] text-slate-500">
+                  <span className="text-[11px] text-slate-600">
                     {isTrialAccount ? (trialAdminData.activeWorkoutsToday * 1.2).toFixed(0) : (platformStats?.workouts?.totalDurationHours ?? 0)} hrs logged
                   </span>
                 </div>
               </div>
 
               {/* Community Challenges */}
-              <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-emerald-50/80 border border-emerald-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Community Quests</span>
-                  <Trophy className="w-4 h-4 text-sky-600" />
+                  <span className="text-xs font-bold text-emerald-850 uppercase tracking-wider">Community Quests</span>
+                  <div className="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-md shadow-emerald-200">
+                    <Trophy className="w-4 h-4" />
+                  </div>
                 </div>
                 <div className="text-2xl font-bold text-slate-900 mt-2 font-mono tabular-nums">
                   {isTrialAccount ? 4 : (platformStats?.challenges?.totalChallenges ?? challenges.length)}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[11px] text-sky-600 font-semibold">
+                  <span className="text-[11px] text-sky-700 font-bold">
                     {isTrialAccount ? 320 : (platformStats?.challenges?.totalParticipations ?? 0)} Enrolled
                   </span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-[11px] text-emerald-600 font-semibold">
+                  <span className="text-[11px] text-emerald-700 font-bold">
                     {isTrialAccount ? 86 : (platformStats?.challenges?.completionRate ?? 0)}% Completion
                   </span>
                 </div>
               </div>
 
               {/* Guides In Moderation */}
-              <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-purple-50/80 border border-purple-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-purple-300 transition-all">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Guides In Review</span>
-                  <FileText className="w-4 h-4 text-amber-500" />
+                  <span className="text-xs font-bold text-purple-850 uppercase tracking-wider">Guides In Review</span>
+                  <div className="w-9 h-9 rounded-xl bg-purple-500 text-white flex items-center justify-center shadow-md shadow-purple-200">
+                    <FileText className="w-4 h-4" />
+                  </div>
                 </div>
                 <div className="text-2xl font-bold text-slate-900 mt-2 font-mono tabular-nums">
                   {telemetryStats.pendingContent}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[11px] text-emerald-600 font-semibold">
+                  <span className="text-[11px] text-emerald-700 font-bold">
                     {telemetryStats.approvedContent} Published
                   </span>
                   <span className="text-slate-300">•</span>
-                  <span className="text-[11px] text-rose-600 font-semibold">
+                  <span className="text-[11px] text-rose-700 font-bold">
                     {isTrialAccount ? 1 : (platformStats?.content?.rejected ?? 0)} Rejected
                   </span>
                 </div>
@@ -703,7 +711,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
             {/* Real Database Statistics Panels */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* 1. Workout Discipline & Intensity Distribution */}
-              <div className="bg-white border border-sky-100 rounded-2xl p-6 shadow-sm space-y-4">
+              <div className="bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all space-y-4">
                 <div className="flex items-center justify-between border-b border-sky-100 pb-3">
                   <div>
                     <h3 className="font-bold text-slate-900 flex items-center gap-2 text-sm">
@@ -771,7 +779,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
               </div>
 
               {/* 2. Challenge Participation Funnel & Top Quests Table */}
-              <div className="bg-white border border-sky-100 rounded-2xl p-6 shadow-sm space-y-4">
+              <div className="bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all space-y-4">
                 <div className="flex items-center justify-between border-b border-sky-100 pb-3">
                   <div>
                     <h3 className="font-bold text-slate-900 flex items-center gap-2 text-sm">
@@ -849,7 +857,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
             {/* 3. 7-Day Activity Velocity Trend & Moderation Pipeline Meter */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* 7-Day Velocity Chart */}
-              <div className="lg:col-span-2 bg-white border border-sky-100 rounded-2xl p-6 shadow-sm space-y-4">
+              <div className="lg:col-span-2 bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all space-y-4">
                 <div className="flex items-center justify-between border-b border-sky-100 pb-3">
                   <div>
                     <h3 className="font-bold text-slate-900 flex items-center gap-2 text-sm">
@@ -896,7 +904,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
               </div>
 
               {/* Moderation Pipeline Breakdown */}
-              <div className="bg-white border border-sky-100 rounded-2xl p-6 shadow-sm space-y-4">
+              <div className="bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all space-y-4">
                 <div className="flex items-center justify-between border-b border-sky-100 pb-3">
                   <h3 className="font-bold text-slate-900 flex items-center gap-2 text-sm">
                     <FileText className="w-4 h-4 text-amber-500" />
@@ -972,7 +980,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
 
             {/* Quick Actions & Recent Activity Stream */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 bg-white border border-sky-100 rounded-2xl p-6 shadow-sm">
+              <div className="lg:col-span-2 bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all">
                 <div className="flex items-center justify-between mb-4 border-b border-sky-100 pb-3">
                   <div>
                     <h3 className="font-bold text-slate-900 flex items-center gap-2 text-sm">
@@ -1045,7 +1053,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
               </div>
 
               {/* Navigation Shortcuts */}
-              <div className="bg-white border border-sky-100 rounded-2xl p-6 shadow-sm space-y-3">
+              <div className="bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all space-y-3">
                 <h3 className="font-bold text-slate-900 mb-2 text-sm">Platform Governance Pillars</h3>
                 <button
                   onClick={() => setActiveTab('users')}

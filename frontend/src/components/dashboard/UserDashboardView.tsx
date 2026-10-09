@@ -119,7 +119,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({
 
               <button
                 onClick={() => onNavigateTab('analytics')}
-                className="px-4 py-2.5 rounded-xl bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold border border-emerald-200/80 transition-all shadow-soft-sm"
+                className="px-4 py-2.5 rounded-xl bg-sky-100 hover:bg-sky-200 text-sky-700 text-xs font-bold border border-sky-300 transition-all shadow-sm"
               >
                 View Detailed Trends
               </button>
@@ -264,7 +264,7 @@ export const UserDashboardView: React.FC<UserDashboardViewProps> = ({
                       className="p-3.5 rounded-xl bg-[#FAFCFA] border border-emerald-100/80 flex items-center justify-between gap-3 hover:bg-emerald-50/40 transition-colors"
                     >
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-white border border-emerald-200/70 flex items-center justify-center text-emerald-700 font-bold text-xs shadow-soft-sm">
+                        <div className="w-10 h-10 rounded-xl bg-sky-100 border border-sky-200 flex items-center justify-center text-sky-800 font-bold text-xs shadow-2xs">
                           {w.type.slice(0, 3).toUpperCase()}
                         </div>
                         <div>

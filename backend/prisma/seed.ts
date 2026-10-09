@@ -216,31 +216,101 @@ async function main() {
 
   console.log('✅ Challenges & User participations seeded');
 
-  // 4. Create Fitness Content
-  await prisma.fitnessContent.create({
-    data: {
+  // 4. Create Fitness Content Guides & Clinical Protocols
+  const clinicalProtocols = [
+    {
       creator_id: adminUser.id,
       title: 'Optimal Hypertrophy Blueprint: Science-Backed Volume & Rep Ranges',
       description: 'Comprehensive guide breaking down weekly mechanical tension, effective sets per muscle group, and progressive overload pacing.',
       category: 'Workout Routine',
-      media_url: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80',
+      media_url: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1200&q=80',
       status: 'APPROVED',
     },
-  });
-
-  await prisma.fitnessContent.create({
-    data: {
+    {
       creator_id: sarahUser.id,
       title: 'Zone 2 Aerobic Conditioning: The Engine of Longevity',
       description: 'How keeping heart rate in lactate threshold 1 enhances mitochondrial density and fat oxidation without CNS fatigue.',
       category: 'Guide',
-      media_url: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=800&q=80',
+      media_url: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1200&q=80',
       status: 'APPROVED',
     },
-  });
-
-  await prisma.fitnessContent.create({
-    data: {
+    // Category: GUIDE (3 New Protocols)
+    {
+      creator_id: adminUser.id,
+      title: 'Biomechanical Barbell Kinematics: Eliminating Spinal Shear in Posterior Chain Lifts',
+      description: 'Comprehensive kinematic breakdown of pelvic tilt, intra-abdominal bracing, and hip hinge levers to maximize force transfer while minimizing lumbar strain.\n\nKey Points:\n* Valsalva maneuver mechanics and hydraulic intra-abdominal pressure.\n* Hip-dominant vs knee-dominant hinge cues.\n* Strict perpendicular bar path tracking over midfoot.',
+      category: 'Guide',
+      media_url: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1200&q=80',
+      status: 'APPROVED',
+    },
+    {
+      creator_id: adminUser.id,
+      title: 'Zone-2 Aerobic Base Architecture: Mitochondrial Density & Lactate Clearance',
+      description: 'Step-by-step programming guidelines for building an expansive aerobic base below 2.0 mmol/L blood lactate.\n\nKey Points:\n* Calculating true Zone-2 thresholds via conversational pacing.\n* Weekly volume distribution following the 80/20 polarized matrix.\n* PGC-1α signaling and mitochondrial cristae expansion.',
+      category: 'Guide',
+      media_url: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=1200&q=80',
+      status: 'APPROVED',
+    },
+    {
+      creator_id: sarahUser.id,
+      title: 'Grip Dynamics & Kinetic Chain Radiations in Overhead Presses',
+      description: "Exploring Sherrington's law of irradiation to unlock vertical pressing stability through active forearm tension and scapulohumeral rhythm.\n\nKey Points:\n* Sherrington's Law of Neural Irradiation.\n* Bulldog grip placement to stack wrist and olecranon vertically.\n* Scapulohumeral rhythm with upward rotation to clear the subacromial space.",
+      category: 'Guide',
+      media_url: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=1200&q=80',
+      status: 'APPROVED',
+    },
+    // Category: NUTRITION (3 New Protocols)
+    {
+      creator_id: adminUser.id,
+      title: 'Peri-Workout Glycogen Supercompensation: Precision Nutrient Timing',
+      description: 'A clinical roadmap to pre-, intra-, and post-workout macronutrient ratios designed to maximize muscle protein synthesis and accelerate glycogen resynthesis.\n\nKey Points:\n* High-glycemic intra-workout carbohydrate-to-electrolyte solutions (6-8% solution).\n* 0.4g/kg post-workout leucine thresholds (3g free L-Leucine).\n* Hydration osmolarity formulas and rapid GLUT-4 translocation.',
+      category: 'Nutrition',
+      media_url: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=80',
+      status: 'APPROVED',
+    },
+    {
+      creator_id: sarahUser.id,
+      title: 'Micronutrient Optimization for High-Volume Endurance & Electrolyte Balance',
+      description: 'Combatting hyponatremia and exercise-induced cramping through customized sodium, potassium, and magnesium dosing strategies.\n\nKey Points:\n* Sweat-rate loss estimation formulas.\n* Bioavailable chelates (magnesium glycinate vs citrate).\n* Timing mineral supplementation relative to training and thermal stress.',
+      category: 'Nutrition',
+      media_url: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=1200&q=80',
+      status: 'APPROVED',
+    },
+    {
+      creator_id: adminUser.id,
+      title: 'Metabolic Hypertrophy Diet: Surplus Calculations Without Adipose Accumulation',
+      description: 'Fine-tuning caloric surplus increments (200–350 kcal) to bias nutrient partitioning toward lean skeletal muscle tissue over body fat.\n\nKey Points:\n* Calculating P-Ratio energy partitioning and avoiding dirty bulking.\n* Hypercaloric titration floor of +200-350 kcal/day.\n* 1.8-2.2g/kg protein anchor and insulin sensitivity cycling.',
+      category: 'Nutrition',
+      media_url: 'https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1200&q=80',
+      status: 'APPROVED',
+    },
+    // Category: RECOVERY (3 New Protocols)
+    {
+      creator_id: adminUser.id,
+      title: 'Central Nervous System Deload Architecture: Preventing Neuro-Endocrine Burnout',
+      description: 'A structured 7-day protocol reducing systemic volume while maintaining movement motor patterns to restore neuromuscular readiness and endocrine baseline.\n\nKey Points:\n* 50% volume drop with 85% intensity preservation (50/85 rule).\n* Assessing morning resting heart rate and HRV deltas.\n* Non-training day parasympathetic walks and box-breathing down-regulation.',
+      category: 'Recovery',
+      media_url: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80',
+      status: 'APPROVED',
+    },
+    {
+      creator_id: sarahUser.id,
+      title: 'Sleep Architecture & Circadian Pacing for Maximal Growth Hormone Secretion',
+      description: 'Evidence-based environmental and behavioral adjustments to expand Slow Wave Sleep (SWS) and Stage 3/4 REM for tissue regeneration.\n\nKey Points:\n* Core body temperature down-regulation (18°C / 65°F sleep environment).\n* Blue-wavelength attenuation and retinal photobiology.\n* Magnesium L-threonate, apigenin, and L-theanine neurochemical synergy.',
+      category: 'Recovery',
+      media_url: 'https://images.unsplash.com/photo-1541781774459-bb2af2f05b55?auto=format&fit=crop&w=1200&q=80',
+      status: 'APPROVED',
+    },
+    {
+      creator_id: adminUser.id,
+      title: 'Targeted Myofascial Release & Dynamic Floss Band Compression',
+      description: 'Clinical manual therapy routines focusing on joint capsule distraction, tissue shear, and venous flush for knee and shoulder complex longevity.\n\nKey Points:\n* Ischemic compression principles and hyaluronic acid viscosity.\n* Voodoo floss band occlusion timing (max 2 minutes) with reactive hyperemia.\n* Joint capsule mobilization under active distraction.',
+      category: 'Recovery',
+      media_url: 'https://images.unsplash.com/photo-1599447421416-3414500d18a5?auto=format&fit=crop&w=1200&q=80',
+      status: 'APPROVED',
+    },
+    // Additional Test Protocols (Pending / Rejected for Admin Moderation verification)
+    {
       creator_id: davidUser.id,
       title: 'Kettlebell Complex for High-Metabolic Burn in 25 Minutes',
       description: 'Five back-to-back kettlebell clean and presses followed by goblet squats and snatches with zero rest between moves.',
@@ -248,10 +318,7 @@ async function main() {
       media_url: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?auto=format&fit=crop&w=800&q=80',
       status: 'PENDING',
     },
-  });
-
-  await prisma.fitnessContent.create({
-    data: {
+    {
       creator_id: davidUser.id,
       title: 'Extreme 500-Calorie Crash Diet Protocol',
       description: 'Questionable protocol advocating starvation for rapid weight loss.',
@@ -259,9 +326,13 @@ async function main() {
       status: 'REJECTED',
       feedback: 'Violates platform safety guidelines. We strictly prohibit crash starvation diets.',
     },
-  });
+  ];
 
-  console.log('✅ Fitness Content Guides seeded');
+  for (const item of clinicalProtocols) {
+    await prisma.fitnessContent.create({ data: item });
+  }
+
+  console.log(`✅ Fitness Content Guides seeded: ${clinicalProtocols.length} clinical protocols loaded`);
 
   // 5. System Settings
   const settings = [

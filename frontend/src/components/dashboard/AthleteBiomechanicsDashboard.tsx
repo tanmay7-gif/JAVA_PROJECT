@@ -165,7 +165,7 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
         {/* ---------------------------------------------------------- */}
         {/* D. DAILY CALORIE TRENDS CARD (Top)                         */}
         {/* ---------------------------------------------------------- */}
-        <div className="bg-white border border-sky-100 rounded-3xl p-6 shadow-sm relative text-slate-800">
+        <div className="bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-3xl p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all duration-200 relative text-slate-800">
           {/* Header */}
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
@@ -298,7 +298,7 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
           {/* -------------------------------------------------------- */}
           {/* E. LIVE HEART RATE & 3D TELEMETRY (Bottom Left)           */}
           {/* -------------------------------------------------------- */}
-          <div className="bg-white border border-sky-100 rounded-3xl p-5 shadow-sm flex flex-col justify-between min-h-[260px] relative text-slate-800">
+          <div className="bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-3xl p-5 shadow-sm hover:shadow-md hover:border-sky-300 transition-all duration-200 flex flex-col justify-between min-h-[260px] relative text-slate-800">
             {/* Header */}
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-sky-900">
@@ -338,7 +338,7 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
           {/* -------------------------------------------------------- */}
           {/* F. REAL-TIME KPI METRIC STACK (Bottom Right)             */}
           {/* -------------------------------------------------------- */}
-          <div className="bg-white border border-sky-100 rounded-3xl p-5 shadow-sm flex flex-col justify-between min-h-[260px] space-y-3 text-slate-800">
+          <div className="bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-3xl p-5 shadow-sm hover:shadow-md hover:border-sky-300 transition-all duration-200 flex flex-col justify-between min-h-[260px] space-y-3 text-slate-800">
             {/* Header with options menu */}
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold tracking-wider text-sky-900">
@@ -350,19 +350,19 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
             </div>
 
             {/* Stacked Telemetry Cards */}
-            {/* 1. Total Workouts Card */}
-            <div className="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-3 shadow-sm hover:border-emerald-300 transition-all">
+            {/* 1. Total Workouts Card - Soft Green Tint */}
+            <div className="bg-emerald-50/80 border border-emerald-200 rounded-2xl p-3 shadow-2xs hover:shadow-xs hover:border-emerald-300 transition-all">
               <div className="flex items-center justify-between mb-0.5">
-                <span className="text-xs font-medium text-emerald-800">Total Workouts</span>
-                <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                <span className="text-xs font-bold text-emerald-900">Total Workouts</span>
+                <div className="w-7 h-7 rounded-xl bg-emerald-500 text-white flex items-center justify-center shadow-xs">
                   <Dumbbell className="w-3.5 h-3.5" />
                 </div>
               </div>
-              <div className="text-lg font-black text-slate-900">
-                {totalWorkoutsCount} <span className="text-xs font-normal text-emerald-700">sessions</span>
+              <div className="text-lg font-bold text-slate-900">
+                {totalWorkoutsCount} <span className="text-xs font-normal text-slate-500">sessions</span>
               </div>
               <div className="flex items-center justify-between mt-1">
-                <span className="text-[10px] font-bold text-emerald-800 bg-emerald-100 px-1.5 py-0.5 rounded-md">
+                <span className="text-[10px] font-medium text-emerald-800 bg-emerald-100/90 px-1.5 py-0.5 rounded-md">
                   {isZeroState ? 'Pristine 0' : '+10%'}
                 </span>
                 <svg viewBox="0 0 40 12" className="w-10 h-3 text-emerald-500 opacity-80">
@@ -371,41 +371,41 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
               </div>
             </div>
 
-            {/* 2. Active Energy Card */}
-            <div className="bg-rose-50/70 border border-rose-200/80 rounded-2xl p-3 shadow-sm hover:border-rose-300 transition-all">
+            {/* 2. Active Energy Card - Soft Peach/Orange Tint */}
+            <div className="bg-orange-50/80 border border-orange-200 rounded-2xl p-3 shadow-2xs hover:shadow-xs hover:border-orange-300 transition-all">
               <div className="flex items-center justify-between mb-0.5">
-                <span className="text-xs font-medium text-rose-800">Active Energy</span>
-                <div className="w-6 h-6 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center">
+                <span className="text-xs font-medium text-orange-900">Active Energy</span>
+                <div className="w-7 h-7 rounded-xl bg-orange-500 text-white flex items-center justify-center shadow-xs">
                   <Flame className="w-3.5 h-3.5" />
                 </div>
               </div>
-              <div className="text-lg font-black text-slate-900">
-                {weeklyCalories.toLocaleString()} <span className="text-xs font-normal text-rose-700">kcal</span>
+              <div className="text-lg font-bold text-slate-900">
+                {weeklyCalories.toLocaleString()} <span className="text-xs font-normal text-slate-500">kcal</span>
               </div>
               <div className="flex items-center justify-between mt-1">
-                <span className="text-[10px] font-bold text-rose-800 bg-rose-100 px-1.5 py-0.5 rounded-md">
+                <span className="text-[10px] font-medium text-orange-800 bg-orange-100/90 px-1.5 py-0.5 rounded-md">
                   {isZeroState ? 'Pristine 0' : '+15%'}
                 </span>
-                <svg viewBox="0 0 40 12" className="w-10 h-3 text-rose-500 opacity-80">
+                <svg viewBox="0 0 40 12" className="w-10 h-3 text-orange-500 opacity-80">
                   <path d="M 0 11 L 8 8 L 16 9 L 24 4 L 32 6 L 40 2" fill="none" stroke="currentColor" strokeWidth="1.5" />
                 </svg>
               </div>
             </div>
 
-            {/* 3. Duration Card */}
-            <div className="bg-sky-50/70 border border-sky-200/80 rounded-2xl p-3 shadow-sm hover:border-sky-300 transition-all">
+            {/* 3. Duration Card - Soft Cyan/Sky Tint */}
+            <div className="bg-sky-50/80 border border-sky-200 rounded-2xl p-3 shadow-2xs hover:shadow-xs hover:border-sky-300 transition-all">
               <div className="flex items-center justify-between mb-0.5">
-                <span className="text-xs font-medium text-sky-800">Duration</span>
-                <div className="w-6 h-6 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center">
+                <span className="text-xs font-medium text-sky-900">Duration</span>
+                <div className="w-7 h-7 rounded-xl bg-sky-500 text-white flex items-center justify-center shadow-xs">
                   <Clock className="w-3.5 h-3.5" />
                 </div>
               </div>
-              <div className="text-lg font-black text-slate-900">
+              <div className="text-lg font-bold text-slate-900">
                 {typeof weeklyHours === 'number' ? weeklyHours.toFixed(1) : weeklyHours}{' '}
-                <span className="text-xs font-normal text-sky-700">hrs</span>
+                <span className="text-xs font-normal text-slate-500">hrs</span>
               </div>
               <div className="flex items-center justify-between mt-1">
-                <span className="text-[10px] font-bold text-sky-800 bg-sky-100 px-1.5 py-0.5 rounded-md">
+                <span className="text-[10px] font-medium text-sky-800 bg-sky-100/90 px-1.5 py-0.5 rounded-md">
                   {isZeroState ? 'Pristine 0' : 'Latest'}
                 </span>
                 <svg viewBox="0 0 40 12" className="w-10 h-3 text-sky-500 opacity-80">
@@ -420,28 +420,38 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
       {/* ============================================================ */}
       {/* RIGHT COLUMN: AI RECOVERY RECOMMENDATION (xl:col-span-5)      */}
       {/* ============================================================ */}
-      <div className="xl:col-span-5 bg-white border border-sky-100 rounded-3xl p-6 shadow-sm flex flex-col justify-between h-full space-y-4 text-slate-800">
-        <div>
+      <div className="relative overflow-hidden xl:col-span-5 bg-gradient-to-br from-[#FAF5FF] via-[#F3E8FF]/60 to-[#F0F9FF] border border-purple-200/90 rounded-3xl p-6 shadow-sm hover:shadow-md hover:border-purple-300 transition-all duration-200 flex flex-col justify-between h-full space-y-4 text-slate-800">
+        {/* Layer: Authentic Athletic Recovery Photo Accent */}
+        <div 
+          className="pointer-events-none absolute inset-0 opacity-[0.06] bg-cover bg-center mix-blend-multiply"
+          style={{
+            backgroundImage: `url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=800&q=80')`
+          }}
+        />
+
+        <div className="relative z-10">
           {/* Header Badge */}
-          <div className="bg-gradient-to-r from-sky-500 to-sky-600 text-white font-bold text-xs px-3.5 py-2 rounded-xl flex items-center justify-between shadow-sm">
+          <div className="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-medium text-xs px-3.5 py-2 rounded-xl flex items-center justify-between shadow-sm">
             <span className="tracking-tight uppercase">AI RECOVERY RECOMMENDATION</span>
-            <Settings className="w-4 h-4 text-white" />
+            <div className="w-7 h-7 rounded-xl bg-purple-500 text-white flex items-center justify-center shadow-xs">
+              <Settings className="w-3.5 h-3.5" />
+            </div>
           </div>
 
           {/* Main Protocol Banner */}
-          <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-tight uppercase mt-4">
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight leading-tight uppercase mt-4 font-sans">
             {isZeroState ? 'AWAITING BASELINE BIOMETRIC PROTOCOL' : currentProtocol.title}
           </h3>
 
           {/* Recovery Slider / Meter */}
           <div className="my-4">
-            <div className="w-full bg-slate-100 border border-slate-200 h-3 rounded-full relative overflow-hidden flex items-center">
+            <div className="w-full bg-purple-100/70 border border-purple-200 h-3 rounded-full relative overflow-hidden flex items-center">
               <div
-                className="bg-gradient-to-r from-sky-400 to-sky-600 h-full rounded-full transition-all duration-500"
+                className="bg-gradient-to-r from-purple-400 via-indigo-500 to-sky-500 h-full rounded-full transition-all duration-500"
                 style={{ width: `${isZeroState ? 0 : currentProtocol.readinessPct}%` }}
               />
               <div
-                className="absolute w-3.5 h-3.5 rounded-full bg-sky-500 ring-2 ring-white shadow-md shadow-sky-400/50 top-1/2 -translate-y-1/2 transition-all duration-500"
+                className="absolute w-3.5 h-3.5 rounded-full bg-purple-600 ring-2 ring-white shadow-md shadow-purple-400/50 top-1/2 -translate-y-1/2 transition-all duration-500"
                 style={{ left: `calc(${isZeroState ? 0 : currentProtocol.readinessPct}% - 7px)` }}
               />
             </div>
@@ -450,15 +460,15 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
           {/* Recommendation List */}
           <div className="space-y-3 pt-2">
             {/* 1. Recommended activity */}
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center shrink-0 mt-0.5">
-                <Footprints className="w-4 h-4 text-sky-600" />
+            <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/80 border border-sky-200 shadow-2xs backdrop-blur-xs">
+              <div className="w-8 h-8 rounded-xl bg-sky-100 text-sky-700 border border-sky-300 flex items-center justify-center shrink-0 mt-0.5">
+                <Footprints className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs text-slate-500 block font-medium">
+                <span className="text-xs text-sky-800 block font-medium">
                   {isZeroState ? 'Action Required' : currentProtocol.activityLabel}
                 </span>
-                <span className="text-xs sm:text-sm font-semibold text-slate-900 block">
+                <span className="text-xs sm:text-sm font-normal text-slate-800 block mt-0.5">
                   {isZeroState
                     ? 'Log your initial workout session to calibrate AI recovery telemetry'
                     : currentProtocol.activityVal}
@@ -467,15 +477,15 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
             </div>
 
             {/* 2. Fascial Release */}
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center shrink-0 mt-0.5">
-                <Sparkles className="w-4 h-4 text-sky-600" />
+            <div className="flex items-start gap-3 p-3 rounded-2xl bg-white/80 border border-purple-200 shadow-2xs backdrop-blur-xs">
+              <div className="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 border border-purple-300 flex items-center justify-center shrink-0 mt-0.5">
+                <Sparkles className="w-4 h-4" />
               </div>
               <div>
-                <span className="text-xs text-slate-500 block font-medium">
+                <span className="text-xs text-purple-800 block font-medium">
                   {isZeroState ? 'Recovery Matrix' : currentProtocol.releaseLabel}
                 </span>
-                <span className="text-xs sm:text-sm font-semibold text-slate-900 block">
+                <span className="text-xs sm:text-sm font-normal text-slate-800 block mt-0.5">
                   {isZeroState
                     ? 'Baseline assessment will generate tailored post-workout protocols'
                     : currentProtocol.releaseVal}

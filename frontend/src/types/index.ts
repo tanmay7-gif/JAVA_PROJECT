@@ -35,7 +35,7 @@ export interface WorkoutLog {
 
 export interface FitnessContent {
   id: string;
-  creator_id: string;
+  creator_id?: string;
   title: string;
   description: string;
   category: string;
@@ -43,9 +43,15 @@ export interface FitnessContent {
   status: ContentStatus;
   feedback?: string | null;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
+  readTime?: string;
+  read_time?: string;
+  author?: string;
+  imageUrl?: string | null;
+  summary?: string;
+  content?: string;
   creator?: {
-    id: string;
+    id?: string;
     name: string;
     email?: string;
     profile_image?: string | null;

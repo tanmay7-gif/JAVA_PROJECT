@@ -27,6 +27,7 @@ const getApiBaseUrl = (): string => {
   // Default to relative /api (proxied in local dev or same-domain deployment)
   return '/api';
 };
+import { CLINICAL_PROTOCOLS } from '../data/mockContent';
 
 const API_BASE_URL = getApiBaseUrl();
 
@@ -718,30 +719,33 @@ class ApiClient {
 
     // Content Fallbacks
     if (cleanEndpoint.startsWith('/content')) {
+      const urlQuery = endpoint.includes('?') ? new URLSearchParams(endpoint.split('?')[1]) : new URLSearchParams();
+      const catParam = urlQuery.get('category');
+      const searchParam = urlQuery.get('search');
+
+      let filtered = [...CLINICAL_PROTOCOLS];
+
+      if (catParam && catParam.toUpperCase() !== 'ALL') {
+        const normCat = catParam.toLowerCase().replace(/[\s_-]+/g, '');
+        filtered = filtered.filter((item) => {
+          const itemNorm = item.category.toLowerCase().replace(/[\s_-]+/g, '');
+          return itemNorm === normCat;
+        });
+      }
+
+      if (searchParam) {
+        const q = searchParam.toLowerCase();
+        filtered = filtered.filter(
+          (item) =>
+            item.title.toLowerCase().includes(q) ||
+            item.description.toLowerCase().includes(q) ||
+            (item.summary && item.summary.toLowerCase().includes(q))
+        );
+      }
+
       return {
         success: true,
-        data: [
-          {
-            id: 'c-1',
-            title: '4-Day Science-Backed Conditioning Split',
-            description: 'Hypertrophy progression integrated with Zone 2 aerobic pacing for maximal VO2 max.',
-            category: 'Strength',
-            status: 'APPROVED',
-            upvotes_count: 28,
-            creator: { name: 'Sarah Connor', profile_image: null },
-            created_at: new Date().toISOString(),
-          },
-          {
-            id: 'c-2',
-            title: 'Metabolic Threshold Nutrition Protocol',
-            description: 'Electrolyte calibration and carbohydrate timing for endurance runners.',
-            category: 'Cardio',
-            status: 'APPROVED',
-            upvotes_count: 42,
-            creator: { name: 'David Miller', profile_image: null },
-            created_at: new Date().toISOString(),
-          },
-        ],
+        data: filtered,
       } as T;
     }
 

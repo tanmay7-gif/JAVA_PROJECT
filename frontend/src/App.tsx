@@ -160,10 +160,25 @@ const AppShell: React.FC = () => {
     <div
       className={
         isAthleteRoute || isAdminRoute
-          ? 'min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col selection:bg-sky-500 selection:text-white'
-          : 'min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col selection:bg-sky-500 selection:text-white'
+          ? 'min-h-screen bg-transparent text-slate-900 flex flex-col selection:bg-sky-500 selection:text-white'
+          : 'relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-[#EBF5FF] via-[#F3F9FF] to-[#E0F2FE] text-slate-900 flex flex-col selection:bg-sky-500 selection:text-white'
       }
     >
+      {/* Background layer for non-athlete/non-admin routes (like Landing Page) */}
+      {!isAthleteRoute && !isAdminRoute && (
+        <>
+          <div 
+            className="pointer-events-none fixed inset-0 z-0 opacity-[0.05] mix-blend-multiply bg-cover bg-center bg-no-repeat transition-opacity"
+            style={{
+              backgroundImage: `url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=2000&q=80')`
+            }}
+          />
+          <div 
+            className="pointer-events-none fixed inset-0 z-0 opacity-[0.04] bg-[radial-gradient(#0284C7_1px,transparent_1px)] [background-size:24px_24px]"
+          />
+        </>
+      )}
+
       {/* Persistent Light-Glass Navigation Header (hidden on athlete telemetry & admin routes) */}
       {user && !isAthleteRoute && !isAdminRoute && <Navbar onOpenLogWorkout={handleOpenLogWorkout} />}
 
@@ -172,7 +187,7 @@ const AppShell: React.FC = () => {
         className={
           isAthleteRoute || isAdminRoute
             ? 'w-full flex-1'
-            : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8'
+            : 'relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8'
         }
       >
         <Routes>

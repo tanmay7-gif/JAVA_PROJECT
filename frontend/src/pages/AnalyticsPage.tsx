@@ -159,7 +159,7 @@ export const AnalyticsPage: React.FC = () => {
             <Sparkles className="w-3 h-3 text-sky-500" />
             3D Biometric Telemetry & Analytics Laboratory
           </div>
-          <h1 className="text-2xl font-black text-slate-900 tracking-tight mt-1.5">
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight mt-1.5">
             Biometric Performance Matrix
           </h1>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -174,9 +174,9 @@ export const AnalyticsPage: React.FC = () => {
               <button
                 key={w}
                 onClick={() => setTimeWindow(w)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                   timeWindow === w
-                    ? 'bg-sky-500 text-white shadow-sm shadow-sky-500/25'
+                    ? 'bg-sky-500 text-white shadow-sm shadow-sky-500/25 font-semibold'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-white/80'
                 }`}
               >
@@ -198,86 +198,86 @@ export const AnalyticsPage: React.FC = () => {
       {/* KPI Cards Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Weekly Active Volume */}
-        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all text-slate-800">
+        <div className="bg-sky-50/80 border border-sky-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-sky-300 transition-all text-slate-800">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-xs font-medium uppercase tracking-wider text-sky-800">
               Active Duration
             </span>
-            <div className="w-8 h-8 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center text-sky-600 shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-sky-500 text-white flex items-center justify-center shadow-md shadow-sky-200">
               <Clock className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-slate-900">
+            <span className="text-2xl sm:text-3xl font-bold text-slate-900">
               {summary.weeklyWorkoutHours}
             </span>
-            <span className="text-xs font-semibold text-slate-500">hours (7d)</span>
+            <span className="text-xs font-normal text-slate-500">hours (7d)</span>
           </div>
-          <p className="text-[11px] text-emerald-600 font-semibold mt-2 flex items-center gap-1">
+          <p className="text-[11px] text-emerald-600 font-medium mt-2 flex items-center gap-1">
             <TrendingUp className="w-3 h-3" />
             Monthly: {summary.monthlyWorkoutHours} hrs
           </p>
         </div>
 
         {/* Energy Output */}
-        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all text-slate-800">
+        <div className="bg-orange-50/80 border border-orange-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-orange-300 transition-all text-slate-800">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-xs font-medium uppercase tracking-wider text-orange-800">
               Metabolic Output
             </span>
-            <div className="w-8 h-8 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-orange-500 text-white flex items-center justify-center shadow-md shadow-orange-200">
               <Flame className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-slate-900">
+            <span className="text-2xl sm:text-3xl font-bold text-slate-900">
               {summary.weeklyCaloriesBurned.toLocaleString()}
             </span>
-            <span className="text-xs font-semibold text-slate-500">kcal (7d)</span>
+            <span className="text-xs font-normal text-slate-500">kcal (7d)</span>
           </div>
-          <p className="text-[11px] text-slate-500 mt-2">
+          <p className="text-[11px] text-orange-700/80 font-normal mt-2">
             Monthly: {summary.monthlyCaloriesBurned.toLocaleString()} kcal
           </p>
         </div>
 
         {/* Efficiency Index */}
-        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all text-slate-800">
+        <div className="bg-amber-50/80 border border-amber-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-amber-300 transition-all text-slate-800">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-xs font-medium uppercase tracking-wider text-amber-800">
               Burn Velocity
             </span>
-            <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-md shadow-amber-200">
               <Zap className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-slate-900">
+            <span className="text-2xl sm:text-3xl font-bold text-slate-900">
               {burnVelocity}
             </span>
-            <span className="text-xs font-semibold text-slate-500">kcal / min</span>
+            <span className="text-xs font-normal text-slate-500">kcal / min</span>
           </div>
-          <p className="text-[11px] text-emerald-600 font-semibold mt-2">
+          <p className="text-[11px] text-amber-700/80 font-medium mt-2">
             {burnVelocity > 0 ? 'Active metabolic burn rate' : 'No active volume'}
           </p>
         </div>
 
         {/* Lifetime Logged */}
-        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all text-slate-800">
+        <div className="bg-purple-50/80 border border-purple-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-purple-300 transition-all text-slate-800">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            <span className="text-xs font-medium uppercase tracking-wider text-purple-800">
               Audited Sessions
             </span>
-            <div className="w-8 h-8 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 shadow-sm">
+            <div className="w-9 h-9 rounded-xl bg-purple-500 text-white flex items-center justify-center shadow-md shadow-purple-200">
               <Layers className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-slate-900">
+            <span className="text-2xl sm:text-3xl font-bold text-slate-900">
               {summary.totalLifetimeWorkouts}
             </span>
-            <span className="text-xs font-semibold text-slate-500">sessions</span>
+            <span className="text-xs font-normal text-slate-500">sessions</span>
           </div>
-          <p className="text-[11px] text-slate-500 mt-2 truncate">
+          <p className="text-[11px] text-purple-700/80 font-normal mt-2 truncate">
             {summary.totalLifetimeHours} lifetime hrs • {summary.totalLifetimeCalories.toLocaleString()} kcal
           </p>
         </div>
@@ -286,69 +286,69 @@ export const AnalyticsPage: React.FC = () => {
       {/* Progress Tracking Matrices: Weekly/Monthly Activity, Goal Progress, Challenge Progress */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Weekly & Monthly Activity Card */}
-        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm text-slate-800 flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-sky-300 transition-all text-slate-800 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-sky-500" /> Activity Horizons
+              <span className="text-xs font-semibold uppercase tracking-wider text-sky-800 flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-sky-600" /> Activity Horizons
               </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-sky-50 text-sky-700 border border-sky-200">
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-200">
                 Live Data
               </span>
             </div>
-            <h4 className="text-sm font-black text-slate-900">Weekly vs Monthly Activity</h4>
+            <h4 className="text-sm font-semibold text-slate-900">Weekly vs Monthly Activity</h4>
             <div className="mt-3 space-y-3">
-              <div className="bg-sky-50/60 p-3 rounded-xl border border-sky-100/80">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+              <div className="bg-sky-100/70 p-3 rounded-xl border border-sky-200">
+                <div className="flex items-center justify-between text-xs font-semibold text-sky-950">
                   <span>Last 7 Days (Weekly)</span>
-                  <span className="text-sky-700 font-extrabold">{summary.weeklyWorkoutsCount} workouts</span>
+                  <span className="text-sky-700 font-bold">{summary.weeklyWorkoutsCount} workouts</span>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1">
+                <div className="flex items-center justify-between text-[11px] text-slate-600 mt-1 font-normal">
                   <span>{summary.weeklyWorkoutHours} hrs duration</span>
                   <span>{summary.weeklyCaloriesBurned.toLocaleString()} kcal</span>
                 </div>
               </div>
 
-              <div className="bg-sky-50/60 p-3 rounded-xl border border-sky-100/80">
-                <div className="flex items-center justify-between text-xs font-bold text-slate-800">
+              <div className="bg-sky-100/70 p-3 rounded-xl border border-sky-200">
+                <div className="flex items-center justify-between text-xs font-semibold text-sky-950">
                   <span>Last 30 Days (Monthly)</span>
-                  <span className="text-teal-700 font-extrabold">{summary.monthlyWorkoutsCount} workouts</span>
+                  <span className="text-teal-700 font-bold">{summary.monthlyWorkoutsCount} workouts</span>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-slate-500 mt-1">
+                <div className="flex items-center justify-between text-[11px] text-slate-600 mt-1 font-normal">
                   <span>{summary.monthlyWorkoutHours} hrs duration</span>
                   <span>{summary.monthlyCaloriesBurned.toLocaleString()} kcal</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="pt-3 mt-3 border-t border-sky-100 text-[11px] text-slate-500 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+          <div className="pt-3 mt-3 border-t border-sky-200 text-[11px] text-slate-600 flex items-center gap-1 font-normal">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
             <span>Audited directly against database workout logs</span>
           </div>
         </div>
 
         {/* Goal Progress Card */}
-        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm text-slate-800 flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-[#F0FDF4] to-[#E0F2FE]/60 border border-emerald-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all text-slate-800 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+              <span className="text-xs font-semibold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
                 <Target className="w-3.5 h-3.5 text-emerald-600" /> Goal Mastery
               </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                 {data?.goalProgress?.activeGoals ?? 0} Active
               </span>
             </div>
-            <h4 className="text-sm font-black text-slate-900">Fitness Goals Progress</h4>
+            <h4 className="text-sm font-semibold text-slate-900">Fitness Goals Progress</h4>
             <div className="mt-3 space-y-3">
               <div className="flex items-baseline justify-between">
-                <span className="text-2xl font-black text-slate-900">
+                <span className="text-2xl font-bold text-slate-900">
                   {Math.round(data?.goalProgress?.averageCompletionPercentage ?? 0)}%
                 </span>
-                <span className="text-xs text-slate-500 font-semibold">Avg Completion</span>
+                <span className="text-xs text-slate-500 font-normal">Avg Completion</span>
               </div>
               
               {/* Progress Bar with High-Frequency Glow */}
-              <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200">
+              <div className="w-full bg-emerald-100 rounded-full h-2.5 overflow-hidden border border-emerald-200">
                 <div
                   className="bg-gradient-to-r from-sky-400 via-sky-500 to-emerald-500 h-2.5 rounded-full transition-all duration-700 shadow-sm"
                   style={{ width: `${Math.min(100, Math.max(0, data?.goalProgress?.averageCompletionPercentage ?? 0))}%` }}
@@ -356,45 +356,45 @@ export const AnalyticsPage: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-center pt-1">
-                <div className="p-2 rounded-xl bg-sky-50/60 border border-sky-100/80">
-                  <div className="text-xs font-black text-sky-700">{data?.goalProgress?.activeGoals ?? 0}</div>
-                  <div className="text-[10px] text-slate-500 font-semibold">Active Goals</div>
+                <div className="p-2 rounded-xl bg-emerald-50/80 border border-emerald-200">
+                  <div className="text-xs font-bold text-sky-700">{data?.goalProgress?.activeGoals ?? 0}</div>
+                  <div className="text-[10px] text-slate-500 font-normal">Active Goals</div>
                 </div>
-                <div className="p-2 rounded-xl bg-sky-50/60 border border-sky-100/80">
-                  <div className="text-xs font-black text-emerald-700">{data?.goalProgress?.completedGoals ?? 0}</div>
-                  <div className="text-[10px] text-slate-500 font-semibold">Completed</div>
+                <div className="p-2 rounded-xl bg-emerald-50/80 border border-emerald-200">
+                  <div className="text-xs font-bold text-emerald-700">{data?.goalProgress?.completedGoals ?? 0}</div>
+                  <div className="text-[10px] text-slate-500 font-normal">Completed</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="pt-3 mt-3 border-t border-sky-100 text-[11px] text-slate-500 flex items-center gap-1">
-            <Info className="w-3.5 h-3.5 text-sky-500" />
+          <div className="pt-3 mt-3 border-t border-emerald-200 text-[11px] text-slate-600 flex items-center gap-1 font-normal">
+            <Info className="w-3.5 h-3.5 text-sky-600" />
             <span>Target milestones calibrated in Athlete Profile</span>
           </div>
         </div>
 
         {/* Challenge Progress Card */}
-        <div className="bg-white border border-sky-100 rounded-2xl p-5 shadow-sm text-slate-800 flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-[#FFFBEB] to-[#E0F2FE]/60 border border-amber-200/90 rounded-2xl p-5 shadow-sm hover:shadow-md hover:border-amber-300 transition-all text-slate-800 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-                <Trophy className="w-3.5 h-3.5 text-amber-500" /> Arena Progress
+              <span className="text-xs font-semibold uppercase tracking-wider text-amber-800 flex items-center gap-1.5">
+                <Trophy className="w-3.5 h-3.5 text-amber-600" /> Arena Progress
               </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
+              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
                 {data?.challengeProgress?.enrolledChallenges ?? 0} Enrolled
               </span>
             </div>
-            <h4 className="text-sm font-black text-slate-900">Challenges & Arena Completion</h4>
+            <h4 className="text-sm font-semibold text-slate-900">Challenges & Arena Completion</h4>
             <div className="mt-3 space-y-3">
               <div className="flex items-baseline justify-between">
-                <span className="text-2xl font-black text-slate-900">
+                <span className="text-2xl font-bold text-slate-900">
                   {Math.round(data?.challengeProgress?.completionRate ?? 0)}%
                 </span>
-                <span className="text-xs text-slate-500 font-semibold">Completion Rate</span>
+                <span className="text-xs text-slate-500 font-normal">Completion Rate</span>
               </div>
 
               {/* Progress Bar with High-Frequency Amber Glow */}
-              <div className="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden border border-slate-200">
+              <div className="w-full bg-amber-100 rounded-full h-2.5 overflow-hidden border border-amber-200">
                 <div
                   className="bg-gradient-to-r from-amber-400 via-orange-400 to-rose-400 h-2.5 rounded-full transition-all duration-700 shadow-sm"
                   style={{ width: `${Math.min(100, Math.max(0, data?.challengeProgress?.completionRate ?? 0))}%` }}
@@ -402,19 +402,19 @@ export const AnalyticsPage: React.FC = () => {
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-center pt-1">
-                <div className="p-2 rounded-xl bg-sky-50/60 border border-sky-100/80">
-                  <div className="text-xs font-black text-amber-600">{data?.challengeProgress?.enrolledChallenges ?? 0}</div>
-                  <div className="text-[10px] text-slate-500 font-semibold">Total Joined</div>
+                <div className="p-2 rounded-xl bg-amber-50/80 border border-amber-200">
+                  <div className="text-xs font-bold text-amber-700">{data?.challengeProgress?.enrolledChallenges ?? 0}</div>
+                  <div className="text-[10px] text-slate-500 font-normal">Total Joined</div>
                 </div>
-                <div className="p-2 rounded-xl bg-sky-50/60 border border-sky-100/80">
-                  <div className="text-xs font-black text-emerald-600">{data?.challengeProgress?.completedChallenges ?? 0}</div>
-                  <div className="text-[10px] text-slate-500 font-semibold">Completed</div>
+                <div className="p-2 rounded-xl bg-amber-50/80 border border-amber-200">
+                  <div className="text-xs font-bold text-emerald-700">{data?.challengeProgress?.completedChallenges ?? 0}</div>
+                  <div className="text-[10px] text-slate-500 font-normal">Completed</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="pt-3 mt-3 border-t border-sky-100 text-[11px] text-slate-500 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-amber-500" />
+          <div className="pt-3 mt-3 border-t border-amber-200 text-[11px] text-slate-600 flex items-center gap-1 font-normal">
+            <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />
             <span>Badge rewards deposited into athletic trophy case</span>
           </div>
         </div>
@@ -423,18 +423,18 @@ export const AnalyticsPage: React.FC = () => {
       {/* Primary 3D Visualizations Dual Laboratory */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* 3D Volumetric Bar Chart (7 cols) */}
-        <div className="lg:col-span-7 bg-white border border-sky-100 rounded-2xl p-6 shadow-sm text-slate-800 flex flex-col justify-between">
+        <div className="lg:col-span-7 bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all text-slate-800 flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between mb-3">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-sky-50 text-sky-700 text-[10px] font-bold uppercase tracking-wider border border-sky-200">
-                  <Activity className="w-3 h-3 text-sky-500" />
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-sky-100 text-sky-800 text-[10px] font-bold uppercase tracking-wider border border-sky-200">
+                  <Activity className="w-3 h-3 text-sky-600" />
                   3D Volumetric Telemetry
                 </div>
                 <h3 className="text-base font-bold text-slate-900 mt-1">
                   Daily Volume & Caloric Load
                 </h3>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-600">
                   Interactive 3D raycast bars with extruded bevel rims. Hover to inspect metrics.
                 </p>
               </div>
@@ -456,17 +456,17 @@ export const AnalyticsPage: React.FC = () => {
             />
           </div>
 
-          <div className="mt-4 pt-3 border-t border-sky-100 text-[11px] text-slate-500 flex items-center justify-between">
+          <div className="mt-4 pt-3 border-t border-sky-200 text-[11px] text-slate-600 flex items-center justify-between font-medium">
             <span className="flex items-center gap-1">
-              <Info className="w-3.5 h-3.5 text-sky-500" />
+              <Info className="w-3.5 h-3.5 text-sky-600" />
               Dynamic height transitions calibrated to daily totals
             </span>
-            <span className="text-sky-600 font-bold">WebGL Shaded</span>
+            <span className="text-sky-700 font-bold">WebGL Shaded</span>
           </div>
         </div>
 
         {/* Discipline Distribution: 3D WebGL / 2D Recharts with Compact Active State (5 cols) */}
-        <div className="lg:col-span-5 bg-white border border-sky-100 rounded-2xl p-6 shadow-sm text-slate-800 flex flex-col justify-between relative">
+        <div className="lg:col-span-5 bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all text-slate-800 flex flex-col justify-between relative">
           <div>
             <div className="flex items-start justify-between mb-3">
               <div>
@@ -587,7 +587,7 @@ export const AnalyticsPage: React.FC = () => {
       </div>
 
       {/* Secondary 2D Curved Volumetric Area Trend Line with High-Frequency 3D Shading */}
-      <div className="bg-white border border-sky-100 rounded-2xl p-6 shadow-sm relative overflow-hidden text-slate-800">
+      <div className="bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 rounded-2xl p-6 shadow-sm hover:shadow-md hover:border-sky-300 transition-all relative overflow-hidden text-slate-800">
         <div className="flex items-center justify-between mb-4 relative z-10">
           <div>
             <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -598,7 +598,7 @@ export const AnalyticsPage: React.FC = () => {
               High-frequency multi-stop gradient telemetry detailing continuous energy pacing across selected time-window.
             </p>
           </div>
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-sky-50 text-sky-700 border border-sky-200 shadow-sm">
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-sky-100 text-sky-800 border border-sky-200 shadow-sm">
             {timeWindow} Window
           </span>
         </div>

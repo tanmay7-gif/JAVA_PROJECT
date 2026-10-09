@@ -8,8 +8,21 @@ export const listPublicContent = async (req: AuthenticatedRequest, res: Response
     const { category, search } = req.query as any;
 
     const where: any = { status: 'APPROVED' };
-    if (category) {
-      where.category = category;
+    if (category && category !== 'ALL') {
+      const normalized = String(category).toLowerCase().replace(/[\s_-]+/g, '');
+      const possibleCategories = [
+        category,
+        category.toUpperCase(),
+        category.toLowerCase(),
+        category.replace(/\s+/g, '_').toUpperCase(),
+        category.replace(/_/g, ' '),
+      ];
+      if (normalized === 'guide') possibleCategories.push('Guide', 'GUIDE');
+      if (normalized === 'nutrition') possibleCategories.push('Nutrition', 'NUTRITION');
+      if (normalized === 'recovery') possibleCategories.push('Recovery', 'RECOVERY');
+      if (normalized === 'workoutroutine') possibleCategories.push('Workout Routine', 'WORKOUT_ROUTINE', 'Workout_Routine');
+
+      where.category = { in: Array.from(new Set(possibleCategories)) };
     }
     if (search) {
       where.OR = [

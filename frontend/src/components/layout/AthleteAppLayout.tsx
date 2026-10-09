@@ -109,23 +109,38 @@ export const AthleteAppLayout: React.FC<AthleteAppLayoutProps> = ({
     : 'Sarah J.';
 
   return (
-    <div className="w-full min-h-screen bg-[#F8FAFC] text-slate-800 flex flex-row font-sans selection:bg-sky-500 selection:text-white relative overflow-x-hidden">
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-[#EBF5FF] via-[#F3F9FF] to-[#E0F2FE] text-slate-800 font-sans selection:bg-sky-500 selection:text-white">
+      {/* Layer 1: Subtle High-Resolution Athletic Texture Layer */}
+      <div 
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.06] mix-blend-multiply bg-cover bg-center bg-no-repeat transition-opacity"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=2000&q=80')`
+        }}
+      />
+
+      {/* Layer 2: Subtle Geometric Isometric Grid / Wave Mesh */}
+      <div 
+        className="pointer-events-none fixed inset-0 z-0 opacity-[0.04] bg-[radial-gradient(#0284C7_1px,transparent_1px)] [background-size:24px_24px]"
+      />
+
       {/* Background Concentric Radar Arcs Watermark (Bottom-Left) */}
-      <div className="fixed -bottom-40 -left-40 w-[540px] h-[540px] pointer-events-none opacity-40 z-0">
+      <div className="fixed -bottom-40 -left-40 w-[540px] h-[540px] pointer-events-none opacity-35 z-0">
         <svg viewBox="0 0 500 500" className="w-full h-full">
-          <circle cx="250" cy="250" r="80" fill="none" stroke="#E0F2FE" strokeWidth="1" strokeDasharray="4 4" />
-          <circle cx="250" cy="250" r="140" fill="none" stroke="#BAE6FD" strokeWidth="1" />
-          <circle cx="250" cy="250" r="200" fill="none" stroke="#E0F2FE" strokeWidth="1" strokeDasharray="3 3" />
-          <circle cx="250" cy="250" r="260" fill="none" stroke="#BAE6FD" strokeWidth="1.5" />
-          <line x1="250" y1="10" x2="250" y2="490" stroke="#E0F2FE" strokeWidth="1" opacity="0.6" />
-          <line x1="10" y1="250" x2="490" y2="250" stroke="#E0F2FE" strokeWidth="1" opacity="0.6" />
+          <circle cx="250" cy="250" r="80" fill="none" stroke="#BAE6FD" strokeWidth="1" strokeDasharray="4 4" />
+          <circle cx="250" cy="250" r="140" fill="none" stroke="#7DD3FC" strokeWidth="1" />
+          <circle cx="250" cy="250" r="200" fill="none" stroke="#BAE6FD" strokeWidth="1" strokeDasharray="3 3" />
+          <circle cx="250" cy="250" r="260" fill="none" stroke="#7DD3FC" strokeWidth="1.5" />
+          <line x1="250" y1="10" x2="250" y2="490" stroke="#BAE6FD" strokeWidth="1" opacity="0.6" />
+          <line x1="10" y1="250" x2="490" y2="250" stroke="#BAE6FD" strokeWidth="1" opacity="0.6" />
         </svg>
       </div>
 
-      {/* ============================================================== */}
-      {/* ZONE 1: VERTICAL NAVIGATION RAIL (LEFT RAIL)                   */}
-      {/* ============================================================== */}
-      <aside className="w-20 md:w-24 shrink-0 min-h-screen bg-white/95 backdrop-blur-2xl border-r border-sky-100 shadow-sm flex flex-col items-center justify-between py-6 px-2 z-40 select-none sticky top-0 h-screen">
+      {/* Layer 3: Application Content Flow */}
+      <div className="relative z-10 w-full min-h-screen flex flex-row overflow-x-hidden">
+        {/* ============================================================== */}
+        {/* ZONE 1: VERTICAL NAVIGATION RAIL (LEFT RAIL)                   */}
+        {/* ============================================================== */}
+        <aside className="w-20 md:w-24 shrink-0 min-h-screen bg-gradient-to-b from-[#F0F9FF]/95 via-[#E6F4FE]/95 to-[#F8FAFC]/95 backdrop-blur-2xl border-r border-sky-200/90 shadow-sm flex flex-col items-center justify-between py-6 px-2 z-40 select-none sticky top-0 h-screen">
         {/* Brand Icon at Top */}
         <div
           className="flex flex-col items-center gap-1.5 group cursor-pointer"
@@ -254,7 +269,7 @@ export const AthleteAppLayout: React.FC<AthleteAppLayoutProps> = ({
       {/* ZONE 2: PERSISTENT CONTEXTUAL LEFT METRIC CARD DECK             */}
       {/* ============================================================== */}
       {/* Desktop Persistent Left Column */}
-      <aside className="hidden lg:flex w-80 md:w-88 xl:w-96 shrink-0 border-r border-sky-100 p-4 lg:p-6 flex-col overflow-y-auto max-h-screen sticky top-0 z-20 bg-white/80 backdrop-blur-xl">
+      <aside className="hidden lg:flex w-80 md:w-88 xl:w-96 shrink-0 border-r border-sky-200 p-4 lg:p-6 flex-col overflow-y-auto max-h-screen sticky top-0 z-10 bg-gradient-to-b from-[#F0F9FF] via-[#E6F4FE] to-[#F8FAFC] backdrop-blur-xl">
         <LeftTelemetryDeck
           currentTab={currentTab}
           analytics={analytics}
@@ -277,7 +292,7 @@ export const AthleteAppLayout: React.FC<AthleteAppLayoutProps> = ({
             className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm"
             onClick={() => setIsDeckMobileOpen(false)}
           />
-          <div className="relative w-80 max-w-[85vw] bg-white border-r border-sky-100 p-4 overflow-y-auto h-full z-10 shadow-2xl">
+          <div className="relative w-80 max-w-[85vw] bg-gradient-to-b from-[#F0F9FF] via-[#E6F4FE] to-[#F8FAFC] border-r border-sky-200 p-4 overflow-y-auto h-full z-10 shadow-2xl">
             <div className="flex items-center justify-between pb-3 mb-2 border-b border-sky-100">
               <span className="text-xs font-bold text-sky-900 uppercase tracking-wider">
                 Telemetry Deck
@@ -313,7 +328,7 @@ export const AthleteAppLayout: React.FC<AthleteAppLayoutProps> = ({
       {/* ============================================================== */}
       {/* ZONE 3: MAIN DYNAMIC WORKSPACE (TOP BAR + CONTENT)             */}
       {/* ============================================================== */}
-      <div className="flex-1 flex flex-col p-4 sm:p-6 lg:p-8 min-w-0 z-10 overflow-y-auto">
+      <div className="flex-1 flex flex-col p-4 sm:p-6 lg:p-8 min-w-0 z-10 overflow-y-auto overflow-x-hidden">
         {/* TOP APP BAR */}
         <header className="flex items-center justify-between gap-4 pb-6 w-full shrink-0">
           {/* Left: Brand mark FitPulse + Current Tab Indicator */}
@@ -490,5 +505,6 @@ export const AthleteAppLayout: React.FC<AthleteAppLayoutProps> = ({
         </main>
       </div>
     </div>
+  </div>
   );
 };

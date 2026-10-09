@@ -117,7 +117,7 @@ export const AdminDashboardView: React.FC<{
               </button>
               <button
                 onClick={() => onNavigateTab('admin-content')}
-                className="px-4 py-2 rounded-xl bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold border border-emerald-200 transition-all shadow-soft-sm"
+                className="px-4 py-2 rounded-xl bg-sky-100 hover:bg-sky-200 text-sky-700 text-xs font-bold border border-sky-300 transition-all shadow-sm"
               >
                 Moderation Queue ({effectiveKpis.pendingContentApprovals})
               </button>

@@ -37,6 +37,26 @@ interface LeaderboardEntry {
   level: string;
 }
 
+const getChallengePhoto = (metric: string, title: string) => {
+  const lower = (metric + ' ' + title).toLowerCase();
+  if (lower.includes('marathon') || lower.includes('run') || lower.includes('step') || lower.includes('distance')) {
+    return 'https://images.unsplash.com/photo-1452626038306-9aae5e071dd3?auto=format&fit=crop&w=600&q=80';
+  }
+  if (lower.includes('cycl') || lower.includes('ride') || lower.includes('bike') || lower.includes('century')) {
+    return 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=600&q=80';
+  }
+  if (lower.includes('titan') || lower.includes('lift') || lower.includes('hypertrophy') || lower.includes('strength') || lower.includes('iron')) {
+    return 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80';
+  }
+  if (lower.includes('zenith') || lower.includes('stretch') || lower.includes('yoga') || lower.includes('mobility')) {
+    return 'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80';
+  }
+  if (lower.includes('swim') || lower.includes('water') || lower.includes('aqua')) {
+    return 'https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=600&q=80';
+  }
+  return 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80';
+};
+
 const DEFAULT_LEADERBOARD: LeaderboardEntry[] = [
   {
     id: 'lead-1',
@@ -235,15 +255,15 @@ export const ChallengesView: React.FC<ChallengesViewProps> = ({ onChallengeJoine
           {activeTab === 'ACTIVE' && (
             <div className="space-y-4">
               {myChallenges.active.length === 0 ? (
-                <div className="p-12 text-center rounded-3xl bg-white border border-sky-100 shadow-sm">
-                  <Target className="w-12 h-12 text-sky-200 mx-auto mb-3" />
+                <div className="p-12 text-center rounded-3xl bg-gradient-to-br from-[#F0F9FF] to-[#E0F2FE]/70 border border-sky-200/90 shadow-sm">
+                  <Target className="w-12 h-12 text-sky-400 mx-auto mb-3" />
                   <h4 className="text-sm font-bold text-slate-800">No active challenges in progress</h4>
                   <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-4">
                     Enroll in an endurance or metabolic challenge to start tracking your next 3D badge.
                   </p>
                   <button
                     onClick={() => setActiveTab('EXPLORE')}
-                    className="px-4 py-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold shadow-md shadow-sky-200 transition-all"
+                    className="px-4 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white text-xs font-bold shadow-md shadow-sky-200 transition-all"
                   >
                     Browse Available Challenges
                   </button>
@@ -266,48 +286,59 @@ export const ChallengesView: React.FC<ChallengesViewProps> = ({ onChallengeJoine
                     return (
                       <div
                         key={uc.id}
-                        className="clinical-card p-6 flex flex-col justify-between relative group hover:border-sky-300"
+                        className="clinical-card p-5 sm:p-6 flex flex-col justify-between relative group hover:border-sky-300"
                       >
                         <div>
-                          <div className="flex items-center justify-between gap-2 mb-2">
-                            <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-sky-50 text-sky-800 border border-sky-200">
-                              {c.target_metric}
-                            </span>
-                            <span className="text-xs font-bold text-sky-700 flex items-center gap-1 bg-sky-50/50 px-2 py-0.5 rounded-md border border-sky-100">
-                              <Award className="w-3.5 h-3.5 text-sky-600" />
-                              {c.reward_badge}
-                            </span>
+                          {/* Authentic Athletic Photography Header */}
+                          <div className="h-28 w-full rounded-2xl overflow-hidden relative mb-3 bg-slate-900 group-hover:shadow-md transition-all">
+                            <img
+                              src={getChallengePhoto(c.target_metric, c.title)}
+                              alt={c.title}
+                              className="w-full h-full object-cover opacity-85 group-hover:scale-105 group-hover:opacity-95 transition-all duration-300"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/30 to-transparent" />
+                            <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                              <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-white/90 text-sky-850 backdrop-blur-xs shadow-xs">
+                                {c.target_metric}
+                              </span>
+                            </div>
+                            <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-white text-xs">
+                              <span className="font-medium text-[11px] text-sky-200 flex items-center gap-1">
+                                <Award className="w-3.5 h-3.5 text-amber-300" />
+                                {c.reward_badge}
+                              </span>
+                            </div>
                           </div>
 
-                          <h4 className="text-base font-bold text-slate-900 group-hover:text-sky-700 transition-colors">
+                          <h4 className="text-base font-semibold text-slate-900 group-hover:text-sky-700 transition-colors">
                             {c.title}
                           </h4>
-                          <p className="text-xs text-slate-500 mt-1 line-clamp-2">{c.description}</p>
+                          <p className="text-xs text-slate-500 mt-1 line-clamp-2 font-normal leading-relaxed">{c.description}</p>
                         </div>
 
                         {/* Progress Section */}
-                        <div className="mt-5 pt-4 border-t border-sky-100 space-y-2">
+                        <div className="mt-4 pt-3.5 border-t border-sky-100 space-y-2">
                           <div className="flex items-center justify-between text-xs">
-                            <span className="text-slate-600 flex items-center gap-1 font-semibold">
+                            <span className="text-slate-600 flex items-center gap-1 font-normal">
                               {metricIcon}
-                              {uc.current_progress.toLocaleString()} / {c.target_value.toLocaleString()} {metricUnit}
+                              {uc.current_progress.toLocaleString()} / {c.target_value.toLocaleString()} <span className="text-slate-400 font-normal">{metricUnit}</span>
                             </span>
-                            <span className="font-extrabold text-sky-700">{percent}%</span>
+                            <span className="font-semibold text-sky-700 font-mono">{percent}%</span>
                           </div>
 
-                          <div className="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden p-0.5 border border-slate-200">
+                          <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden p-0.5 border border-slate-200">
                             <div
                               className="h-full rounded-full bg-gradient-to-r from-sky-400 to-sky-600 transition-all duration-500"
                               style={{ width: `${percent}%` }}
                             />
                           </div>
 
-                          <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                          <div className="flex items-center justify-between text-[11px] text-slate-400 pt-0.5">
                             <span className="flex items-center gap-1">
-                              <Calendar className="w-3 h-3" />
+                              <Calendar className="w-3 h-3 text-slate-400" />
                               Ends {new Date(c.end_date).toLocaleDateString()}
                             </span>
-                            <span className="text-sky-600 font-semibold">Auto-Synced</span>
+                            <span className="text-sky-600 font-medium">Auto-Synced</span>
                           </div>
                         </div>
                       </div>
@@ -328,32 +359,47 @@ export const ChallengesView: React.FC<ChallengesViewProps> = ({ onChallengeJoine
                 return (
                   <div
                     key={c.id}
-                    className="clinical-card p-6 flex flex-col justify-between relative group hover:border-sky-300"
+                    className="clinical-card p-5 sm:p-6 flex flex-col justify-between relative group hover:border-sky-300"
                   >
                     <div>
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-sky-50 text-sky-800 border border-sky-200">
-                          {c.target_metric}
-                        </span>
-                        <span className="text-[11px] text-slate-500 flex items-center gap-1 font-medium">
-                          <Users className="w-3 h-3 text-sky-600" />
-                          {c.total_participants || 0} enrolled
-                        </span>
+                      {/* Authentic Athletic Photography Header */}
+                      <div className="h-28 w-full rounded-2xl overflow-hidden relative mb-3 bg-slate-900 group-hover:shadow-md transition-all">
+                        <img
+                          src={getChallengePhoto(c.target_metric, c.title)}
+                          alt={c.title}
+                          className="w-full h-full object-cover opacity-85 group-hover:scale-105 group-hover:opacity-95 transition-all duration-300"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/30 to-transparent" />
+                        <div className="absolute top-2 left-2 flex items-center gap-1.5">
+                          <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md bg-white/90 text-sky-850 backdrop-blur-xs shadow-xs">
+                            {c.target_metric}
+                          </span>
+                        </div>
+                        <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between text-white text-xs">
+                          <span className="font-medium text-[11px] text-sky-200 flex items-center gap-1">
+                            <Award className="w-3.5 h-3.5 text-amber-300" />
+                            {c.reward_badge}
+                          </span>
+                          <span className="text-[10px] text-white/80 flex items-center gap-1">
+                            <Users className="w-3 h-3 text-sky-300" />
+                            {c.total_participants || 0} enrolled
+                          </span>
+                        </div>
                       </div>
 
-                      <h4 className="text-base font-bold text-slate-900 mb-1">{c.title}</h4>
-                      <p className="text-xs text-slate-500 mb-4">{c.description}</p>
+                      <h4 className="text-base font-semibold text-slate-900 mb-1">{c.title}</h4>
+                      <p className="text-xs text-slate-500 mb-3.5 font-normal leading-relaxed">{c.description}</p>
 
-                      <div className="p-3.5 rounded-xl bg-sky-50/40 border border-sky-100 space-y-1.5 text-xs">
+                      <div className="p-3 rounded-xl bg-sky-50/80 border border-sky-200/80 text-sky-900 space-y-1.5 text-xs">
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-500">Target Volume:</span>
-                          <span className="font-bold text-slate-900">
-                            {c.target_value.toLocaleString()} {c.target_metric.toLowerCase()}
+                          <span className="text-slate-600 font-normal">Target Volume:</span>
+                          <span className="font-semibold text-slate-900">
+                            {c.target_value.toLocaleString()} <span className="font-normal text-slate-500">{c.target_metric.toLowerCase()}</span>
                           </span>
                         </div>
                         <div className="flex items-center justify-between">
-                          <span className="text-slate-500">Unlockable 3D Trophy:</span>
-                          <span className="font-bold text-sky-700 flex items-center gap-1">
+                          <span className="text-slate-600 font-normal">Reward Badge:</span>
+                          <span className="font-medium text-sky-700 flex items-center gap-1">
                             <Award className="w-3.5 h-3.5 text-sky-600" />
                             {c.reward_badge}
                           </span>
@@ -361,26 +407,26 @@ export const ChallengesView: React.FC<ChallengesViewProps> = ({ onChallengeJoine
                       </div>
                     </div>
 
-                    <div className="mt-5 pt-4 border-t border-sky-100 flex items-center justify-between">
-                      <span className="text-[11px] text-slate-400 flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
+                    <div className="mt-4 pt-3.5 border-t border-sky-100 flex items-center justify-between">
+                      <span className="text-[11px] text-slate-400 flex items-center gap-1 font-normal">
+                        <Calendar className="w-3 h-3 text-slate-400" />
                         Ends {new Date(c.end_date).toLocaleDateString()}
                       </span>
 
                       {isCompleted ? (
-                        <span className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold flex items-center gap-1">
+                        <span className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                           Achieved
                         </span>
                       ) : isJoined ? (
-                        <span className="px-3 py-1.5 rounded-xl bg-sky-50 text-sky-700 border border-sky-200 text-xs font-bold">
+                        <span className="px-3 py-1.5 rounded-xl bg-sky-50 text-sky-700 border border-sky-200 text-xs font-semibold">
                           Enrolled ({c.progress_percent || 0}%)
                         </span>
                       ) : (
                         <button
                           onClick={() => handleJoin(c.id)}
                           disabled={joiningId === c.id}
-                          className="px-4 py-1.5 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-bold shadow-md shadow-sky-200 transition-all disabled:opacity-50"
+                          className="px-4 py-1.5 rounded-xl bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white text-xs font-semibold shadow-sm shadow-sky-200 transition-all disabled:opacity-50"
                         >
                           {joiningId === c.id ? 'Joining...' : 'Enroll Challenge'}
                         </button>
@@ -395,24 +441,30 @@ export const ChallengesView: React.FC<ChallengesViewProps> = ({ onChallengeJoine
           {/* TAB 3: TROPHY CASE WITH 3D HOLOGRAPHIC BADGES */}
           {activeTab === 'HISTORY' && (
             <div className="space-y-6">
-              <div className="p-6 rounded-3xl bg-gradient-to-r from-sky-50 via-sky-50/40 to-white border border-sky-200 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-white border border-sky-200 flex items-center justify-center text-sky-600 shadow-md shadow-sky-200/50">
-                    <Trophy className="w-7 h-7 text-sky-600" />
+              <div className="relative overflow-hidden p-6 rounded-3xl bg-gradient-to-r from-sky-100/90 via-[#E0F2FE]/80 to-[#F0F9FF] border border-sky-200 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+                <div 
+                  className="pointer-events-none absolute inset-0 opacity-[0.08] bg-cover bg-center mix-blend-multiply"
+                  style={{
+                    backgroundImage: `url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&q=80')`
+                  }}
+                />
+                <div className="relative z-10 flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-500 to-cyan-500 text-white flex items-center justify-center shadow-md shadow-sky-300/50">
+                    <Trophy className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900">3D Holographic Medal Cabinet</h3>
-                    <p className="text-xs text-slate-600">
+                    <h3 className="text-lg font-bold text-sky-950 tracking-tight">3D Holographic Medal Cabinet</h3>
+                    <p className="text-xs text-slate-600 font-normal">
                       Hover over any medal to inspect real-time physics lighting and holographic reflections.
                     </p>
                   </div>
                 </div>
 
-                <div className="text-right">
-                  <div className="text-3xl font-black text-sky-700">
+                <div className="relative z-10 text-right">
+                  <div className="text-3xl font-bold text-sky-700 tracking-tight">
                     {myChallenges.completed.length}
                   </div>
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  <span className="text-xs font-normal text-slate-500 uppercase tracking-wider">
                     Badges Unlocked
                   </span>
                 </div>
