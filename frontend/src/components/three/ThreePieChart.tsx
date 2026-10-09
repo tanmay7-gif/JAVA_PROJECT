@@ -101,26 +101,26 @@ const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
         {/* Compact Tooltip Pill right above slice when hovered */}
         {isHovered && (
           <Html position={[0, height + 0.18, 0]} center distanceFactor={7}>
-            <div className="rounded-lg border border-slate-700/80 bg-[#0b101c]/95 p-2 px-3 shadow-2xl backdrop-blur-md max-w-[210px] text-left pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100">
-              <div className="flex items-center justify-between gap-3 mb-1">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-                  Discipline
+            <div className="rounded-lg border border-slate-700/80 bg-[#0c1424]/95 p-2 px-2.5 shadow-xl backdrop-blur-md max-w-[170px] text-left pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100">
+              <div className="flex items-center justify-between gap-2.5 mb-1">
+                <span className="text-[9px] font-semibold uppercase tracking-wider text-slate-400">
+                  DISCIPLINE
                 </span>
-                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
                   {slice.value}%
                 </span>
               </div>
-              <div className="flex items-center justify-between gap-3">
-                <span className="flex items-center gap-1.5 text-[11px] text-slate-300">
+              <div className="flex items-center justify-between gap-2.5">
+                <span className="flex items-center gap-1.5 text-[11px] text-slate-300 min-w-0">
                   <span
                     className="h-1.5 w-1.5 rounded-full shrink-0 shadow-[0_0_6px_currentColor]"
                     style={{ backgroundColor: slice.color }}
                   />
-                  <span>{slice.name}</span>
+                  <span className="font-semibold text-white truncate max-w-[75px]">{slice.name}</span>
                 </span>
-                <span className="text-xs font-bold text-slate-100">
+                <span className="text-[10px] font-medium text-slate-300 whitespace-nowrap shrink-0">
                   {slice.sessionsCount}{' '}
-                  <span className="text-[10px] font-normal text-slate-400">sessions</span>
+                  {slice.sessionsCount === 1 ? 'session' : 'sessions'}
                 </span>
               </div>
             </div>
@@ -186,10 +186,44 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
       currentAngle += sliceAngle;
       return angleConfig;
     });
-  }, [data, totalValue]);
+  const activeSlice = useMemo(() => {
+    if (hoveredSlice) {
+      const match = data.find((d) => d.name === hoveredSlice);
+      if (match) return match;
+    }
+    return data[0] || null;
+  }, [hoveredSlice, data]);
 
   return (
     <div className={`relative w-full ${heightClass} flex flex-col justify-between`}>
+      {/* Compact Discipline Readout Widget */}
+      {activeSlice && (
+        <div className="absolute top-4 left-4 z-10 rounded-xl border border-slate-700/80 bg-[#0c1424]/85 p-2.5 px-3 max-w-[210px] shadow-lg backdrop-blur-md pointer-events-none">
+          <div className="flex flex-col gap-1.5 min-w-[140px]">
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                DISCIPLINE
+              </span>
+              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                {activeSlice.value}%
+              </span>
+            </div>
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-white min-w-0">
+                <span
+                  className="w-2 h-2 rounded-full shrink-0 shadow-[0_0_6px_currentColor]"
+                  style={{ backgroundColor: activeSlice.color }}
+                />
+                <span className="truncate max-w-[75px]">{activeSlice.name}</span>
+              </div>
+              <span className="text-xs font-medium text-slate-300 whitespace-nowrap shrink-0">
+                {activeSlice.sessionsCount} {activeSlice.sessionsCount === 1 ? 'session' : 'sessions'}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* 3D Canvas */}
       <div className="absolute inset-0">
         <Suspense
@@ -268,8 +302,8 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
         </Suspense>
       </div>
 
-      {/* Floating Interactive Badge Legend */}
-      <div className="relative z-10 mt-auto pb-1 flex items-center justify-center gap-1.5 flex-wrap pointer-events-auto">
+      {/* Streamlined Interactive Badge Legend */}
+      <div className="relative z-10 mt-auto pb-1 flex items-center justify-center gap-1.5 flex-wrap pointer-events-auto px-2">
         {data.map((cat) => {
           const isSelected = hoveredSlice === cat.name;
           return (
@@ -279,18 +313,18 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
               onClick={() => setHoveredSlice(isSelected ? null : cat.name)}
               onMouseEnter={() => setInternalHoveredSlice(cat.name)}
               onMouseLeave={() => setInternalHoveredSlice(null)}
-              className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1.5 ${
+              className={`px-2 py-0.5 rounded-lg text-[10px] font-semibold transition-all flex items-center gap-1.5 ${
                 isSelected
-                  ? 'bg-slate-800 text-white border border-cyan-400/60 ring-1 ring-cyan-400/50 shadow-[0_0_12px_rgba(6,182,212,0.25)] scale-105'
+                  ? 'bg-slate-800 text-white border border-cyan-400/50 shadow-sm'
                   : 'bg-[#0B131E]/80 hover:bg-[#131E2D] text-slate-300 border border-slate-800/80 shadow-sm'
               }`}
             >
               <span
-                className="w-2 h-2 rounded-full inline-block shadow-[0_0_6px_currentColor]"
+                className="w-1.5 h-1.5 rounded-full inline-block shadow-[0_0_5px_currentColor]"
                 style={{ backgroundColor: cat.color }}
               />
               <span>{cat.name}</span>
-              <span className="text-[10px] text-slate-400 ml-0.5">{cat.value}%</span>
+              <span className="text-[9px] text-slate-400 ml-0.5 font-normal">{cat.value}%</span>
             </button>
           );
         })}

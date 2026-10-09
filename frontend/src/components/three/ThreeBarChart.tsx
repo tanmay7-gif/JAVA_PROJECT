@@ -156,34 +156,32 @@ const VolumetricBar: React.FC<VolumetricBarProps> = ({
         {/* Compact Hover Drei <Html> Tooltip Pin */}
         {isHovered && (
           <Html position={[0, 0.65, 0]} center distanceFactor={7}>
-            <div className="rounded-lg border border-slate-700/80 bg-[#0b101c]/95 p-2 px-3 shadow-2xl backdrop-blur-md max-w-[210px] text-left pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100">
-              <div className="flex items-center justify-between gap-3 mb-1">
+            <div className="rounded-lg border border-slate-700/80 bg-[#0c1424]/95 p-2 px-2.5 shadow-xl backdrop-blur-md max-w-[170px] text-left pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100">
+              <div className="flex items-center justify-between gap-2.5 mb-1">
                 <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
                   {point.date}
                 </span>
-                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                <span className="text-[9px] font-medium px-1.5 py-0.2 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
                   {point.day}
                 </span>
               </div>
               <div className="flex flex-col gap-1">
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center justify-between gap-2.5">
                   <span className="flex items-center gap-1.5 text-[11px] text-slate-300">
-                    <Flame className="w-3 h-3 text-cyan-400 shrink-0" />
+                    <Flame className="w-3 h-3 text-sky-400 shrink-0" />
                     <span>Calories</span>
                   </span>
-                  <span className="text-xs font-bold text-slate-100">
-                    {point.calories.toLocaleString()}{' '}
-                    <span className="text-[10px] font-normal text-slate-400">kcal</span>
+                  <span className="text-xs font-bold text-white">
+                    {point.calories.toLocaleString()}
                   </span>
                 </div>
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center justify-between gap-2.5">
                   <span className="flex items-center gap-1.5 text-[11px] text-slate-300">
                     <Clock className="w-3 h-3 text-emerald-400 shrink-0" />
                     <span>Duration</span>
                   </span>
-                  <span className="text-xs font-bold text-slate-100">
-                    {point.duration}{' '}
-                    <span className="text-[10px] font-normal text-slate-400">mins</span>
+                  <span className="text-xs font-bold text-white">
+                    {point.duration}m
                   </span>
                 </div>
               </div>
@@ -218,8 +216,36 @@ export const ThreeBarChart: React.FC<ThreeBarChartProps> = ({
     activeMetric === 'calories' ? 500 : 60
   );
 
+  const activePoint = React.useMemo(() => {
+    if (hoveredDay) {
+      const match = chartData.find((d) => d.day === hoveredDay);
+      if (match) return match;
+    }
+    return chartData[chartData.length - 1] || { calories: 0, duration: 0, day: 'Today', date: '' };
+  }, [hoveredDay, chartData]);
+
   return (
     <div className={`relative w-full ${heightClass} flex flex-col justify-between`}>
+      {/* Compact Calories & Duration Widget */}
+      <div className="absolute top-4 left-4 z-10 rounded-xl border border-slate-700/80 bg-[#0c1424]/85 p-2.5 px-3 max-w-[210px] shadow-lg backdrop-blur-md pointer-events-none">
+        <div className="flex flex-col gap-1.5 min-w-[140px]">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-1.5 text-xs font-medium text-slate-300">
+              <Flame className="w-3.5 h-3.5 text-sky-400" />
+              <span>Calories</span>
+            </div>
+            <span className="text-sm font-bold text-white tracking-tight">{activePoint.calories.toLocaleString()}</span>
+          </div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-1.5 text-xs font-medium text-slate-300">
+              <Clock className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Duration</span>
+            </div>
+            <span className="text-sm font-bold text-white tracking-tight">{activePoint.duration}m</span>
+          </div>
+        </div>
+      </div>
+
       {/* 3D Canvas Scene */}
       <div className="absolute inset-0">
         <Suspense

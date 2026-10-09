@@ -40,15 +40,15 @@ export const CompactSlicePopover: React.FC<CompactSlicePopoverProps> = ({
       : '';
 
   return (
-    <div className="rounded-lg border border-slate-700/80 bg-[#0b101c]/95 p-2.5 px-3 shadow-2xl backdrop-blur-md max-w-[210px] w-full animate-in fade-in zoom-in-95 duration-150">
+    <div className="rounded-xl border border-slate-700/70 bg-[#0c1424]/95 p-2 px-2.5 shadow-xl backdrop-blur-md max-w-[190px] w-full animate-in fade-in zoom-in-95 duration-150">
       {/* Micro Uppercase Header */}
       <div className="flex items-center justify-between gap-2 mb-1 border-b border-slate-800/80 pb-1">
-        <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400 truncate">
+        <span className="text-[9px] font-semibold uppercase tracking-wider text-slate-400 truncate">
           {title}
         </span>
         <button
           onClick={onClose}
-          className="text-slate-400 hover:text-white p-0.5 rounded-md hover:bg-slate-800 transition-colors"
+          className="text-slate-400 hover:text-white p-0.5 rounded hover:bg-slate-800/60 transition-colors"
           title="Dismiss"
           type="button"
         >
@@ -60,24 +60,24 @@ export const CompactSlicePopover: React.FC<CompactSlicePopoverProps> = ({
       <div className="flex items-center justify-between gap-2 mt-1">
         <div className="flex items-center gap-1.5 min-w-0">
           <span
-            className="w-2 h-2 rounded-full shrink-0 shadow-[0_0_6px_currentColor]"
+            className="w-1.5 h-1.5 rounded-full shrink-0 shadow-[0_0_5px_currentColor]"
             style={{ backgroundColor: color }}
           />
-          <span className="text-xs font-bold text-slate-100 truncate">
+          <span className="text-xs font-bold text-white truncate max-w-[85px]">
             {slice.name}
           </span>
         </div>
         {displayPercent && (
-          <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shrink-0">
+          <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shrink-0">
             {displayPercent}
           </span>
         )}
       </div>
 
       {/* Metric Breakdown */}
-      <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1 pt-1 border-t border-slate-800/50">
-        <span>{metricLabel}</span>
-        <span className="font-bold text-white">
+      <div className="flex items-center justify-between text-[10px] text-slate-400 mt-1 pt-1 border-t border-slate-800/60">
+        <span className="font-medium truncate">{metricLabel}</span>
+        <span className="text-xs font-bold text-white tracking-tight shrink-0">
           {slice.sessionsCount !== undefined
             ? slice.sessionsCount.toLocaleString()
             : slice.value.toLocaleString()}{' '}
