@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { api } from '../services/api';
 import { Challenge } from '../types';
 import { AdminAppLayout, AdminTabType } from '../components/layout/AdminAppLayout';
+import { useAuth } from '../context/AuthContext';
+import { generateTrialAdminData } from '../utils/mockTrialData';
 import {
   Trophy,
   Plus,
@@ -71,6 +73,8 @@ export interface AdminDashboardProps {
 }
 
 export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'overview' }) => {
+  const { isTrialAccount } = useAuth();
+  const trialAdminData = useMemo(() => generateTrialAdminData(), []);
   const [activeTab, setActiveTab] = useState<TabType>(initialTab);
 
   useEffect(() => {
@@ -543,6 +547,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
 
   // Compute telemetry stats for persistent Left Deck
   const telemetryStats = useMemo(() => {
+    if (isTrialAccount) {
+      return {
+        totalUsers: trialAdminData.totalAthletes,
+        activeAthletes: Math.round(trialAdminData.totalAthletes * 0.78),
+        adminsCount: 8,
+        suspendedUsers: 2,
+        totalWorkouts: trialAdminData.activeWorkoutsToday * 7,
+        pendingContent: trialAdminData.pendingReviewsCount,
+        approvedContent: 42,
+        auditLogsCount: trialAdminData.recentAuditLogsCount,
+        maintenanceMode: settings.find((s) => s.key === 'maintenance_mode')?.value === 'true',
+      };
+    }
+
     const totalUsers = platformStats?.users?.total ?? dashboardData?.kpis?.totalUsers ?? users.length;
     const activeAthletes = platformStats?.users?.active ?? users.filter((u) => u.status === 'Active' || u.is_active !== false).length;
     const adminsCount = users.filter((u) => u.role?.toUpperCase() === 'ADMIN').length;
@@ -564,7 +582,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
       auditLogsCount,
       maintenanceMode,
     };
-  }, [platformStats, dashboardData, users, contentList, activityTotal, activityLogs.length, settings]);
+  }, [isTrialAccount, trialAdminData, platformStats, dashboardData, users, contentList, activityTotal, activityLogs.length, settings]);
 
   return (
     <AdminAppLayout
@@ -607,15 +625,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
                   <Users className="w-4 h-4 text-emerald-400" />
                 </div>
                 <div className="text-2xl font-bold text-white mt-2 font-mono tabular-nums">
-                  {platformStats?.users?.total ?? dashboardData?.kpis?.totalUsers ?? users.length}
+                  {telemetryStats.totalUsers}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-[11px] text-emerald-400 font-semibold">
-                    {platformStats?.users?.active ?? users.filter(u => u.status === 'Active').length} Active
+                    {telemetryStats.activeAthletes} Active
                   </span>
                   <span className="text-slate-600">•</span>
                   <span className="text-[11px] text-slate-400">
-                    +{platformStats?.users?.growthLast30Days ?? 2} this month
+                    +{isTrialAccount ? 48 : (platformStats?.users?.growthLast30Days ?? 0)} this month
                   </span>
                 </div>
               </div>
@@ -627,16 +645,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
                   <Zap className="w-4 h-4 text-amber-400" />
                 </div>
                 <div className="text-2xl font-bold text-white mt-2 font-mono tabular-nums">
-                  {platformStats?.workouts?.totalWorkouts ?? dashboardData?.kpis?.activeWorkoutsToday ?? 0}
+                  {telemetryStats.totalWorkouts}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-[11px] text-amber-400 font-semibold flex items-center gap-0.5">
                     <Flame className="w-3 h-3" />
-                    {(platformStats?.workouts?.totalCalories ?? 0).toLocaleString()} kcal
+                    {(isTrialAccount ? trialAdminData.totalKcalBurnedPlatform : (platformStats?.workouts?.totalCalories ?? 0)).toLocaleString()} kcal
                   </span>
                   <span className="text-slate-600">•</span>
                   <span className="text-[11px] text-slate-400">
-                    {platformStats?.workouts?.totalDurationHours ?? 0} hrs logged
+                    {isTrialAccount ? (trialAdminData.activeWorkoutsToday * 1.2).toFixed(0) : (platformStats?.workouts?.totalDurationHours ?? 0)} hrs logged
                   </span>
                 </div>
               </div>
@@ -648,15 +666,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
                   <Trophy className="w-4 h-4 text-violet-400" />
                 </div>
                 <div className="text-2xl font-bold text-white mt-2 font-mono tabular-nums">
-                  {platformStats?.challenges?.totalChallenges ?? challenges.length}
+                  {isTrialAccount ? 4 : (platformStats?.challenges?.totalChallenges ?? challenges.length)}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-[11px] text-violet-400 font-semibold">
-                    {platformStats?.challenges?.totalParticipations ?? 0} Enrolled
+                    {isTrialAccount ? 320 : (platformStats?.challenges?.totalParticipations ?? 0)} Enrolled
                   </span>
                   <span className="text-slate-600">•</span>
                   <span className="text-[11px] text-emerald-400 font-semibold">
-                    {platformStats?.challenges?.completionRate ?? 0}% Completion
+                    {isTrialAccount ? 86 : (platformStats?.challenges?.completionRate ?? 0)}% Completion
                   </span>
                 </div>
               </div>
@@ -668,15 +686,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({ initialTab = 'ov
                   <FileText className="w-4 h-4 text-rose-400" />
                 </div>
                 <div className="text-2xl font-bold text-amber-400 mt-2 font-mono tabular-nums">
-                  {platformStats?.content?.pending ?? dashboardData?.kpis?.pendingContentApprovals ?? contentList.filter((c) => c.status === 'PENDING').length}
+                  {telemetryStats.pendingContent}
                 </div>
                 <div className="flex items-center gap-2 mt-1">
                   <span className="text-[11px] text-emerald-400 font-semibold">
-                    {platformStats?.content?.approved ?? 0} Published
+                    {telemetryStats.approvedContent} Published
                   </span>
                   <span className="text-slate-600">•</span>
                   <span className="text-[11px] text-rose-400 font-semibold">
-                    {platformStats?.content?.rejected ?? 0} Rejected
+                    {isTrialAccount ? 1 : (platformStats?.content?.rejected ?? 0)} Rejected
                   </span>
                 </div>
               </div>

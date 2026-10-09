@@ -8,7 +8,9 @@ interface AuthContextType {
   token: string | null;
   role: Role | null;
   isLoading: boolean;
-  login: (email: string, password?: string) => Promise<void>;
+  isTrialAccount: boolean;
+  setTrialMode: (isTrial: boolean) => void;
+  login: (email: string, password?: string, isTrial?: boolean) => Promise<void>;
   register: (name: string, email: string, password?: string, role?: Role) => Promise<void>;
   logout: () => void;
   updateUser: (updates: Partial<User>) => void;
@@ -28,15 +30,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return saved.trim();
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isTrialAccount, setIsTrialAccount] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return true;
+    const stored = localStorage.getItem('fitpulse_is_trial');
+    if (stored !== null) return stored === 'true';
+    return true; // Default trial/demo for initial inspection
+  });
   const { showToast } = useToast();
+
+  const setTrialMode = useCallback((isTrial: boolean) => {
+    setIsTrialAccount(isTrial);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('fitpulse_is_trial', isTrial ? 'true' : 'false');
+    }
+  }, []);
 
   const logout = useCallback(() => {
     if (typeof window !== 'undefined') {
       localStorage.removeItem('fitpulse_token');
       localStorage.removeItem('fitpulse_demo_role');
+      localStorage.removeItem('fitpulse_is_trial');
     }
     setToken(null);
     setUser(null);
+    setIsTrialAccount(true);
     showToast('You have been safely signed out.', 'info');
   }, [showToast]);
 
@@ -47,9 +64,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (typeof window !== 'undefined') {
         localStorage.removeItem('fitpulse_token');
         localStorage.removeItem('fitpulse_demo_role');
+        localStorage.removeItem('fitpulse_is_trial');
       }
       setToken(null);
       setUser(null);
+      setIsTrialAccount(true);
       const msg = event?.detail?.message || 'Your session has expired. Please sign in again.';
       showToast(msg, 'error');
     };
@@ -88,7 +107,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     api.getMe()
       .then((res) => {
         if (isMounted && res.success && res.data) {
-          setUser(res.data);
+          const storedTrial = localStorage.getItem('fitpulse_is_trial');
+          const isTrial = storedTrial !== null
+            ? storedTrial === 'true'
+            : res.data.email === 'sarah@fitpulse.com' ||
+              res.data.email === 'admin@fitpulse.com' ||
+              res.data.email.includes('trial') ||
+              res.data.email.includes('demo');
+
+          setIsTrialAccount(isTrial);
+          localStorage.setItem('fitpulse_is_trial', isTrial ? 'true' : 'false');
+          setUser({ ...res.data, isTrialAccount: isTrial });
           setToken(savedToken.trim());
           localStorage.setItem('fitpulse_demo_role', res.data.role);
         }
@@ -99,9 +128,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (typeof window !== 'undefined') {
             localStorage.removeItem('fitpulse_token');
             localStorage.removeItem('fitpulse_demo_role');
+            localStorage.removeItem('fitpulse_is_trial');
           }
           setToken(null);
           setUser(null);
+          setIsTrialAccount(true);
         }
       })
       .finally(() => {
@@ -116,17 +147,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   // 3. Authenticate with real backend credentials
-  const login = async (email: string, password = 'User123!') => {
+  const login = async (email: string, password = 'User123!', isTrialExplicit?: boolean) => {
     setIsLoading(true);
     try {
       const res = await api.login({ email, password });
       if (res.success && res.data?.token) {
         const cleanToken = res.data.token.trim();
+        const isTrial =
+          isTrialExplicit !== undefined
+            ? isTrialExplicit
+            : email === 'sarah@fitpulse.com' ||
+              email === 'admin@fitpulse.com' ||
+              email.includes('demo') ||
+              email.includes('trial');
+
         localStorage.setItem('fitpulse_token', cleanToken);
         localStorage.setItem('fitpulse_demo_role', res.data.user.role);
+        localStorage.setItem('fitpulse_is_trial', isTrial ? 'true' : 'false');
         setToken(cleanToken);
-        setUser(res.data.user);
-        showToast(`Welcome back, ${res.data.user.name}!`, 'success');
+        setIsTrialAccount(isTrial);
+        setUser({ ...res.data.user, isTrialAccount: isTrial });
+        showToast(
+          `Welcome back, ${res.data.user.name}! ${isTrial ? '(Trial Demo Mode Active)' : '(Live User Account)'}`,
+          'success'
+        );
         return;
       }
       throw new Error(res.message || 'Authentication failed.');
@@ -139,7 +183,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // 4. Register new athlete in database
+  // 4. Register new athlete in database - ALWAYS sets isTrialAccount = false (0 baseline)
   const register = async (name: string, email: string, password = 'User123!', role: Role = 'USER') => {
     setIsLoading(true);
     try {
@@ -148,9 +192,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const cleanToken = res.data.token.trim();
         localStorage.setItem('fitpulse_token', cleanToken);
         localStorage.setItem('fitpulse_demo_role', res.data.user.role || role);
+        localStorage.setItem('fitpulse_is_trial', 'false');
         setToken(cleanToken);
-        setUser(res.data.user);
-        showToast(`Account created! Welcome, ${res.data.user.name}.`, 'success');
+        setIsTrialAccount(false); // Strict Real Account
+        setUser({ ...res.data.user, isTrialAccount: false });
+        showToast(`Account created! Welcome, ${res.data.user.name}. Initialized to strict zero-baseline.`, 'success');
         return;
       }
       throw new Error(res.message || 'Registration failed.');
@@ -167,7 +213,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser((prev) => (prev ? { ...prev, ...updates } : null));
   };
 
-  // 5. Seamlessly switch between authenticated demo personas using valid backend credentials
+  // 5. Seamlessly switch between authenticated demo personas - sets isTrialAccount = true
   const switchDemoUser = async (targetRole: Role) => {
     setIsLoading(true);
     try {
@@ -179,9 +225,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const cleanToken = res.data.token.trim();
         localStorage.setItem('fitpulse_token', cleanToken);
         localStorage.setItem('fitpulse_demo_role', targetRole);
+        localStorage.setItem('fitpulse_is_trial', 'true');
         setToken(cleanToken);
-        setUser(res.data.user);
-        showToast(`Switched to ${res.data.user.name} (${targetRole})`, 'success');
+        setIsTrialAccount(true); // Demo mode is trial
+        setUser({ ...res.data.user, isTrialAccount: true });
+        showToast(`Switched to ${res.data.user.name} (${targetRole} Trial Demo)`, 'success');
         return;
       }
       throw new Error('Failed to obtain authenticated token for demo persona.');
@@ -200,6 +248,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         token,
         role: (user?.role as Role) || null,
         isLoading,
+        isTrialAccount,
+        setTrialMode,
         login,
         register,
         logout,

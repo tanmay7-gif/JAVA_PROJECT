@@ -12,7 +12,7 @@ import {
   PlusCircle,
   Database,
   Lock,
-} from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 interface AdminLeftTelemetryDeckProps {
   activeTab: 'overview' | 'users' | 'challenges' | 'moderation' | 'activity' | 'settings';
@@ -38,13 +38,43 @@ export const AdminLeftTelemetryDeck: React.FC<AdminLeftTelemetryDeckProps> = ({
   onRefreshTelemetry,
   onOpenCreateUser,
 }) => {
-  // Ring Math:
-  // Ring 1 (Concurrency / Active Users): Cyan/Emerald (#10B981) - 92%
-  // Ring 2 (Content Clearance Rate): Amber (#F59E0B) - 85%
-  // Ring 3 (Security & RBAC Integrity): Violet (#8B5CF6) - 100%
-  const activeConcurrencyPct = 92;
-  const contentClearancePct = 85;
-  const securityIntegrityPct = 100;
+  const { isTrialAccount } = useAuth();
+
+  // Dynamic Ring Math based on mode:
+  // Trial: Realistic showcase percentages (92%, 85%, 100%)
+  // Real Account: Computed dynamically from database telemetry with strict 0% baseline
+  const activeConcurrencyPct = isTrialAccount
+    ? 92
+    : stats.totalUsers > 0
+    ? Math.min(100, Math.round((stats.activeAthletes / stats.totalUsers) * 100))
+    : 0;
+
+  const totalContent = stats.pendingContent + stats.approvedContent;
+  const contentClearancePct = isTrialAccount
+    ? 85
+    : totalContent > 0
+    ? Math.min(100, Math.round((stats.approvedContent / totalContent) * 100))
+    : 0;
+
+  const securityIntegrityPct = isTrialAccount
+    ? 100
+    : stats.totalUsers > 0
+    ? 100
+    : 0;
+
+  const displayActiveAthletes = isTrialAccount
+    ? (stats.activeAthletes || 24)
+    : stats.activeAthletes;
+
+  const displayPendingReviews = isTrialAccount
+    ? (stats.pendingContent || 3)
+    : stats.pendingContent;
+
+  const displayHealthText = isTrialAccount
+    ? '99.9%'
+    : stats.totalUsers > 0
+    ? '100%'
+    : '0.0%';
 
   return (
     <div className="w-full flex flex-col gap-4 select-none">
@@ -115,7 +145,7 @@ export const AdminLeftTelemetryDeck: React.FC<AdminLeftTelemetryDeckProps> = ({
               textAnchor="middle"
               className="select-none"
             >
-              92%
+              {activeConcurrencyPct}%
             </text>
 
             {/* 2. Middle Ring: Clearance Velocity (#F59E0B Amber, 85%) */}
@@ -161,7 +191,7 @@ export const AdminLeftTelemetryDeck: React.FC<AdminLeftTelemetryDeckProps> = ({
               textAnchor="middle"
               className="select-none"
             >
-              85%
+              {contentClearancePct}%
             </text>
 
             {/* 3. Inner Ring: Security & RBAC Integrity (#8B5CF6 Violet, 100%) */}
@@ -181,7 +211,7 @@ export const AdminLeftTelemetryDeck: React.FC<AdminLeftTelemetryDeckProps> = ({
               stroke="#8B5CF6"
               strokeWidth="22"
               strokeDasharray="370.7"
-              strokeDashoffset={0}
+              strokeDashoffset={370.7 * (1 - securityIntegrityPct / 100)}
               strokeLinecap="round"
               transform="rotate(-90 170 170)"
               className="transition-all duration-1000 ease-out"
@@ -207,7 +237,7 @@ export const AdminLeftTelemetryDeck: React.FC<AdminLeftTelemetryDeckProps> = ({
               textAnchor="middle"
               className="select-none"
             >
-              100%
+              {securityIntegrityPct}%
             </text>
 
             {/* Center Data Label */}
@@ -221,7 +251,7 @@ export const AdminLeftTelemetryDeck: React.FC<AdminLeftTelemetryDeckProps> = ({
                 fill="#FFFFFF"
                 className="select-none font-sans"
               >
-                99.9%
+                {displayHealthText}
               </text>
               <text
                 y="14"
@@ -247,7 +277,7 @@ export const AdminLeftTelemetryDeck: React.FC<AdminLeftTelemetryDeckProps> = ({
               <span className="text-[11px] font-bold text-[#10B981]">Active</span>
             </div>
             <span className="text-base sm:text-lg font-black text-white tracking-tight">
-              {stats.activeAthletes || 24} <span className="text-[10px] font-normal text-slate-400 block">athletes</span>
+              {displayActiveAthletes} <span className="text-[10px] font-normal text-slate-400 block">athletes</span>
             </span>
           </div>
 
@@ -258,7 +288,7 @@ export const AdminLeftTelemetryDeck: React.FC<AdminLeftTelemetryDeckProps> = ({
               <span className="text-[11px] font-bold text-[#F59E0B]">Pending</span>
             </div>
             <span className="text-base sm:text-lg font-black text-white tracking-tight">
-              {stats.pendingContent || 3} <span className="text-[10px] font-normal text-slate-400 block">reviews</span>
+              {displayPendingReviews} <span className="text-[10px] font-normal text-slate-400 block">reviews</span>
             </span>
           </div>
 

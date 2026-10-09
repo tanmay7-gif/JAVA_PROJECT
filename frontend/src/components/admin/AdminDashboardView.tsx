@@ -14,6 +14,8 @@ import {
   ShieldCheck,
   Server,
 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
+import { generateTrialAdminData } from '../../utils/mockTrialData';
 import { CompactChartTooltip } from '../analytics/CompactChartTooltip';
 import {
   ResponsiveContainer,
@@ -30,8 +32,11 @@ export const AdminDashboardView: React.FC<{
   onNavigateTab: (tab: string) => void;
 }> = ({ onNavigateTab }) => {
   const { showToast } = useToast();
+  const { isTrialAccount } = useAuth();
   const [data, setData] = useState<AdminDashboardData | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const trialAdmin = React.useMemo(() => generateTrialAdminData(), []);
 
   useEffect(() => {
     const fetchAdminStats = async () => {
@@ -66,6 +71,26 @@ export const AdminDashboardView: React.FC<{
 
   const { kpis, recentActivity, engagementTrend } = data;
 
+  const effectiveKpis = {
+    totalUsers: isTrialAccount ? (kpis.totalUsers > 0 ? kpis.totalUsers : trialAdmin.totalAthletes) : kpis.totalUsers,
+    activeWorkoutsToday: isTrialAccount ? (kpis.activeWorkoutsToday > 0 ? kpis.activeWorkoutsToday : trialAdmin.activeWorkoutsToday) : kpis.activeWorkoutsToday,
+    pendingContentApprovals: isTrialAccount ? (kpis.pendingContentApprovals > 0 ? kpis.pendingContentApprovals : trialAdmin.pendingReviewsCount) : kpis.pendingContentApprovals,
+    ongoingChallenges: isTrialAccount ? (kpis.ongoingChallenges > 0 ? kpis.ongoingChallenges : 4) : kpis.ongoingChallenges,
+  };
+
+  const effectiveTrend =
+    isTrialAccount && (!engagementTrend || engagementTrend.length === 0 || engagementTrend.every((e) => e.workouts === 0))
+      ? [
+          { day: 'Mon', workouts: 180, activeUsers: 140 },
+          { day: 'Tue', workouts: 220, activeUsers: 175 },
+          { day: 'Wed', workouts: 280, activeUsers: 210 },
+          { day: 'Thu', workouts: 240, activeUsers: 195 },
+          { day: 'Fri', workouts: 310, activeUsers: 260 },
+          { day: 'Sat', workouts: 350, activeUsers: 290 },
+          { day: 'Sun', workouts: 290, activeUsers: 230 },
+        ]
+      : engagementTrend;
+
   return (
     <div className="space-y-6">
       {/* Top Banner with 3D Globe Preview */}
@@ -94,7 +119,7 @@ export const AdminDashboardView: React.FC<{
                 onClick={() => onNavigateTab('admin-content')}
                 className="px-4 py-2 rounded-xl bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold border border-emerald-200 transition-all shadow-soft-sm"
               >
-                Moderation Queue ({kpis.pendingContentApprovals})
+                Moderation Queue ({effectiveKpis.pendingContentApprovals})
               </button>
             </div>
           </div>
@@ -119,7 +144,7 @@ export const AdminDashboardView: React.FC<{
               <Users className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-gray-900">{kpis.totalUsers}</div>
+          <div className="text-3xl font-extrabold text-gray-900">{effectiveKpis.totalUsers}</div>
           <div className="text-[11px] text-emerald-700 font-semibold mt-2 flex items-center gap-1">
             <TrendingUp className="w-3 h-3" />
             Verified accounts registered
@@ -136,7 +161,7 @@ export const AdminDashboardView: React.FC<{
               <Activity className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-gray-900">{kpis.activeWorkoutsToday}</div>
+          <div className="text-3xl font-extrabold text-gray-900">{effectiveKpis.activeWorkoutsToday}</div>
           <div className="text-[11px] text-gray-500 mt-2">Active athletes since 00:00 UTC</div>
         </div>
 
@@ -144,7 +169,7 @@ export const AdminDashboardView: React.FC<{
         <div
           onClick={() => onNavigateTab('admin-content')}
           className={`clinical-card p-5 cursor-pointer transition-all ${
-            kpis.pendingContentApprovals > 0
+            effectiveKpis.pendingContentApprovals > 0
               ? 'border-amber-300 bg-amber-50/20'
               : 'hover:border-emerald-300'
           }`}
@@ -157,10 +182,10 @@ export const AdminDashboardView: React.FC<{
               <FileCheck2 className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-amber-600">{kpis.pendingContentApprovals}</div>
+          <div className="text-3xl font-extrabold text-amber-600">{effectiveKpis.pendingContentApprovals}</div>
           <div className="text-[11px] text-gray-500 mt-2 flex items-center justify-between">
             <span>Awaiting review</span>
-            {kpis.pendingContentApprovals > 0 && (
+            {effectiveKpis.pendingContentApprovals > 0 && (
               <span className="text-amber-700 font-bold flex items-center">
                 Review <ArrowUpRight className="w-3 h-3 ml-0.5" />
               </span>
@@ -178,7 +203,7 @@ export const AdminDashboardView: React.FC<{
               <Trophy className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-3xl font-extrabold text-gray-900">{kpis.ongoingChallenges}</div>
+          <div className="text-3xl font-extrabold text-gray-900">{effectiveKpis.ongoingChallenges}</div>
           <div className="text-[11px] text-emerald-700 font-semibold mt-2">Open community events</div>
         </div>
       </div>
@@ -203,7 +228,7 @@ export const AdminDashboardView: React.FC<{
 
             <div className="h-72 w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={engagementTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <BarChart data={effectiveTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="adminBarWorkouts" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="#34D399" />

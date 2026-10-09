@@ -11,6 +11,7 @@ export interface User {
   role: Role;
   profile_image?: string | null;
   is_active?: boolean;
+  isTrialAccount?: boolean;
   created_at: string;
   updated_at?: string;
   _count?: {

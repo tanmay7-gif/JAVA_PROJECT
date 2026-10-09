@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { api } from '../../services/api';
 import { AnalyticsSummary } from '../../types';
+import { useAuth } from '../../context/AuthContext';
+import { generateTrialAthleteData, generateZeroStateAthleteData } from '../../utils/mockTrialData';
 import { ActivityOrb } from '../three/ActivityOrb';
 import {
   MoreHorizontal,
@@ -13,6 +15,8 @@ import {
   Footprints,
   Sparkles,
   Activity,
+  ShieldCheck,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface ZenDashboardProps {
@@ -78,11 +82,15 @@ const AI_PROTOCOLS: AIProtocol[] = [
 export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
   refreshTrigger = 0,
 }) => {
+  const { isTrialAccount, user } = useAuth();
   const [analytics, setAnalytics] = useState<AnalyticsSummary | null>(null);
   const [protocolIndex, setProtocolIndex] = useState<number>(0);
   const [liveBpm, setLiveBpm] = useState<number>(72);
 
-  // Load telemetry metrics
+  // Generate randomized trial data on load
+  const trialData = useMemo(() => generateTrialAthleteData(), [isTrialAccount]);
+
+  // Load real database telemetry
   useEffect(() => {
     let isMounted = true;
     const loadDashboardData = async () => {
@@ -102,13 +110,18 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
     };
   }, [refreshTrigger]);
 
-  // Subtle real-time heart rate variation (71-74 BPM)
+  // Subtle real-time heart rate variation for trial mode
   useEffect(() => {
+    if (!isTrialAccount && (!analytics?.summary?.totalLifetimeWorkouts || analytics.summary.totalLifetimeWorkouts === 0)) {
+      setLiveBpm(0); // Standby for pristine zero state
+      return;
+    }
+
     const interval = setInterval(() => {
       setLiveBpm(71 + Math.floor(Math.random() * 4));
     }, 3200);
     return () => clearInterval(interval);
-  }, []);
+  }, [isTrialAccount, analytics]);
 
   const currentProtocol = AI_PROTOCOLS[protocolIndex];
 
@@ -120,10 +133,28 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
     setProtocolIndex((prev) => (prev - 1 + AI_PROTOCOLS.length) % AI_PROTOCOLS.length);
   };
 
-  // Real database-backed values with authentic fallbacks
-  const totalWorkoutsCount = analytics?.summary?.totalLifetimeWorkouts || 5;
-  const weeklyCalories = analytics?.summary?.weeklyCaloriesBurned || 1452;
-  const weeklyHours = analytics?.summary?.weeklyWorkoutHours || 2.5;
+  // Determine values based on Account Mode:
+  // 1. Trial Account: Rich randomized mock values
+  // 2. Real Account: Strict 0 baseline until real workout logs are registered
+  const totalWorkoutsCount = isTrialAccount
+    ? (analytics?.summary?.totalLifetimeWorkouts && analytics.summary.totalLifetimeWorkouts > 0
+        ? analytics.summary.totalLifetimeWorkouts
+        : trialData.kpis.totalWorkouts)
+    : (analytics?.summary?.totalLifetimeWorkouts ?? 0);
+
+  const weeklyCalories = isTrialAccount
+    ? (analytics?.summary?.weeklyCaloriesBurned && analytics.summary.weeklyCaloriesBurned > 0
+        ? analytics.summary.weeklyCaloriesBurned
+        : trialData.kpis.activeEnergy)
+    : (analytics?.summary?.weeklyCaloriesBurned ?? 0);
+
+  const weeklyHours = isTrialAccount
+    ? (analytics?.summary?.weeklyWorkoutHours && analytics.summary.weeklyWorkoutHours > 0
+        ? analytics.summary.weeklyWorkoutHours
+        : parseFloat(trialData.kpis.durationHours))
+    : (analytics?.summary?.weeklyWorkoutHours ?? 0);
+
+  const isZeroState = !isTrialAccount && totalWorkoutsCount === 0;
 
   return (
     <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 w-full items-stretch animate-in fade-in duration-300">
@@ -137,15 +168,26 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
         <div className="bg-[#131D2A]/85 backdrop-blur-md border border-slate-800/80 rounded-3xl p-6 shadow-2xl relative">
           {/* Header */}
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
-              DAILY CALORIE TRENDS
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
+                DAILY CALORIE TRENDS
+              </span>
+              {isTrialAccount ? (
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                  Trial Simulation
+                </span>
+              ) : (
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                  Live Account
+                </span>
+              )}
+            </div>
             <button className="text-slate-500 hover:text-slate-300 p-1 rounded-lg transition-colors">
               <MoreHorizontal className="w-4 h-4" />
             </button>
           </div>
 
-          {/* Multi-line smooth splines chart with highlighted Thursday tooltip */}
+          {/* Spline Chart: Dynamic Mock for Trial, Strict Baseline / Real Points for Real User */}
           <div className="w-full h-44 sm:h-48 pt-1">
             <svg viewBox="0 0 460 190" className="w-full h-full overflow-visible">
               {/* Y-Axis Scale: 1550, 1000, 500, 0 */}
@@ -160,56 +202,90 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
               <line x1="45" y1="114" x2="445" y2="114" stroke="#1E293B" strokeWidth="1" opacity="0.6" />
               <line x1="45" y1="157" x2="445" y2="157" stroke="#1E293B" strokeWidth="1" opacity="0.8" />
 
-              {/* Secondary Cyan/Blue Accent Curve */}
-              <path
-                d="M 50 148 C 80 142, 95 118, 115 118 C 135 118, 155 132, 180 128 C 205 124, 215 88, 245 84 C 275 80, 290 102, 310 98 C 330 94, 355 106, 375 102 C 395 98, 415 90, 440 88"
-                fill="none"
-                stroke="#52637A"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
+              {isZeroState ? (
+                /* Strict Zero-Baseline State for New Users */
+                <>
+                  {/* Flat baseline curve at 0 kcal */}
+                  <line x1="50" y1="157" x2="440" y2="157" stroke="#334155" strokeWidth="2.5" strokeDasharray="4 4" />
+                  
+                  {/* Floating Pristine Baseline Chip */}
+                  <g transform="translate(180, 120)">
+                    <rect
+                      x="0"
+                      y="0"
+                      width="120"
+                      height="28"
+                      rx="8"
+                      fill="#0B131E"
+                      stroke="#1E293B"
+                      strokeWidth="1"
+                    />
+                    <text x="60" y="18" fontSize="11" fontWeight="700" fill="#94A3B8" textAnchor="middle">
+                      Baseline: 0 kcal
+                    </text>
+                  </g>
 
-              {/* Primary Purple/Pink/Coral Accent Curve */}
-              <path
-                d="M 50 138 C 75 120, 95 88, 115 84 C 135 80, 155 96, 180 92 C 205 88, 220 54, 245 50 C 270 46, 285 86, 310 82 C 335 78, 355 60, 375 56 C 395 52, 415 32, 440 28"
-                fill="none"
-                stroke="#FA5F5F"
-                strokeWidth="3"
-                strokeLinecap="round"
-              />
+                  {/* Nodes at zero baseline */}
+                  {[50, 115, 180, 245, 310, 375, 440].map((cx, i) => (
+                    <circle key={i} cx={cx} cy={157} r="3.5" fill="#1E293B" stroke="#475569" strokeWidth="1.5" />
+                  ))}
+                </>
+              ) : (
+                /* Dynamic Trial Simulation or Real User Active Curve */
+                <>
+                  {/* Secondary Cyan/Blue Accent Curve */}
+                  <path
+                    d="M 50 148 C 80 142, 95 118, 115 118 C 135 118, 155 132, 180 128 C 205 124, 215 88, 245 84 C 275 80, 290 102, 310 98 C 330 94, 355 106, 375 102 C 395 98, 415 90, 440 88"
+                    fill="none"
+                    stroke="#06B6D4"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    opacity="0.8"
+                  />
 
-              {/* Vertical dotted guide line to Thursday peak */}
-              <line x1="245" y1="40" x2="245" y2="50" stroke="#FA5F5F" strokeWidth="1.5" strokeDasharray="2 2" />
+                  {/* Primary Purple/Coral High-Frequency Curve */}
+                  <path
+                    d="M 50 138 C 75 120, 95 88, 115 84 C 135 80, 155 96, 180 92 C 205 88, 220 54, 245 50 C 270 46, 285 86, 310 82 C 335 78, 355 60, 375 56 C 395 52, 415 32, 440 28"
+                    fill="none"
+                    stroke="#FA5F5F"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
 
-              {/* Floating Highlighted Tooltip Pill on Active Day: Today: 1985 kcal */}
-              <g transform="translate(202, 8)">
-                <rect
-                  x="0"
-                  y="0"
-                  width="86"
-                  height="30"
-                  rx="8"
-                  fill="#0F1722"
-                  stroke="#334155"
-                  strokeWidth="1"
-                />
-                <text x="43" y="11" fontSize="9" fontWeight="600" fill="#94A3B8" textAnchor="middle">
-                  Today
-                </text>
-                <text x="43" y="24" fontSize="11" fontWeight="800" fill="#FA5F5F" textAnchor="middle">
-                  1985 kcal
-                </text>
-              </g>
+                  {/* Vertical dotted guide line to active peak */}
+                  <line x1="245" y1="40" x2="245" y2="50" stroke="#FA5F5F" strokeWidth="1.5" strokeDasharray="2 2" />
 
-              {/* Glowing Node on Active Thursday */}
-              <circle cx="245" cy="50" r="8" fill="#FA5F5F" fillOpacity="0.25" />
-              <circle cx="245" cy="50" r="4.5" fill="#FA5F5F" stroke="#FFFFFF" strokeWidth="2" />
+                  {/* Floating Highlighted Tooltip Pill */}
+                  <g transform="translate(202, 8)">
+                    <rect
+                      x="0"
+                      y="0"
+                      width="86"
+                      height="30"
+                      rx="8"
+                      fill="#0F1722"
+                      stroke="#334155"
+                      strokeWidth="1"
+                    />
+                    <text x="43" y="11" fontSize="9" fontWeight="600" fill="#94A3B8" textAnchor="middle">
+                      Today
+                    </text>
+                    <text x="43" y="24" fontSize="11" fontWeight="800" fill="#FA5F5F" textAnchor="middle">
+                      {weeklyCalories > 0 ? `${Math.round(weeklyCalories / 7)} kcal` : '1985 kcal'}
+                    </text>
+                  </g>
+
+                  {/* Glowing Node on Active Peak */}
+                  <circle cx="245" cy="50" r="8" fill="#FA5F5F" fillOpacity="0.25" />
+                  <circle cx="245" cy="50" r="4.5" fill="#FA5F5F" stroke="#FFFFFF" strokeWidth="2" />
+                </>
+              )}
 
               {/* X-Axis Labels: Mon, Tue, Wed, Thu, Fri, Sat, Sun */}
               <text x="50" y="180" fontSize="11" fontWeight="600" fill="#64748B" textAnchor="middle">Mon</text>
               <text x="115" y="180" fontSize="11" fontWeight="600" fill="#64748B" textAnchor="middle">Tue</text>
               <text x="180" y="180" fontSize="11" fontWeight="600" fill="#64748B" textAnchor="middle">Wed</text>
-              <text x="245" y="180" fontSize="11" fontWeight="700" fill="#FA5F5F" textAnchor="middle">Thu</text>
+              <text x="245" y="180" fontSize="11" fontWeight="700" fill={isZeroState ? '#64748B' : '#FA5F5F'} textAnchor="middle">Thu</text>
               <text x="310" y="180" fontSize="11" fontWeight="600" fill="#64748B" textAnchor="middle">Fri</text>
               <text x="375" y="180" fontSize="11" fontWeight="600" fill="#64748B" textAnchor="middle">Sat</text>
               <text x="440" y="180" fontSize="11" fontWeight="600" fill="#64748B" textAnchor="middle">Sun</text>
@@ -223,7 +299,7 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
           {/* E. LIVE HEART RATE & 3D TELEMETRY (Bottom Left)           */}
           {/* -------------------------------------------------------- */}
           <div className="bg-[#131D2A]/85 backdrop-blur-md border border-slate-800/80 rounded-3xl p-5 shadow-2xl flex flex-col justify-between min-h-[260px] relative">
-            {/* Header: LIVE HEART RATE with options menu */}
+            {/* Header */}
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
                 LIVE HEART RATE
@@ -235,25 +311,27 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
 
             {/* Center Visual: Three.js WebGL canvas interactive oscillating particle orb */}
             <div className="w-full h-36 flex items-center justify-center relative">
-              <ActivityOrb completionPercentage={74} streakDays={6} showCenterBadge={false} />
+              <ActivityOrb
+                completionPercentage={isZeroState ? 0 : 74}
+                streakDays={isZeroState ? 0 : 6}
+                showCenterBadge={false}
+              />
             </div>
 
-            {/* Bottom Readout: LIVE HEART RATE: 72 BPM with 3-dot indicators */}
+            {/* Bottom Readout */}
             <div className="text-center pt-1">
               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-0.5">
-                LIVE HEART RATE
+                {isZeroState ? 'SENSOR STANDBY' : 'LIVE TELEMETRY'}
               </span>
               <div className="text-2xl sm:text-3xl font-black text-white flex items-center justify-center gap-1.5 tracking-tight">
-                <span>{liveBpm}</span>
+                <span>{isZeroState ? '--' : liveBpm}</span>
                 <span className="text-sm font-bold text-slate-400">BPM</span>
               </div>
-
-              {/* 3-Dot Carousel Indicators */}
-              <div className="flex items-center justify-center gap-1.5 mt-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-slate-600" />
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span className="w-1.5 h-1.5 rounded-full bg-slate-600" />
-              </div>
+              <p className="text-[10px] text-slate-500 mt-1">
+                {isZeroState
+                  ? 'Sensor in standby • Start a session to track live HR'
+                  : 'Real-time telemetry stream connected'}
+              </p>
             </div>
           </div>
 
@@ -285,9 +363,8 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
               </div>
               <div className="flex items-center justify-between mt-1">
                 <span className="text-[10px] font-bold text-emerald-300 bg-emerald-500/20 px-1.5 py-0.5 rounded-md">
-                  +10%
+                  {isZeroState ? 'Pristine 0' : '+10%'}
                 </span>
-                {/* Mini Sparkline */}
                 <svg viewBox="0 0 40 12" className="w-10 h-3 text-emerald-400 opacity-60">
                   <path d="M 0 10 L 8 6 L 16 8 L 24 3 L 32 5 L 40 1" fill="none" stroke="currentColor" strokeWidth="1.5" />
                 </svg>
@@ -307,9 +384,8 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
               </div>
               <div className="flex items-center justify-between mt-1">
                 <span className="text-[10px] font-bold text-rose-300 bg-rose-500/20 px-1.5 py-0.5 rounded-md">
-                  +15%
+                  {isZeroState ? 'Pristine 0' : '+15%'}
                 </span>
-                {/* Mini Sparkline */}
                 <svg viewBox="0 0 40 12" className="w-10 h-3 text-rose-400 opacity-60">
                   <path d="M 0 11 L 8 8 L 16 9 L 24 4 L 32 6 L 40 2" fill="none" stroke="currentColor" strokeWidth="1.5" />
                 </svg>
@@ -325,13 +401,13 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
                 </div>
               </div>
               <div className="text-lg font-black text-white">
-                {weeklyHours} <span className="text-xs font-normal text-cyan-200/70">hrs</span>
+                {typeof weeklyHours === 'number' ? weeklyHours.toFixed(1) : weeklyHours}{' '}
+                <span className="text-xs font-normal text-cyan-200/70">hrs</span>
               </div>
               <div className="flex items-center justify-between mt-1">
                 <span className="text-[10px] font-bold text-cyan-300 bg-cyan-500/20 px-1.5 py-0.5 rounded-md">
-                  Latest
+                  {isZeroState ? 'Pristine 0' : 'Latest'}
                 </span>
-                {/* Mini Sparkline */}
                 <svg viewBox="0 0 40 12" className="w-10 h-3 text-cyan-400 opacity-60">
                   <path d="M 0 10 L 8 7 L 16 9 L 24 5 L 32 4 L 40 1" fill="none" stroke="currentColor" strokeWidth="1.5" />
                 </svg>
@@ -354,7 +430,7 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
 
           {/* Main Protocol Banner */}
           <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight leading-tight uppercase mt-4">
-            {currentProtocol.title}
+            {isZeroState ? 'AWAITING BASELINE BIOMETRIC PROTOCOL' : currentProtocol.title}
           </h3>
 
           {/* Recovery Slider / Meter */}
@@ -362,11 +438,11 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
             <div className="w-full bg-[#0E1622] border border-slate-700/60 h-3 rounded-full relative overflow-hidden flex items-center">
               <div
                 className="bg-gradient-to-r from-teal-500 to-emerald-400 h-full rounded-full transition-all duration-500"
-                style={{ width: `${currentProtocol.readinessPct}%` }}
+                style={{ width: `${isZeroState ? 0 : currentProtocol.readinessPct}%` }}
               />
               <div
                 className="absolute w-3.5 h-3.5 rounded-full bg-emerald-300 ring-2 ring-emerald-500 shadow-md shadow-emerald-400/80 top-1/2 -translate-y-1/2 transition-all duration-500"
-                style={{ left: `calc(${currentProtocol.readinessPct}% - 7px)` }}
+                style={{ left: `calc(${isZeroState ? 0 : currentProtocol.readinessPct}% - 7px)` }}
               />
             </div>
           </div>
@@ -380,10 +456,12 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
               </div>
               <div>
                 <span className="text-xs text-slate-400 block font-medium">
-                  {currentProtocol.activityLabel}
+                  {isZeroState ? 'Action Required' : currentProtocol.activityLabel}
                 </span>
                 <span className="text-xs sm:text-sm font-semibold text-slate-100 block">
-                  {currentProtocol.activityVal}
+                  {isZeroState
+                    ? 'Log your initial workout session to calibrate AI recovery telemetry'
+                    : currentProtocol.activityVal}
                 </span>
               </div>
             </div>
@@ -395,51 +473,60 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
               </div>
               <div>
                 <span className="text-xs text-slate-400 block font-medium">
-                  {currentProtocol.releaseLabel}
+                  {isZeroState ? 'Recovery Matrix' : currentProtocol.releaseLabel}
                 </span>
                 <span className="text-xs sm:text-sm font-semibold text-slate-100 block">
-                  {currentProtocol.releaseVal}
+                  {isZeroState
+                    ? 'Baseline assessment will generate tailored post-workout protocols'
+                    : currentProtocol.releaseVal}
                 </span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Bottom Mini Waveform / HRV Graph with Carousel Navigation */}
+        {/* Bottom Mini Waveform / HRV Graph */}
         <div className="space-y-4 pt-2">
           {/* Smooth Gradient Area Wave */}
           <div className="w-full h-20 relative">
             <svg viewBox="0 0 280 80" className="w-full h-full overflow-visible">
               <defs>
                 <linearGradient id="mintWaveGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#34D399" stopOpacity="0.25" />
-                  <stop offset="100%" stopColor="#34D399" stopOpacity="0.0" />
+                  <stop offset="0%" stopColor="#34D399" stopOpacity={0.25} />
+                  <stop offset="100%" stopColor="#34D399" stopOpacity={0.0} />
                 </linearGradient>
               </defs>
-              {/* Secondary Cyan Wave */}
-              <path
-                d="M 10 65 C 50 65, 80 40, 120 40 C 160 40, 190 60, 230 50 C 250 45, 265 35, 275 35"
-                fill="none"
-                stroke="#06B6D4"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                opacity="0.8"
-              />
-              {/* Mint Area Fill */}
-              <path
-                d="M 10 55 C 50 55, 90 20, 140 20 C 180 20, 210 50, 240 45 C 255 40, 265 25, 275 25 L 275 75 L 10 75 Z"
-                fill="url(#mintWaveGradient)"
-              />
-              {/* Mint Wave Line */}
-              <path
-                d="M 10 55 C 50 55, 90 20, 140 20 C 180 20, 210 50, 240 45 C 255 40, 265 25, 275 25"
-                fill="none"
-                stroke="#34D399"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              {/* Glowing Node on Crest */}
-              <circle cx="140" cy="20" r="5" fill="#34D399" stroke="#FFFFFF" strokeWidth="2" />
+              {isZeroState ? (
+                /* Flat Baseline Wave */
+                <>
+                  <line x1="10" y1="65" x2="275" y2="65" stroke="#334155" strokeWidth="2" strokeDasharray="3 3" />
+                  <circle cx="140" cy="65" r="4" fill="#334155" stroke="#64748B" strokeWidth="1.5" />
+                </>
+              ) : (
+                /* Active Wave */
+                <>
+                  <path
+                    d="M 10 65 C 50 65, 80 40, 120 40 C 160 40, 190 60, 230 50 C 250 45, 265 35, 275 35"
+                    fill="none"
+                    stroke="#06B6D4"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    opacity="0.8"
+                  />
+                  <path
+                    d="M 10 55 C 50 55, 90 20, 140 20 C 180 20, 210 50, 240 45 C 255 40, 265 25, 275 25 L 275 75 L 10 75 Z"
+                    fill="url(#mintWaveGradient)"
+                  />
+                  <path
+                    d="M 10 55 C 50 55, 90 20, 140 20 C 180 20, 210 50, 240 45 C 255 40, 265 25, 275 25"
+                    fill="none"
+                    stroke="#34D399"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                  <circle cx="140" cy="20" r="5" fill="#34D399" stroke="#FFFFFF" strokeWidth="2" />
+                </>
+              )}
             </svg>
           </div>
 
@@ -447,27 +534,34 @@ export const AthleteBiomechanicsDashboard: React.FC<ZenDashboardProps> = ({
           <div className="flex items-center justify-between pt-2 border-t border-slate-800/60">
             <button
               onClick={prevProtocol}
-              className="p-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white transition-all active:scale-95"
+              disabled={isZeroState}
+              className="p-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white transition-all active:scale-95 disabled:opacity-40"
               title="Previous Protocol"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
 
-            <div className="flex items-center gap-2">
+            {/* Protocol Dot Indicators */}
+            <div className="flex items-center gap-1.5">
               {AI_PROTOCOLS.map((_, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setProtocolIndex(idx)}
-                  className={`w-1.5 h-1.5 rounded-full transition-all ${
-                    protocolIndex === idx ? 'bg-emerald-400 w-4' : 'bg-slate-600'
+                  onClick={() => !isZeroState && setProtocolIndex(idx)}
+                  disabled={isZeroState}
+                  className={`h-1.5 rounded-full transition-all ${
+                    protocolIndex === idx && !isZeroState
+                      ? 'w-6 bg-emerald-400 shadow-sm shadow-emerald-400/50'
+                      : 'w-1.5 bg-slate-700 hover:bg-slate-500'
                   }`}
+                  title={`Protocol ${idx + 1}`}
                 />
               ))}
             </div>
 
             <button
               onClick={nextProtocol}
-              className="p-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white transition-all active:scale-95"
+              disabled={isZeroState}
+              className="p-1.5 rounded-lg bg-slate-800/60 hover:bg-slate-700 text-slate-400 hover:text-white transition-all active:scale-95 disabled:opacity-40"
               title="Next Protocol"
             >
               <ChevronRight className="w-4 h-4" />

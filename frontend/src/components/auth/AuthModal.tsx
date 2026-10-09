@@ -75,28 +75,36 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </p>
       </div>
 
-      {/* Quick 1-Click Demo Accounts Banner */}
+      {/* Quick 1-Click Demo / Explore Trial Accounts Banner */}
       <div className="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200/60 mb-5">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block mb-2 flex items-center gap-1.5">
-          <Zap className="w-3.5 h-3.5 text-emerald-600" />
-          1-Click Instant Demo Credentials:
-        </span>
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
+            <Zap className="w-3.5 h-3.5 text-emerald-600" />
+            1-Click Instant Trial / Guest Access:
+          </span>
+          <span className="text-[9px] font-mono text-emerald-600 font-bold bg-emerald-100/70 px-1.5 py-0.5 rounded">
+            MOCK TELEMETRY
+          </span>
+        </div>
         <div className="grid grid-cols-2 gap-2">
           <button
             type="button"
             onClick={() => fillQuickDemo('USER')}
             className="py-2.5 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white border border-emerald-700 text-xs font-bold transition-all shadow-md active:scale-95 text-center flex items-center justify-center gap-1"
           >
-            <Zap className="w-3.5 h-3.5 fill-white" /> Athlete (Sarah)
+            <Zap className="w-3.5 h-3.5 fill-white" /> Explore Athlete Trial
           </button>
           <button
             type="button"
             onClick={() => fillQuickDemo('ADMIN')}
             className="py-2.5 px-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white border border-teal-800 text-xs font-bold transition-all shadow-md active:scale-95 text-center"
           >
-            Administrator
+            Explore Admin Trial
           </button>
         </div>
+        <p className="text-[10px] text-emerald-700/80 mt-2 text-center">
+          Personal registrations initialize to strict <strong className="text-emerald-900">$0$ baseline</strong> telemetry.
+        </p>
       </div>
 
       {/* Auth Form */}

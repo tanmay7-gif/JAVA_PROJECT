@@ -47,7 +47,7 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
   onOpenCreateUser,
   children,
 }) => {
-  const { user, logout } = useAuth();
+  const { user, isTrialAccount, logout } = useAuth();
   const navigate = useNavigate();
 
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
@@ -311,6 +311,17 @@ export const AdminAppLayout: React.FC<AdminAppLayoutProps> = ({
                 <span className="text-xs font-semibold text-cyan-400/90 bg-cyan-500/10 border border-cyan-500/20 px-2.5 py-0.5 rounded-full hidden md:inline">
                   {tabLabel}
                 </span>
+                {isTrialAccount ? (
+                  <span className="text-[11px] font-bold text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                    Admin Demo Trial
+                  </span>
+                ) : (
+                  <span className="text-[11px] font-bold text-cyan-300 bg-cyan-500/15 border border-cyan-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                    Live Admin Account
+                  </span>
+                )}
               </div>
             </div>
           </div>

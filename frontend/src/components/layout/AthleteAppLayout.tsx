@@ -32,7 +32,7 @@ export const AthleteAppLayout: React.FC<AthleteAppLayoutProps> = ({
   onOpenLogWorkout,
   refreshTrigger = 0,
 }) => {
-  const { user, role, logout } = useAuth();
+  const { user, role, logout, isTrialAccount } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -341,13 +341,24 @@ export const AthleteAppLayout: React.FC<AthleteAppLayoutProps> = ({
                   </svg>
                 </div>
               </div>
-              <div className="flex items-baseline gap-2">
+              <div className="flex items-baseline gap-2 flex-wrap">
                 <span className="text-lg font-black tracking-tight text-white hidden sm:inline">
                   FitPulse
                 </span>
                 <span className="text-xs font-semibold text-emerald-400/90 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
                   {tabLabel}
                 </span>
+                {isTrialAccount ? (
+                  <span className="text-[11px] font-bold text-amber-300 bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
+                    Trial / Guest Mode
+                  </span>
+                ) : (
+                  <span className="text-[11px] font-bold text-emerald-300 bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-sm">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    Live Athlete Account
+                  </span>
+                )}
               </div>
             </div>
           </div>

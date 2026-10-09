@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { AnalyticsSummary } from '../../types';
+import { useAuth } from '../../context/AuthContext';
+import { generateTrialAthleteData } from '../../utils/mockTrialData';
 import {
   MoreHorizontal,
   Flame,
@@ -28,14 +30,73 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
   onOpenLogWorkout,
   onNavigateTab,
 }) => {
-  // Real values with authentic clinical fallbacks
-  const totalWorkouts = analytics?.summary?.totalLifetimeWorkouts || 5;
-  const weeklyCalories = analytics?.summary?.weeklyCaloriesBurned || 1452;
-  const weeklyHours = analytics?.summary?.weeklyWorkoutHours || 2.5;
+  const { isTrialAccount } = useAuth();
+  const trialData = useMemo(() => generateTrialAthleteData(), [isTrialAccount]);
 
-  const movePct = 84;
-  const exercisePct = 108;
-  const standPct = 100;
+  // Account Mode Dependent Values:
+  // 1. Trial Account: Rich randomized mock values
+  // 2. Real Account: Strict 0 baseline until user performs live actions
+  const totalWorkouts = isTrialAccount
+    ? (analytics?.summary?.totalLifetimeWorkouts && analytics.summary.totalLifetimeWorkouts > 0
+        ? analytics.summary.totalLifetimeWorkouts
+        : trialData.kpis.totalWorkouts)
+    : (analytics?.summary?.totalLifetimeWorkouts ?? 0);
+
+  const weeklyCalories = isTrialAccount
+    ? (analytics?.summary?.weeklyCaloriesBurned && analytics.summary.weeklyCaloriesBurned > 0
+        ? analytics.summary.weeklyCaloriesBurned
+        : trialData.kpis.activeEnergy)
+    : (analytics?.summary?.weeklyCaloriesBurned ?? 0);
+
+  const weeklyHours = isTrialAccount
+    ? (analytics?.summary?.weeklyWorkoutHours && analytics.summary.weeklyWorkoutHours > 0
+        ? analytics.summary.weeklyWorkoutHours
+        : parseFloat(trialData.kpis.durationHours))
+    : (analytics?.summary?.weeklyWorkoutHours ?? 0);
+
+  // Activity Ring Percentages
+  const movePct = isTrialAccount
+    ? trialData.activityRings.move.percentage
+    : weeklyCalories > 0
+    ? Math.min(100, Math.round((weeklyCalories / 1500) * 100))
+    : 0;
+
+  const exercisePct = isTrialAccount
+    ? trialData.activityRings.exercise.percentage
+    : weeklyHours > 0
+    ? Math.min(100, Math.round(((weeklyHours * 60) / 60) * 100))
+    : 0;
+
+  const standPct = isTrialAccount
+    ? trialData.activityRings.stand.percentage
+    : totalWorkouts > 0
+    ? Math.min(100, Math.round(((analytics?.summary?.weeklyWorkoutsCount || 1) / 7) * 100))
+    : 0;
+
+  // Readouts
+  const moveSteps = isTrialAccount
+    ? trialData.activityRings.move.current.toLocaleString()
+    : weeklyCalories > 0
+    ? Math.round(weeklyCalories * 12).toLocaleString()
+    : '0';
+
+  const exerciseMins = isTrialAccount
+    ? trialData.activityRings.exercise.current
+    : weeklyHours > 0
+    ? Math.round(weeklyHours * 60)
+    : 0;
+
+  const standHoursDisplay = isTrialAccount
+    ? `${trialData.activityRings.stand.current}/12`
+    : totalWorkouts > 0
+    ? `${Math.min(12, (analytics?.summary?.weeklyWorkoutsCount || 1) * 2)}/12`
+    : '0/12';
+
+  const averageTargetPct = isTrialAccount
+    ? 100
+    : Math.round((movePct + exercisePct + standPct) / 3);
+
+  const isZeroState = !isTrialAccount && totalWorkouts === 0;
 
   return (
     <div className="w-full flex flex-col gap-4 select-none">
@@ -43,23 +104,27 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
       {/* 1. HERO METRIC CARD: ACTIVITY RINGS                          */}
       {/* ============================================================ */}
       <div className="bg-[#131D2A]/85 backdrop-blur-md border border-slate-800/80 rounded-3xl p-5 shadow-2xl relative overflow-hidden">
-        {/* Header: Title ACTIVITY RINGS with three-dot action menu */}
+        {/* Header */}
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span
+              className={`w-2 h-2 rounded-full ${
+                isTrialAccount ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'
+              }`}
+            />
             <span className="text-xs font-bold uppercase tracking-wider text-slate-300">
               ACTIVITY RINGS
             </span>
           </div>
-          <button className="text-slate-500 hover:text-slate-300 p-1 rounded-lg transition-colors">
-            <MoreHorizontal className="w-4 h-4" />
-          </button>
+          <span className="text-[10px] font-semibold text-slate-400">
+            {isTrialAccount ? 'Trial Mode' : 'Live'}
+          </span>
         </div>
 
         {/* Central Ring Graphic with Concentric Rings & Dynamic Center Label */}
         <div className="relative flex items-center justify-center my-auto py-1">
           <svg viewBox="0 0 340 340" className="w-full max-w-[270px] sm:max-w-[290px] overflow-visible">
-            {/* 1. Outer Ring: Move (Red/Coral stroke #FA5F5F, 84%) */}
+            {/* 1. Outer Ring: Move (Red/Coral stroke #FA5F5F) */}
             <circle
               cx="170"
               cy="170"
@@ -76,7 +141,7 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
               stroke="#FA5F5F"
               strokeWidth="22"
               strokeDasharray="785.4"
-              strokeDashoffset={785.4 * (1 - movePct / 100)}
+              strokeDashoffset={785.4 * (1 - Math.min(movePct, 100) / 100)}
               strokeLinecap="round"
               transform="rotate(-90 170 170)"
               className="transition-all duration-1000 ease-out"
@@ -102,10 +167,10 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
               textAnchor="middle"
               className="select-none"
             >
-              84%
+              {movePct}%
             </text>
 
-            {/* 2. Middle Ring: Exercise (Emerald/Green stroke #10B981, 108%) */}
+            {/* 2. Middle Ring: Exercise (Emerald/Green stroke #10B981) */}
             <circle
               cx="170"
               cy="170"
@@ -122,7 +187,7 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
               stroke="#10B981"
               strokeWidth="22"
               strokeDasharray="578.05"
-              strokeDashoffset={0}
+              strokeDashoffset={578.05 * (1 - Math.min(exercisePct, 100) / 100)}
               strokeLinecap="round"
               transform="rotate(-90 170 170)"
               className="transition-all duration-1000 ease-out"
@@ -148,10 +213,10 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
               textAnchor="middle"
               className="select-none"
             >
-              108%
+              {exercisePct}%
             </text>
 
-            {/* 3. Inner Ring: Stand (Cyan/Sky-Blue stroke #06B6D4, 100%) */}
+            {/* 3. Inner Ring: Stand (Cyan/Sky-Blue stroke #06B6D4) */}
             <circle
               cx="170"
               cy="170"
@@ -168,7 +233,7 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
               stroke="#06B6D4"
               strokeWidth="22"
               strokeDasharray="370.7"
-              strokeDashoffset={0}
+              strokeDashoffset={370.7 * (1 - Math.min(standPct, 100) / 100)}
               strokeLinecap="round"
               transform="rotate(-90 170 170)"
               className="transition-all duration-1000 ease-out"
@@ -194,10 +259,10 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
               textAnchor="middle"
               className="select-none"
             >
-              100%
+              {standPct}%
             </text>
 
-            {/* Center Data Label: Dynamic percentage display centered inside rings */}
+            {/* Center Data Label */}
             <circle cx="170" cy="170" r="42" fill="#0E1825" />
             <g transform="translate(170, 166)">
               <text
@@ -208,7 +273,7 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
                 fill="#FFFFFF"
                 className="select-none font-sans"
               >
-                100%
+                {averageTargetPct}%
               </text>
               <text
                 y="14"
@@ -225,38 +290,38 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
           </svg>
         </div>
 
-        {/* Bottom Metric Readouts (Horizontal flex with color dot indicators) */}
+        {/* Bottom Metric Readouts */}
         <div className="grid grid-cols-3 gap-2 pt-4 border-t border-slate-800/60 mt-1">
-          {/* Move: Red dot indicator, 18,402 steps */}
+          {/* Move */}
           <div>
             <div className="flex items-center gap-1.5 mb-1">
               <span className="w-2 h-2 rounded-full bg-[#FA5F5F] inline-block" />
               <span className="text-xs font-bold text-[#FA5F5F]">Move</span>
             </div>
             <span className="text-base sm:text-lg font-black text-white tracking-tight">
-              18,402 <span className="text-[10px] font-normal text-slate-400 block">steps</span>
+              {moveSteps} <span className="text-[10px] font-normal text-slate-400 block">steps</span>
             </span>
           </div>
 
-          {/* Exercise: Green dot indicator, 76 mins */}
+          {/* Exercise */}
           <div>
             <div className="flex items-center gap-1.5 mb-1">
               <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block" />
               <span className="text-xs font-bold text-[#10B981]">Exercise</span>
             </div>
             <span className="text-base sm:text-lg font-black text-white tracking-tight">
-              76 <span className="text-[10px] font-normal text-slate-400 block">mins</span>
+              {exerciseMins} <span className="text-[10px] font-normal text-slate-400 block">mins</span>
             </span>
           </div>
 
-          {/* Stand: Blue dot indicator, 14/12 hours */}
+          {/* Stand */}
           <div>
             <div className="flex items-center gap-1.5 mb-1">
               <span className="w-2 h-2 rounded-full bg-[#06B6D4] inline-block" />
               <span className="text-xs font-bold text-[#06B6D4]">Stand</span>
             </div>
             <span className="text-base sm:text-lg font-black text-white tracking-tight">
-              14/12 <span className="text-[10px] font-normal text-slate-400 block">hours</span>
+              {standHoursDisplay} <span className="text-[10px] font-normal text-slate-400 block">hours</span>
             </span>
           </div>
         </div>
@@ -274,7 +339,7 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
               <Dumbbell className="w-3.5 h-3.5 text-emerald-400" /> Session Telemetry
             </span>
             <span className="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
-              ACTIVE
+              {isZeroState ? 'ZERO BASELINE' : 'ACTIVE'}
             </span>
           </div>
 
@@ -285,7 +350,9 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
             </div>
             <div className="p-3 rounded-2xl bg-[#0F1723] border border-slate-800/70">
               <span className="text-[10px] font-bold text-slate-400 block mb-0.5">Active Time</span>
-              <span className="text-lg font-black text-cyan-300">{weeklyHours} hrs</span>
+              <span className="text-lg font-black text-cyan-300">
+                {typeof weeklyHours === 'number' ? weeklyHours.toFixed(1) : weeklyHours} hrs
+              </span>
             </div>
           </div>
 
@@ -307,7 +374,7 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
               <TrendingUp className="w-3.5 h-3.5 text-cyan-400" /> Metabolic Pacing
             </span>
             <span className="text-[10px] font-bold text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded-md border border-cyan-500/20">
-              CALIBRATED
+              {isZeroState ? 'ZERO BASELINE' : 'CALIBRATED'}
             </span>
           </div>
 
@@ -322,7 +389,9 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
             </div>
             <div className="flex items-center justify-between p-2.5 rounded-2xl bg-[#0F1723] border border-slate-800/70 text-xs">
               <span className="text-slate-400">HRV Telemetry</span>
-              <span className="font-black text-cyan-300">68 ms (Optimal)</span>
+              <span className="font-black text-cyan-300">
+                {isZeroState ? 'Standby (0 ms)' : '68 ms (Optimal)'}
+              </span>
             </div>
           </div>
         </div>
@@ -336,25 +405,30 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
               <Target className="w-3.5 h-3.5 text-rose-400" /> Quest Momentum
             </span>
             <span className="text-[10px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded-md border border-rose-500/20">
-              TIER 4
+              {isZeroState ? 'UNRANKED' : 'TIER 4'}
             </span>
           </div>
 
           <div className="grid grid-cols-2 gap-2.5">
             <div className="p-3 rounded-2xl bg-[#0F1723] border border-slate-800/70">
               <span className="text-[10px] font-bold text-slate-400 block mb-0.5">Consecutive</span>
-              <span className="text-lg font-black text-emerald-400">5 Days</span>
+              <span className="text-lg font-black text-emerald-400">
+                {isZeroState ? '0 Days' : '5 Days'}
+              </span>
             </div>
             <div className="p-3 rounded-2xl bg-[#0F1723] border border-slate-800/70">
               <span className="text-[10px] font-bold text-slate-400 block mb-0.5">Quests Won</span>
-              <span className="text-lg font-black text-amber-300">12 Badges</span>
+              <span className="text-lg font-black text-amber-300">
+                {isZeroState ? '0 Badges' : '12 Badges'}
+              </span>
             </div>
           </div>
 
           <div className="p-2.5 rounded-2xl bg-[#0F1723] border border-slate-800/70 flex items-center justify-between text-xs">
             <span className="text-slate-400">Community Podium</span>
             <span className="font-bold text-white flex items-center gap-1">
-              <Award className="w-3.5 h-3.5 text-amber-400" /> Rank #4 Global
+              <Award className="w-3.5 h-3.5 text-amber-400" />
+              {isZeroState ? 'Unranked' : 'Rank #4 Global'}
             </span>
           </div>
         </div>
@@ -368,14 +442,18 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
               <Sparkles className="w-3.5 h-3.5 text-amber-400" /> Protocol Status
             </span>
             <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded-md border border-amber-500/20">
-              CLINICAL
+              {isZeroState ? 'STANDBY' : 'CLINICAL'}
             </span>
           </div>
 
           <div className="p-3 rounded-2xl bg-[#0F1723] border border-slate-800/70">
             <span className="text-[10px] font-bold text-slate-400 block mb-0.5">Active Routine</span>
-            <span className="text-xs font-bold text-white block">Zone-2 Aerobic Flush & Fascial Mobility</span>
-            <span className="text-[11px] text-emerald-400 mt-1 block">88% Protocol Compliance</span>
+            <span className="text-xs font-bold text-white block">
+              {isZeroState ? 'Pristine Baseline - No Active Protocol' : 'Zone-2 Aerobic Flush & Fascial Mobility'}
+            </span>
+            <span className="text-[11px] text-emerald-400 mt-1 block">
+              {isZeroState ? 'Log a workout to activate protocol' : '88% Protocol Compliance'}
+            </span>
           </div>
         </div>
       )}
@@ -395,15 +473,15 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
           <div className="space-y-2">
             <div className="flex items-center justify-between p-2.5 rounded-2xl bg-[#0F1723] border border-slate-800/70 text-xs">
               <span className="text-slate-400">Resting Heart Rate</span>
-              <span className="font-black text-white">72 BPM</span>
+              <span className="font-black text-white">{isZeroState ? 'Standby' : '72 BPM'}</span>
             </div>
             <div className="flex items-center justify-between p-2.5 rounded-2xl bg-[#0F1723] border border-slate-800/70 text-xs">
               <span className="text-slate-400">Biometric Tier</span>
               <span className="font-black text-emerald-400">Pro Sports Telemetry</span>
             </div>
             <div className="flex items-center justify-between p-2.5 rounded-2xl bg-[#0F1723] border border-slate-800/70 text-xs">
-              <span className="text-slate-400">2FA Security Status</span>
-              <span className="font-black text-cyan-300">Protected</span>
+              <span className="text-slate-400">Account Type</span>
+              <span className="font-black text-cyan-300">{isTrialAccount ? 'Trial Guest' : 'Verified Personal'}</span>
             </div>
           </div>
         </div>
@@ -418,7 +496,9 @@ export const LeftTelemetryDeck: React.FC<LeftTelemetryDeckProps> = ({
             </div>
             <div>
               <span className="text-xs font-bold text-white block">Biometrics Sync</span>
-              <span className="text-[10px] text-slate-400">100% Calibrated</span>
+              <span className="text-[10px] text-slate-400">
+                {isTrialAccount ? 'Trial Calibrated' : isZeroState ? 'Zero Baseline' : 'Live Connected'}
+              </span>
             </div>
           </div>
           <button
