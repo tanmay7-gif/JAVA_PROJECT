@@ -33,6 +33,8 @@ interface WorkoutAnalyticsChartsProps {
   refreshTrigger: number;
 }
 
+const DynamicPie = Pie as any;
+
 const INTENSITY_COLORS: Record<string, string> = {
   LOW: '#10B981',    // Fluorescent Mint
   MEDIUM: '#F59E0B', // Vibrant Amber
@@ -300,7 +302,7 @@ export const WorkoutAnalyticsCharts: React.FC<WorkoutAnalyticsChartsProps> = ({
             ) : (
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie
+                  <DynamicPie
                     data={intensityBreakdown}
                     cx="50%"
                     cy="50%"
@@ -310,7 +312,7 @@ export const WorkoutAnalyticsCharts: React.FC<WorkoutAnalyticsChartsProps> = ({
                     dataKey="value"
                     activeIndex={activeIntensityIndex !== null ? activeIntensityIndex : undefined}
                     activeShape={renderCompactActivePieShape}
-                    onClick={(_, index) => {
+                    onClick={(_: any, index: number) => {
                       setActiveIntensityIndex((prev) => (prev === index ? null : index));
                     }}
                     cursor="pointer"
@@ -323,7 +325,7 @@ export const WorkoutAnalyticsCharts: React.FC<WorkoutAnalyticsChartsProps> = ({
                         strokeWidth={2}
                       />
                     ))}
-                  </Pie>
+                  </DynamicPie>
                   
                   {/* Compact Tooltip */}
                   <Tooltip

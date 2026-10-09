@@ -186,6 +186,8 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
       currentAngle += sliceAngle;
       return angleConfig;
     });
+  }, [data, totalValue]);
+
   const activeSlice = useMemo(() => {
     if (hoveredSlice) {
       const match = data.find((d) => d.name === hoveredSlice);

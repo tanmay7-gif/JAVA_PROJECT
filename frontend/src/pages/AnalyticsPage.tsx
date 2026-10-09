@@ -37,6 +37,7 @@ import {
 
 type TimeWindow = 'Week' | 'Month' | 'Year' | 'All-Time';
 type ActiveMetric = 'calories' | 'duration';
+const DynamicPie = Pie as any;
 
 export const AnalyticsPage: React.FC = () => {
   const { showToast } = useToast();
@@ -526,7 +527,7 @@ export const AnalyticsPage: React.FC = () => {
                 ) : (
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
-                      <Pie
+                      <DynamicPie
                         data={formattedPieData}
                         cx="50%"
                         cy="50%"
@@ -537,7 +538,7 @@ export const AnalyticsPage: React.FC = () => {
                         nameKey="name"
                         activeIndex={activeDisciplineIndex !== null ? activeDisciplineIndex : undefined}
                         activeShape={renderCompactActivePieShape}
-                        onClick={(_, index) => {
+                        onClick={(_: any, index: number) => {
                           const nextIdx = activeDisciplineIndex === index ? null : index;
                           setActiveDisciplineIndex(nextIdx);
                           setSelectedDisciplineSlice(nextIdx !== null ? formattedPieData[nextIdx] : null);
@@ -552,7 +553,7 @@ export const AnalyticsPage: React.FC = () => {
                             strokeWidth={2}
                           />
                         ))}
-                      </Pie>
+                      </DynamicPie>
                       <Tooltip content={<CompactChartTooltip unit="sessions" />} offset={12} />
                     </PieChart>
                   </ResponsiveContainer>
