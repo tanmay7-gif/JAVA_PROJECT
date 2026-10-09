@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: 138 20% 98%;
+    --foreground: 220 26% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 26% 14%;
+    --primary: 158 64% 45%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 140 18% 95%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 152 76% 94%;
+    --accent-foreground: 160 84% 28%;
+    --border: 146 28% 90%;
+    --radius: 1rem;
+  }
+
+  * {
+    border-color: rgba(209, 231, 221, 0.6);
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background-color: #F8FAF8;
+    color: #1F2937;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    border: none;
+    text-align: left;
+  }
+}
+
+/* Clinical Frosted Glass & Surface Styling */
+.clinical-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(209, 231, 221, 0.7);
+  box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  border-radius: 1.25rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.clinical-card:hover {
+  box-shadow: 0 10px 25px -4px rgba(16, 185, 129, 0.1), 0 4px 10px -2px rgba(0, 0, 0, 0.03);
+  border-color: rgba(52, 211, 153, 0.5);
+}
+
+.frosted-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 8px 32px 0 rgba(16, 185, 129, 0.06);
+}
+
+.mint-badge {
+  background-color: #ECFDF5;
+  color: #059669;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+
+.mint-gradient-text {
+  background: linear-gradient(135deg, #059669 0%, #10B981 50%, #34D399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mint-gradient-bg {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+}
+
+.mint-gradient-soft {
+  background: linear-gradient(135deg, #ECFDF5 0%, #E6F4EA 100%);
+}
+
+/* Custom Clean Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: #F3F6F3;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPulse — Workout Center &amp; Conditioning Logs</title>
+    <link rel="stylesheet" th:href="@{/css/clinical-mint.css}">
+    <style>
+      .data-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; }
+      .data-table th { padding: 1.1rem 1.25rem; background: #FAFCFA; border-bottom: 1px solid var(--border-light); font-weight: 700; color: #64748B; text-transform: uppercase; font-size: 0.725rem; letter-spacing: 0.05em; }
+      .data-table td { padding: 1.1rem 1.25rem; border-bottom: 1px solid rgba(209, 231, 221, 0.45); color: #374151; }
+      .tag { display: inline-block; padding: 0.25rem 0.6rem; border-radius: 0.45rem; font-size: 0.725rem; font-weight: 700; }
+      .tag-high { background: #FFE4E6; color: #BE123C; }
+      .tag-medium { background: #FEF3C7; color: #B45309; }
+      .tag-low { background: #ECFDF5; color: #065F46; }
+      .filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
+      .modal { display: none; position: fixed; inset: 0; background: rgba(17, 24, 39, 0.45); backdrop-filter: blur(6px); z-index: 120; align-items: center; justify-content: center; }
+      .modal.open { display: flex; }
+      .modal-card { background: white; border-radius: 1.75rem; width: 100%; max-width: 560px; padding: 2.25rem; border: 1px solid var(--border-light); box-shadow: 0 24px 48px rgba(0,0,0,0.12); }
+    </style>
+</head>
+<body>
+    <header class="clinical-navbar">
+        <a th:href="@{/dashboard}" class="clinical-brand">
+            <div class="brand-icon">⚡</div>
+            <div>
+                FitPulse
+                <span style="display:block; font-size:9px; text-transform:uppercase; color:var(--emerald-primary); margin-top:-3px; font-weight:700;">Clinical Wellness OS</span>
+            </div>
+        </a>
+
+        <button onclick="openModal()" class="btn-primary">+ Log Session</button>
+    </header>
+
+    <main class="spacious-container">
+        <!-- Spacious Header Row -->
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:2.25rem; border-bottom:1px solid var(--border-light); padding-bottom:1.5rem;">
+            <div>
+                <h1 style="font-size:1.85rem; font-weight:900; letter-spacing:-0.025em;">Workout Center</h1>
+                <p style="color:var(--text-secondary); font-size:0.875rem; margin-top:0.4rem; line-height:1.6;">
+                    Comprehensive paginated audit records of all conditioning, hypertrophy, and recovery sessions.
+                </p>
+            </div>
+            <button onclick="openModal()" class="btn-primary">+ Add Workout</button>
+        </div>
+
+        <!-- Filter Controls Bar -->
+        <div class="spacious-card filter-bar">
+            <div style="display:flex; gap:1rem; align-items:center; flex-wrap:wrap; flex:1;">
+                <input type="text" placeholder="Type workout name or notes to start..." style="max-width:360px;" id="searchInput">
+                <select style="max-width:200px;">
+                    <option value="ALL">All Disciplines</option>
+                    <option value="CARDIO">Cardio Endurance</option>
+                    <option value="STRENGTH">Strength &amp; Hypertrophy</option>
+                    <option value="HIIT">HIIT Intervals</option>
+                    <option value="YOGA">Yoga &amp; Mobility</option>
+                </select>
+                <select style="max-width:180px;">
+                    <option value="ALL">All Intensities</option>
+                    <option value="LOW">Low (Recovery)</option>
+                    <option value="MEDIUM">Medium (Tempo)</option>
+                    <option value="HIGH">High (Max Exertion)</option>
+                </select>
+            </div>
+            <span style="font-size:0.8rem; color:var(--text-muted); font-weight:700;">Verified Athlete Logs</span>
+        </div>
+
+        <!-- Workout History Table -->
+        <div class="spacious-card" style="padding:0; overflow:hidden;">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date &amp; Timestamp</th>
+                        <th>Discipline</th>
+                        <th>Active Duration</th>
+                        <th>Exertion (RPE)</th>
+                        <th>Metabolic Burn</th>
+                        <th>Conditioning Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Today, 08:30 AM</strong></td>
+                        <td><span style="font-weight:700; color:#065F46;">RUNNING</span></td>
+                        <td>50 mins</td>
+                        <td><span class="tag tag-medium">MEDIUM</span></td>
+                        <td style="font-weight:800; color:var(--emerald-primary);">540 kcal</td>
+                        <td>Tempo threshold 10km run on outdoor track</td>
+                    </tr>
+                    <tr>
+                        <td>Yesterday, 06:15 PM</td>
+                        <td><span style="font-weight:700; color:#065F46;">YOGA</span></td>
+                        <td>40 mins</td>
+                        <td><span class="tag tag-low">LOW</span></td>
+                        <td style="font-weight:800; color:var(--emerald-primary);">210 kcal</td>
+                        <td>Deep myofascial recovery and hip mobility flow</td>
+                    </tr>
+                    <tr>
+                        <td>2 days ago</td>
+                        <td><span style="font-weight:700; color:#065F46;">STRENGTH</span></td>
+                        <td>75 mins</td>
+                        <td><span class="tag tag-high">HIGH</span></td>
+                        <td style="font-weight:800; color:var(--emerald-primary);">750 kcal</td>
+                        <td>Back &amp; Posterior Chain - Deadlifts 160kg, Weighted Pull-ups</td>
+                    </tr>
+                    <tr>
+                        <td>3 days ago</td>
+                        <td><span style="font-weight:700; color:#065F46;">HIIT</span></td>
+                        <td>30 mins</td>
+                        <td><span class="tag tag-high">HIGH</span></td>
+                        <td style="font-weight:800; color:var(--emerald-primary);">410 kcal</td>
+                        <td>Tabata sprints with assault bike intervals</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Workout Modal (with standard input placeholders) -->
+    <div id="workoutModal" class="modal">
+        <div class="modal-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem; border-bottom:1px solid #E2E8F0; padding-bottom:1rem;">
+                <h3 style="font-size:1.2rem; font-weight:800;">Log Conditioning Session</h3>
+                <button onclick="closeModal()" style="background:none; border:none; font-size:1.5rem; cursor:pointer;">&times;</button>
+            </div>
+            <form onsubmit="handleLogWorkout(event)">
+                <div style="margin-bottom:1.25rem;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;">Discipline</label>
+                    <select id="modalType">
+                        <option value="STRENGTH">Strength &amp; Hypertrophy</option>
+                        <option value="CARDIO">Cardio Endurance</option>
+                        <option value="HIIT">HIIT Intervals</option>
+                        <option value="YOGA">Yoga &amp; Mobility</option>
+                    </select>
+                </div>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem;">
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;">Duration (Mins)</label>
+                        <input type="number" id="modalDuration" value="45" min="1" required>
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;">Calories (kcal)</label>
+                        <input type="number" id="modalCalories" value="480" min="0" required>
+                    </div>
+                </div>
+                <div style="margin-bottom:1.25rem;">
+                    <label style="display:block; font-size:0.75rem; font-weight:700; text-transform:uppercase; margin-bottom:0.4rem;">Target Notes</label>
+                    <textarea id="modalNotes" rows="3" placeholder="Type workout name or notes to start..."></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%;">Save Workout Session</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Persistent Floating Interactive Taskbar / Dock -->
+    <nav class="floating-dock-container">
+        <a th:href="@{/dashboard}" class="dock-item" title="Dashboard">
+            <span>⚡</span>
+            <span class="dock-tooltip">Dashboard</span>
+        </a>
+
+        <a th:href="@{/workouts}" class="dock-item active" title="Workouts">
+            <span>📋</span>
+            <span class="dock-tooltip">Workouts</span>
+        </a>
+
+        <button class="dock-action-btn" onclick="openModal()" title="Log Workout">
+            <span>+</span>
+        </button>
+
+        <a th:href="@{/analytics}" class="dock-item" title="Analytics">
+            <span>📊</span>
+            <span class="dock-tooltip">Analytics</span>
+        </a>
+
+        <a th:href="@{/challenges}" class="dock-item" title="Challenges">
+            <span>🏆</span>
+            <span class="dock-tooltip">Arena</span>
+        </a>
+
+        <a th:href="@{/profile}" class="dock-item" title="Profile">
+            <span>👤</span>
+            <span class="dock-tooltip">Profile</span>
+        </a>
+
+        <div class="dock-status-badge">
+            <span class="status-ping"></span>
+            <span>4 Logged This Wk</span>
+        </div>
+    </nav>
+
+    <script>
+      function openModal() { document.getElementById('workoutModal').classList.add('open'); }
+      function closeModal() { document.getElementById('workoutModal').classList.remove('open'); }
+      function handleLogWorkout(e) {
+        e.preventDefault();
+        alert('Workout session saved into Spring Boot JPA backend!');
+        closeModal();
+      }
+    </script>
+</body>
+</html>

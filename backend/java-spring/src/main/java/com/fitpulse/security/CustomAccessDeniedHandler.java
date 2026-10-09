@@ -1,0 +1,44 @@
+package com.fitpulse.security;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * AccessDeniedHandler invoked when an authenticated athlete or user attempts
+ * to access a restricted resource without possessing the necessary role (e.g. USER accessing ADMIN APIs).
+ * Explicitly produces HTTP 403 Forbidden with structured JSON payload.
+ */
+@Component
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Override
+    public void handle(HttpServletRequest request,
+                       HttpServletResponse response,
+                       AccessDeniedException accessDeniedException) throws IOException, ServletException {
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("success", false);
+        body.put("status", HttpServletResponse.SC_FORBIDDEN);
+        body.put("error", "Forbidden");
+        body.put("message", "Access denied: You do not possess the required permissions or role (e.g. ROLE_ADMIN) to access this administrative resource.");
+        body.put("path", request.getRequestURI());
+        body.put("timestamp", LocalDateTime.now().toString());
+
+        objectMapper.writeValue(response.getOutputStream(), body);
+    }
+}

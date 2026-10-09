@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPulse — Athlete Persona &amp; Account Settings</title>
+    <link rel="stylesheet" th:href="@{/css/clinical-mint.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script th:src="@{/js/three-components.js}"></script>
+    <style>
+      .profile-grid { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 2.75rem; align-items: start; }
+      @media (max-width: 992px) { .profile-grid { grid-template-columns: 1fr; } }
+      .tab-nav { display: flex; gap: 0.65rem; background: white; border: 1px solid var(--border-light); border-radius: 1rem; padding: 0.4rem; margin-bottom: 2rem; }
+      .tab-btn { flex: 1; padding: 0.65rem 0.85rem; border-radius: 0.75rem; border: none; font-size: 0.825rem; font-weight: 700; cursor: pointer; background: transparent; color: #4B5563; transition: all 0.2s; }
+      .tab-btn.active { background: var(--emerald-primary); color: white; box-shadow: 0 4px 12px rgba(16,185,129,0.25); }
+      .tab-content { display: none; }
+      .tab-content.active { display: block; }
+      .form-group { margin-bottom: 1.5rem; }
+      .form-label { display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem; color: #4B5563; letter-spacing: 0.04em; }
+    </style>
+</head>
+<body>
+    <header class="clinical-navbar">
+        <a th:href="@{/dashboard}" class="clinical-brand">
+            <div class="brand-icon">⚡</div>
+            <div>
+                FitPulse
+                <span style="display:block; font-size:9px; text-transform:uppercase; color:var(--emerald-primary); margin-top:-3px; font-weight:700;">Clinical Wellness OS</span>
+            </div>
+        </a>
+
+        <span style="font-size:0.75rem; font-weight:700; color:#065F46; background:var(--emerald-light); padding:0.4rem 0.85rem; border-radius:999px; border:1px solid #A7F3D0;">
+            ROLE_USER
+        </span>
+    </header>
+
+    <main class="spacious-container">
+        <div style="border-bottom: 1px solid var(--border-light); padding-bottom: 1.5rem; margin-bottom: 2.25rem;">
+            <h1 style="font-size:1.85rem; font-weight:900; letter-spacing:-0.025em;">Athlete Profile &amp; Body Model</h1>
+            <p style="color:var(--text-secondary); font-size:0.875rem; margin-top:0.4rem; line-height:1.6;">
+                Rotate your realistic anatomical body model in 360°, inspect muscle fatigue hotspots, and configure account benchmarks.
+            </p>
+        </div>
+
+        <div class="profile-grid">
+            <!-- Left: Realistic Anatomical BodyModel -->
+            <div class="spacious-card" style="padding:1.5rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; padding:0 0.5rem;">
+                    <div>
+                        <span style="font-size:10px; font-weight:800; text-transform:uppercase; color:#065F46; background:var(--emerald-light); padding:0.25rem 0.6rem; border-radius:0.45rem; border:1px solid #A7F3D0;">Anatomical Physique</span>
+                        <h3 style="font-size:1.15rem; font-weight:800; margin-top:0.35rem;">Body Model</h3>
+                    </div>
+                    <span style="font-size:0.775rem; color:var(--emerald-primary); font-weight:800;">360° Drag Orbit</span>
+                </div>
+
+                <div id="avatar-container" class="canvas-container" style="height:480px;">
+                    <div id="avatar-tooltip" class="three-tooltip"></div>
+                </div>
+                <p style="font-size:0.775rem; color:var(--text-muted); text-align:center; margin-top:1rem;">
+                    Click highlighted muscle nodes to inspect recovery status &amp; personal records.
+                </p>
+            </div>
+
+            <!-- Right: 4-Tabbed Settings Panels -->
+            <div class="spacious-card">
+                <nav class="tab-nav">
+                    <button class="tab-btn active" onclick="switchTab('details')">Personal</button>
+                    <button class="tab-btn" onclick="switchTab('goals')">Goals</button>
+                    <button class="tab-btn" onclick="switchTab('security')">Security</button>
+                    <button class="tab-btn" onclick="switchTab('preferences')">Preferences</button>
+                </nav>
+
+                <!-- Tab 1: Personal Details -->
+                <div id="tab-details" class="tab-content active">
+                    <form onsubmit="handleSave(event, 'Personal details updated')">
+                        <div class="form-group">
+                            <label class="form-label">Athlete Display Name</label>
+                            <input type="text" value="Sarah Connor" placeholder="Enter athlete display name...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" value="sarah@fitpulse.com" placeholder="athlete@domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Avatar Image URL</label>
+                            <input type="url" value="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Athletic Bio / Discipline Focus</label>
+                            <textarea rows="3" placeholder="Type workout name or notes to start...">Strength &amp; endurance athlete tracking hypertrophy markers and metabolic pacing.</textarea>
+                        </div>
+                        <button type="submit" class="btn-primary">Save Profile Changes</button>
+                    </form>
+                </div>
+
+                <!-- Tab 2: Fitness Goals -->
+                <div id="tab-goals" class="tab-content">
+                    <form onsubmit="handleSave(event, 'Fitness goals calibrated')">
+                        <div class="form-group">
+                            <label class="form-label">Weekly Active Hours Target</label>
+                            <input type="number" step="0.5" value="5.0" placeholder="e.g. 5.0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Daily Active Caloric Target (kcal)</label>
+                            <input type="number" step="50" value="650" placeholder="e.g. 650">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Benchmark Bodyweight</label>
+                            <input type="text" value="74.5 kg" placeholder="e.g. 74.5 kg">
+                        </div>
+                        <button type="submit" class="btn-primary">Calibrate Benchmarks</button>
+                    </form>
+                </div>
+
+                <!-- Tab 3: Security & Credentials -->
+                <div id="tab-security" class="tab-content">
+                    <form onsubmit="handleSave(event, 'Password successfully verified and changed')">
+                        <div class="form-group">
+                            <label class="form-label">Current Password</label>
+                            <input type="password" placeholder="Enter current password...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">New Password</label>
+                            <input type="password" placeholder="Minimum 6 characters...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Confirm New Password</label>
+                            <input type="password" placeholder="Re-enter new password...">
+                        </div>
+                        <button type="submit" class="btn-primary">Update Password</button>
+                    </form>
+                </div>
+
+                <!-- Tab 4: Preferences -->
+                <div id="tab-preferences" class="tab-content">
+                    <div style="display:flex; flex-direction:column; gap:1.25rem;">
+                        <label style="display:flex; align-items:center; gap:0.85rem; font-size:0.875rem; font-weight:600; cursor:pointer;">
+                            <input type="checkbox" checked style="width:20px; height:20px; accent-color:var(--emerald-primary);">
+                            Daily Conditioning Reminders (Morning Notifications)
+                        </label>
+                        <label style="display:flex; align-items:center; gap:0.85rem; font-size:0.875rem; font-weight:600; cursor:pointer;">
+                            <input type="checkbox" checked style="width:20px; height:20px; accent-color:var(--emerald-primary);">
+                            Challenge Milestone &amp; Medal Alerts
+                        </label>
+                        <label style="display:flex; align-items:center; gap:0.85rem; font-size:0.875rem; font-weight:600; cursor:pointer;">
+                            <input type="checkbox" checked style="width:20px; height:20px; accent-color:var(--emerald-primary);">
+                            Weekly Biometric Digest (Caloric Velocity)
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Persistent Floating Interactive Taskbar / Dock -->
+    <nav class="floating-dock-container">
+        <a th:href="@{/dashboard}" class="dock-item" title="Dashboard">
+            <span>⚡</span>
+            <span class="dock-tooltip">Dashboard</span>
+        </a>
+
+        <a th:href="@{/workouts}" class="dock-item" title="Workouts">
+            <span>📋</span>
+            <span class="dock-tooltip">Workouts</span>
+        </a>
+
+        <button class="dock-action-btn" onclick="location.href='/workouts'" title="Log Workout">
+            <span>+</span>
+        </button>
+
+        <a th:href="@{/analytics}" class="dock-item" title="Analytics">
+            <span>📊</span>
+            <span class="dock-tooltip">Analytics</span>
+        </a>
+
+        <a th:href="@{/challenges}" class="dock-item" title="Challenges">
+            <span>🏆</span>
+            <span class="dock-tooltip">Arena</span>
+        </a>
+
+        <a th:href="@{/profile}" class="dock-item active" title="Profile">
+            <span>👤</span>
+            <span class="dock-tooltip">Profile</span>
+        </a>
+
+        <div class="dock-status-badge">
+            <span class="status-ping"></span>
+            <span>Profile Synced</span>
+        </div>
+    </nav>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        FitPulseVisuals.initBodyModel('avatar-container', 'avatar-tooltip');
+      });
+
+      function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById('tab-' + tabId).classList.add('active');
+      }
+
+      function handleSave(e, msg) {
+        e.preventDefault();
+        alert(msg);
+      }
+    </script>
+</body>
+</html>

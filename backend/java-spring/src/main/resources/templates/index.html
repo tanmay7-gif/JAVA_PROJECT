@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPulse — Clinical Wellness &amp; Biometric Telemetry Platform</title>
+    <link rel="stylesheet" th:href="@{/css/clinical-mint.css}">
+    <style>
+      .hero-wrap { min-height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; }
+    </style>
+</head>
+<body>
+    <header class="clinical-navbar">
+        <a th:href="@{/}" class="clinical-brand">
+            <div class="brand-icon">⚡</div>
+            <div>
+                FitPulse
+                <span style="display:block; font-size:9px; text-transform:uppercase; color:var(--emerald-primary); margin-top:-3px; font-weight:700;">Clinical Wellness OS</span>
+            </div>
+        </a>
+
+        <div style="display:flex; gap:0.75rem;">
+            <a th:href="@{/dashboard}" class="btn-primary">Launch Athlete Portal</a>
+            <a th:href="@{/admin/dashboard}" class="btn-secondary">Admin Governance</a>
+        </div>
+    </header>
+
+    <main class="hero-wrap">
+        <span style="font-size:10px; font-weight:800; text-transform:uppercase; color:#065F46; background:var(--emerald-light); padding:0.35rem 0.85rem; border-radius:999px; border:1px solid #A7F3D0; margin-bottom:1rem;">
+            Enterprise Spring Boot 3.x &amp; WebGL Architecture
+        </span>
+        <h1 style="font-size:2.75rem; font-weight:900; letter-spacing:-0.03em; max-width:760px; line-height:1.2;">
+            Clinical Health OS with Interactive Biometric Telemetry
+        </h1>
+        <p style="color:var(--text-muted); font-size:1rem; max-width:580px; margin-top:1rem; line-height:1.6;">
+            A complete 100% Java Spring Boot 3 backend application with Spring Security 6, JPA Hibernate persistence, 
+            realistic anatomical body models, volumetric telemetry charts, and clinical separated routes.
+        </p>
+
+        <div style="display:flex; gap:1rem; margin-top:2rem;">
+            <a th:href="@{/dashboard}" class="btn-primary" style="padding:0.85rem 1.75rem; font-size:0.9rem;">
+                Open Athlete Dashboard (Demo)
+            </a>
+            <a th:href="@{/swagger-ui.html}" target="_blank" class="btn-secondary" style="padding:0.85rem 1.75rem; font-size:0.9rem;">
+                OpenAPI Specification (Swagger) ↗
+            </a>
+        </div>
+
+        <div style="margin-top:3rem; padding:1.25rem 2rem; background:white; border:1px solid var(--border-light); border-radius:1.25rem; display:flex; gap:2.5rem; text-align:left; box-shadow:var(--shadow-subtle);">
+            <div>
+                <span style="font-size:0.7rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Demo Athlete</span>
+                <div style="font-size:0.85rem; font-weight:800; color:var(--text-primary);">sarah@fitpulse.com</div>
+                <div style="font-size:0.75rem; color:#059669; font-weight:600;">Password: User123!</div>
+            </div>
+            <div style="border-left:1px solid var(--border-light); padding-left:2.5rem;">
+                <span style="font-size:0.7rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Demo Administrator</span>
+                <div style="font-size:0.85rem; font-weight:800; color:var(--text-primary);">admin@fitpulse.com</div>
+                <div style="font-size:0.75rem; color:#0D9488; font-weight:600;">Password: Admin123!</div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

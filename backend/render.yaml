@@ -1,0 +1,27 @@
+# ====================================================================
+# Render Blueprint Specification for FitPulse Backend
+# https://render.com/docs/blueprint-spec
+# ====================================================================
+
+services:
+  - type: web
+    name: fitpulse-backend-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: DATABASE_URL
+        value: file:./prisma/dev.db
+      - key: FRONTEND_URL
+        value: https://guvi-java-project.vercel.app

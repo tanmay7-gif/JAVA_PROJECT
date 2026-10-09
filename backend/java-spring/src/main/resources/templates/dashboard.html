@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPulse — Daily Pulse &amp; Telemetry Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/clinical-mint.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script th:src="@{/js/three-components.js}"></script>
+    <style>
+      .grid-kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; margin-top: 2.25rem; }
+      .kpi-title { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.05em; }
+      .kpi-val { font-size: 2.25rem; font-weight: 900; color: var(--text-primary); margin-top: 0.35rem; }
+      .hero-grid { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 2.5rem; align-items: center; }
+      @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <!-- Top Brand Bar -->
+    <header class="clinical-navbar">
+        <a th:href="@{/dashboard}" class="clinical-brand">
+            <div class="brand-icon">⚡</div>
+            <div>
+                FitPulse
+                <span style="display:block; font-size:9px; text-transform:uppercase; color:var(--emerald-primary); margin-top:-3px; font-weight:700;">Clinical Wellness OS</span>
+            </div>
+        </a>
+
+        <div style="display:flex; align-items:center; gap:1.25rem;">
+            <div style="text-align:right;">
+                <span style="display:block; font-size:11px; font-weight:800; color:var(--text-primary);" th:text="${currentUser != null ? currentUser.name : 'Sarah Connor'}">Sarah Connor</span>
+                <span style="font-size:10px; color:var(--emerald-primary); font-weight:700;">Verified Athlete</span>
+            </div>
+            <a th:href="@{/profile}" style="text-decoration:none;">
+                <img th:src="${currentUser != null and currentUser.avatarUrl != null ? currentUser.avatarUrl : 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah'}"
+                     alt="Avatar" style="width:40px; height:40px; border-radius:50%; border:2px solid #A7F3D0; object-fit:cover;">
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Spacious View -->
+    <main class="spacious-container">
+        <!-- Hero Card with ActivityMetricsVisualizer -->
+        <section class="spacious-card hero-grid">
+            <div>
+                <span style="display:inline-block; font-size:10px; font-weight:800; text-transform:uppercase; color:#065F46; background:var(--emerald-light); padding:0.3rem 0.75rem; border-radius:999px; border:1px solid #A7F3D0;">
+                    Activity Telemetry Engine
+                </span>
+                <h1 style="font-size: 2.25rem; font-weight: 900; margin-top: 0.75rem; letter-spacing: -0.025em; line-height: 1.2;">
+                    Good day, <span th:text="${currentUser != null ? currentUser.name : 'Sarah'}">Sarah</span> 🌿
+                </h1>
+                <p style="color: var(--text-secondary); font-size: 0.925rem; margin-top: 0.75rem; line-height: 1.65; max-width: 520px;">
+                    Your activity metrics visualizer is oscillating in continuous response to your conditioning volume. 
+                    Current weekly volume is pacing at <strong style="color:var(--emerald-primary);">4.8 hours</strong> completed toward your 5.0 hour target.
+                </p>
+                <div style="margin-top: 1.75rem; display:flex; gap:1rem;">
+                    <a th:href="@{/workouts}" class="btn-primary">Log Workout Session</a>
+                    <a th:href="@{/analytics}" class="btn-secondary">View Performance Analytics</a>
+                </div>
+            </div>
+
+            <!-- Activity Metrics Visualizer Canvas -->
+            <div id="orb-container" class="canvas-container" style="height: 300px;"></div>
+        </section>
+
+        <!-- 3 Quick KPI Cards (Calories, Active Time, Goal %) -->
+        <section class="grid-kpi">
+            <div class="spacious-card">
+                <span class="kpi-title">Weekly Energy</span>
+                <div class="kpi-val" style="color:var(--emerald-primary);">3,970 <span style="font-size:13px; color:var(--text-muted); font-weight:600;">kcal</span></div>
+                <p style="font-size:12px; color:#059669; font-weight:700; margin-top:0.5rem;">Dynamic MET Calibrated</p>
+            </div>
+
+            <div class="spacious-card">
+                <span class="kpi-title">Active Time</span>
+                <div class="kpi-val">4.8 <span style="font-size:13px; color:var(--text-muted); font-weight:600;">hours</span></div>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:0.5rem;">Target: 5.0 hours / week</p>
+            </div>
+
+            <div class="spacious-card">
+                <span class="kpi-title">Goal Completion</span>
+                <div class="kpi-val" style="color:#0D9488;">96%</div>
+                <p style="font-size:12px; color:#059669; font-weight:700; margin-top:0.5rem;">Optimal Recovery Pace</p>
+            </div>
+
+            <div class="spacious-card">
+                <span class="kpi-title">Badges Achieved</span>
+                <div class="kpi-val">3 <span style="font-size:13px; color:var(--text-muted); font-weight:600;">milestones</span></div>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:0.5rem;">Trophy case unlocked</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Persistent Floating Interactive Taskbar / Dock -->
+    <nav class="floating-dock-container">
+        <a th:href="@{/dashboard}" class="dock-item active" title="Dashboard">
+            <span>⚡</span>
+            <span class="dock-tooltip">Dashboard</span>
+        </a>
+
+        <a th:href="@{/workouts}" class="dock-item" title="Workouts">
+            <span>📋</span>
+            <span class="dock-tooltip">Workouts</span>
+        </a>
+
+        <button class="dock-action-btn" onclick="location.href='/workouts'" title="Log Workout">
+            <span>+</span>
+        </button>
+
+        <a th:href="@{/analytics}" class="dock-item" title="Analytics">
+            <span>📊</span>
+            <span class="dock-tooltip">Analytics</span>
+        </a>
+
+        <a th:href="@{/challenges}" class="dock-item" title="Challenges">
+            <span>🏆</span>
+            <span class="dock-tooltip">Arena</span>
+        </a>
+
+        <a th:href="@{/profile}" class="dock-item" title="Profile">
+            <span>👤</span>
+            <span class="dock-tooltip">Profile</span>
+        </a>
+
+        <div class="dock-status-badge">
+            <span class="status-ping"></span>
+            <span>6-Day Streak</span>
+        </div>
+    </nav>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        FitPulseVisuals.initActivityVisualizer('orb-container', 96);
+      });
+    </script>
+</body>
+</html>

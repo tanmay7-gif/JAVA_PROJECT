@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPulse Admin — Governance &amp; Cluster Telemetry</title>
+    <link rel="stylesheet" th:href="@{/css/clinical-mint.css}">
+    <style>
+      .layout-container { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem; }
+      .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+      .kpi-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); }
+      .kpi-val { font-size: 2rem; font-weight: 900; color: var(--text-primary); margin-top: 0.25rem; }
+    </style>
+</head>
+<body>
+    <header class="clinical-navbar">
+        <a th:href="@{/admin/dashboard}" class="clinical-brand">
+            <div class="brand-icon" style="background: linear-gradient(135deg, #0D9488 0%, #115E59 100%);">🛡️</div>
+            <div>
+                FitPulse Admin
+                <span style="display:block; font-size:9px; text-transform:uppercase; color:#0D9488; margin-top:-3px;">Cluster Governance OS</span>
+            </div>
+        </a>
+
+        <ul class="nav-links">
+            <li><a th:href="@{/admin/dashboard}" class="nav-link active">Overview</a></li>
+            <li><a th:href="@{/admin/users}" class="nav-link">Users Directory</a></li>
+            <li><a th:href="@{/admin/moderation}" class="nav-link">Moderation Queue</a></li>
+            <li><a th:href="@{/admin/settings}" class="nav-link">System Settings</a></li>
+            <li><a th:href="@{/dashboard}" class="nav-link" style="color:var(--emerald-primary);">Athlete View</a></li>
+        </ul>
+
+        <span style="font-size:0.75rem; font-weight:700; color:#0F766E; background:#CCFBF1; padding:0.35rem 0.75rem; border-radius:999px;">
+            ROLE_ADMIN
+        </span>
+    </header>
+
+    <main class="layout-container">
+        <div style="border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h1 style="font-size:1.6rem; font-weight:900; letter-spacing:-0.02em;">Administrative Control Center</h1>
+            <p style="color:var(--text-muted); font-size:0.825rem; margin-top:0.25rem;">
+                Live monitoring of registered athlete accounts, workout session throughput, and compliance review queues.
+            </p>
+        </div>
+
+        <section class="grid-4">
+            <div class="clinical-card">
+                <span class="kpi-title">Total Registered Athletes</span>
+                <div class="kpi-val" style="color:#0F766E;">148</div>
+                <p style="font-size:11px; color:#059669; font-weight:600; margin-top:0.35rem;">Active Spring Security accounts</p>
+            </div>
+
+            <div class="clinical-card">
+                <span class="kpi-title">Sessions Logged Today</span>
+                <div class="kpi-val" style="color:var(--emerald-primary);">42</div>
+                <p style="font-size:11px; color:var(--text-muted); margin-top:0.35rem;">Since 00:00 UTC</p>
+            </div>
+
+            <div class="clinical-card">
+                <span class="kpi-title">Pending Moderation</span>
+                <div class="kpi-val" style="color:#D97706;">1</div>
+                <p style="font-size:11px; color:#B45309; font-weight:600; margin-top:0.35rem;">Guides awaiting peer review</p>
+            </div>
+
+            <div class="clinical-card">
+                <span class="kpi-title">Active Challenges</span>
+                <div class="kpi-val">3</div>
+                <p style="font-size:11px; color:var(--text-muted); margin-top:0.35rem;">Open community events</p>
+            </div>
+        </section>
+
+        <!-- Quick Actions Row -->
+        <div style="margin-top:1.5rem; display:flex; gap:1rem;">
+            <a th:href="@{/admin/users}" class="btn-primary" style="background:linear-gradient(135deg, #0D9488, #115E59);">Manage Athletes Directory</a>
+            <a th:href="@{/admin/moderation}" class="btn-secondary">Review Moderation Queue</a>
+            <a th:href="@{/swagger-ui.html}" target="_blank" class="btn-secondary">OpenAPI Swagger UI ↗</a>
+        </div>
+    </main>
+</body>
+</html>

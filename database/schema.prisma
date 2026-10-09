@@ -1,0 +1,152 @@
+// FitPulse Online Fitness Tracking Platform - Prisma Schema
+// Fully compatible with SQLite (local zero-setup dev) and PostgreSQL (production deployment)
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String          @id @default(uuid())
+  name          String
+  email         String          @unique
+  password_hash String
+  role          String          @default("USER") // "USER" | "ADMIN"
+  profile_image String?
+  is_active     Boolean         @default(true)
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+
+  workouts       WorkoutLog[]
+  contents       FitnessContent[]
+  userChallenges UserChallenge[]
+  auditLogs      AuditLog[]
+  goals          Goal[]
+
+  @@map("users")
+}
+
+model WorkoutLog {
+  id               String    @id @default(uuid())
+  user_id          String
+  type             String    // Cardio, Strength, HIIT, Yoga, Cycling, Running, etc.
+  duration_minutes Int
+  intensity        String    @default("MEDIUM") // "LOW" | "MEDIUM" | "HIGH"
+  calories_burned  Int
+  date             DateTime  @default(now())
+  notes            String?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  user             User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([date])
+  @@map("workout_logs")
+}
+
+model FitnessContent {
+  id          String   @id @default(uuid())
+  creator_id  String
+  title       String
+  description String
+  category    String   // Guide, Workout Routine, Nutrition, Recovery
+  media_url   String?
+  status      String   @default("PENDING") // "PENDING" | "APPROVED" | "REJECTED"
+  feedback    String?
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  creator     User     @relation(fields: [creator_id], references: [id], onDelete: Cascade)
+
+  @@index([status])
+  @@index([creator_id])
+  @@map("fitness_contents")
+}
+
+model Challenge {
+  id            String          @id @default(uuid())
+  title         String
+  description   String
+  target_metric String          // "CALORIES" | "DURATION" | "WORKOUT_COUNT"
+  target_value  Int
+  start_date    DateTime
+  end_date      DateTime
+  reward_badge  String          // e.g. "Flame Master", "Endurance Titan", "Iron Will"
+  created_at    DateTime        @default(now())
+
+  participants  UserChallenge[]
+
+  @@map("challenges")
+}
+
+model UserChallenge {
+  id               String    @id @default(uuid())
+  user_id          String
+  challenge_id     String
+  status           String    @default("IN_PROGRESS") // "IN_PROGRESS" | "COMPLETED" | "ABANDONED"
+  current_progress Int       @default(0)
+  joined_at        DateTime  @default(now())
+  completed_at     DateTime?
+
+  user             User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  challenge        Challenge @relation(fields: [challenge_id], references: [id], onDelete: Cascade)
+
+  @@unique([user_id, challenge_id])
+  @@index([user_id])
+  @@index([challenge_id])
+  @@map("user_challenges")
+}
+
+model SystemSetting {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  value       String
+  description String?
+  updated_by  String?
+  updated_at  DateTime @updatedAt
+
+  @@map("system_settings")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  user_id   String?
+  action    String   // e.g. "USER_REGISTER", "USER_LOGIN", "LOG_WORKOUT", "UPDATE_CONTENT_STATUS", "UPDATE_SYSTEM_SETTING"
+  details   String?  // JSON formatted or readable description
+  timestamp DateTime @default(now())
+
+  user      User?    @relation(fields: [user_id], references: [id], onDelete: SetNull)
+
+  @@index([timestamp])
+  @@index([user_id])
+  @@map("audit_logs")
+}
+
+model Goal {
+  id               String    @id @default(uuid())
+  user_id          String
+  title            String
+  description      String?
+  goal_type        String    @default("CALORIE_BURN") // "CALORIE_BURN" | "DURATION_MINUTES" | "WORKOUT_COUNT"
+  target_value     Float
+  current_value    Float     @default(0)
+  unit             String    @default("kcal")
+  status           String    @default("IN_PROGRESS") // "IN_PROGRESS" | "COMPLETED" | "ABANDONED"
+  start_date       DateTime  @default(now())
+  target_date      DateTime
+  completed_at     DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  user             User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+  @@index([status])
+  @@map("goals")
+}
+

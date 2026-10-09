@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPulse — Performance Metrics &amp; Telemetry Laboratory</title>
+    <link rel="stylesheet" th:href="@{/css/clinical-mint.css}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script th:src="@{/js/three-components.js}"></script>
+    <style>
+      .dual-lab { display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 2.5rem; margin-top: 2rem; }
+      @media (max-width: 992px) { .dual-lab { grid-template-columns: 1fr; } }
+      .pill-group { display: flex; background: white; border: 1px solid var(--border-light); border-radius: 0.85rem; padding: 0.3rem; }
+      .pill-btn { padding: 0.45rem 1rem; border-radius: 0.6rem; font-size: 0.775rem; font-weight: 700; border: none; cursor: pointer; background: transparent; color: #64748B; }
+      .pill-btn.active { background: var(--emerald-primary); color: white; }
+    </style>
+</head>
+<body>
+    <header class="clinical-navbar">
+        <a th:href="@{/dashboard}" class="clinical-brand">
+            <div class="brand-icon">⚡</div>
+            <div>
+                FitPulse
+                <span style="display:block; font-size:9px; text-transform:uppercase; color:var(--emerald-primary); margin-top:-3px; font-weight:700;">Clinical Wellness OS</span>
+            </div>
+        </a>
+
+        <div class="pill-group">
+            <button class="pill-btn active">Week</button>
+            <button class="pill-btn">Month</button>
+            <button class="pill-btn">Year</button>
+        </div>
+    </header>
+
+    <main class="spacious-container">
+        <div style="border-bottom: 1px solid var(--border-light); padding-bottom: 1.5rem; margin-bottom: 2rem;">
+            <h1 style="font-size:1.85rem; font-weight:900; letter-spacing:-0.025em;">Biometric Metrics &amp; Telemetry</h1>
+            <p style="color:var(--text-secondary); font-size:0.875rem; margin-top:0.4rem; line-height:1.6;">
+                WebGL-accelerated volumetric training volume, extruded discipline distribution, and continuous metabolic velocity analysis.
+            </p>
+        </div>
+
+        <!-- Visualizations Dual Laboratory Grid -->
+        <div class="dual-lab">
+            <!-- PerformanceVolumeChart Card -->
+            <div class="spacious-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                    <div>
+                        <h3 style="font-size:1.15rem; font-weight:800;">Performance Volume Chart</h3>
+                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.2rem;">Daily active training load across the rolling 7-day cycle</p>
+                    </div>
+                    <span style="font-size:0.725rem; font-weight:800; background:var(--emerald-light); color:#065F46; padding:0.25rem 0.65rem; border-radius:0.5rem; border:1px solid #A7F3D0;">Raycast Shaded</span>
+                </div>
+                <div id="bar-chart-container" class="canvas-container" style="height:360px;"></div>
+            </div>
+
+            <!-- CategoryDistributionChart Card -->
+            <div class="spacious-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                    <div>
+                        <h3 style="font-size:1.15rem; font-weight:800;">Category Distribution Chart</h3>
+                        <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.2rem;">Hover slices to raise on Y-axis with emissive mint radiance</p>
+                    </div>
+                    <span style="font-size:0.725rem; font-weight:800; background:#E0F2FE; color:#0369A1; padding:0.25rem 0.65rem; border-radius:0.5rem; border:1px solid #BAE6FD;">Cylindrical Extrusion</span>
+                </div>
+                <div id="pie-chart-container" class="canvas-container" style="height:360px;"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Persistent Floating Interactive Taskbar / Dock -->
+    <nav class="floating-dock-container">
+        <a th:href="@{/dashboard}" class="dock-item" title="Dashboard">
+            <span>⚡</span>
+            <span class="dock-tooltip">Dashboard</span>
+        </a>
+
+        <a th:href="@{/workouts}" class="dock-item" title="Workouts">
+            <span>📋</span>
+            <span class="dock-tooltip">Workouts</span>
+        </a>
+
+        <button class="dock-action-btn" onclick="location.href='/workouts'" title="Log Workout">
+            <span>+</span>
+        </button>
+
+        <a th:href="@{/analytics}" class="dock-item active" title="Analytics">
+            <span>📊</span>
+            <span class="dock-tooltip">Analytics</span>
+        </a>
+
+        <a th:href="@{/challenges}" class="dock-item" title="Challenges">
+            <span>🏆</span>
+            <span class="dock-tooltip">Arena</span>
+        </a>
+
+        <a th:href="@{/profile}" class="dock-item" title="Profile">
+            <span>👤</span>
+            <span class="dock-tooltip">Profile</span>
+        </a>
+
+        <div class="dock-status-badge">
+            <span class="status-ping"></span>
+            <span>Telemetry Active</span>
+        </div>
+    </nav>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        FitPulseVisuals.initPerformanceVolumeChart('bar-chart-container', [
+          { day: 'Mon', val: 480 },
+          { day: 'Tue', val: 620 },
+          { day: 'Wed', val: 350 },
+          { day: 'Thu', val: 750 },
+          { day: 'Fri', val: 520 },
+          { day: 'Sat', val: 840 },
+          { day: 'Sun', val: 410 }
+        ]);
+
+        FitPulseVisuals.initCategoryDistributionChart('pie-chart-container', [
+          { name: 'Cardio', val: 35, color: 0x10B981 },
+          { name: 'Strength', val: 40, color: 0x059669 },
+          { name: 'Flexibility', val: 15, color: 0x14B8A6 },
+          { name: 'HIIT', val: 10, color: 0x38BDF8 }
+        ]);
+      });
+    </script>
+</body>
+</html>

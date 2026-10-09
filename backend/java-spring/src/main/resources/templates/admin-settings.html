@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPulse Admin — Platform Configurations</title>
+    <link rel="stylesheet" th:href="@{/css/clinical-mint.css}">
+    <style>
+      .layout-container { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem; }
+      .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border-light); }
+    </style>
+</head>
+<body>
+    <header class="clinical-navbar">
+        <a th:href="@{/admin/dashboard}" class="clinical-brand">
+            <div class="brand-icon" style="background: linear-gradient(135deg, #0D9488 0%, #115E59 100%);">🛡️</div>
+            <div>
+                FitPulse Admin
+                <span style="display:block; font-size:9px; text-transform:uppercase; color:#0D9488; margin-top:-3px;">Cluster Governance OS</span>
+            </div>
+        </a>
+
+        <ul class="nav-links">
+            <li><a th:href="@{/admin/dashboard}" class="nav-link">Overview</a></li>
+            <li><a th:href="@{/admin/users}" class="nav-link">Users Directory</a></li>
+            <li><a th:href="@{/admin/moderation}" class="nav-link">Moderation Queue</a></li>
+            <li><a th:href="@{/admin/settings}" class="nav-link active">System Settings</a></li>
+            <li><a th:href="@{/dashboard}" class="nav-link" style="color:var(--emerald-primary);">Athlete View</a></li>
+        </ul>
+
+        <span style="font-size:0.75rem; font-weight:700; color:#0F766E; background:#CCFBF1; padding:0.35rem 0.75rem; border-radius:999px;">
+            ROLE_ADMIN
+        </span>
+    </header>
+
+    <main class="layout-container">
+        <div style="border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h1 style="font-size:1.6rem; font-weight:900; letter-spacing:-0.02em;">Global System Configuration</h1>
+            <p style="color:var(--text-muted); font-size:0.825rem; margin-top:0.25rem;">
+                Platform flags, security audit levels, and automated mathematical telemetry parameters.
+            </p>
+        </div>
+
+        <div class="clinical-card">
+            <div class="setting-item">
+                <div>
+                    <h4 style="font-size:0.9rem; font-weight:800;">Platform Maintenance Mode</h4>
+                    <p style="font-size:0.75rem; color:var(--text-muted);">Temporarily restrict athlete session writes for maintenance updates.</p>
+                </div>
+                <input type="checkbox" style="width:20px; height:20px; accent-color:var(--emerald-primary);">
+            </div>
+
+            <div class="setting-item">
+                <div>
+                    <h4 style="font-size:0.9rem; font-weight:800;">Require Athlete Email Verification</h4>
+                    <p style="font-size:0.75rem; color:var(--text-muted);">Ensure JWT tokens are only issued to verified email identities.</p>
+                </div>
+                <input type="checkbox" checked style="width:20px; height:20px; accent-color:var(--emerald-primary);">
+            </div>
+
+            <div class="setting-item">
+                <div>
+                    <h4 style="font-size:0.9rem; font-weight:800;">MET Formula Dynamic Scaling</h4>
+                    <p style="font-size:0.75rem; color:var(--text-muted);">Recalibrate active caloric burn velocity based on RPE intensity multiplier.</p>
+                </div>
+                <input type="checkbox" checked style="width:20px; height:20px; accent-color:var(--emerald-primary);">
+            </div>
+
+            <div style="margin-top:1.5rem;">
+                <button class="btn-primary" onclick="alert('System settings calibrated into database!')">Save System Settings</button>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

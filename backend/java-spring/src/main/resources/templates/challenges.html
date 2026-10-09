@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPulse — Challenges Arena &amp; Holographic Badges</title>
+    <link rel="stylesheet" th:href="@{/css/clinical-mint.css}">
+    <style>
+      .layout-container { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem; }
+      .challenge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+      .progress-bar-bg { width: 100%; height: 8px; background: #E2E8F0; border-radius: 999px; overflow: hidden; margin-top: 0.5rem; }
+      .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #10B981, #34D399); border-radius: 999px; }
+      .badge-icon { width: 48px; height: 48px; border-radius: 1rem; background: #ECFDF5; border: 1px solid #A7F3D0; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+    </style>
+</head>
+<body>
+    <header class="clinical-navbar">
+        <a th:href="@{/dashboard}" class="clinical-brand">
+            <div class="brand-icon">⚡</div>
+            <div>
+                FitPulse
+                <span style="display:block; font-size:9px; text-transform:uppercase; color:var(--emerald-primary); margin-top:-3px; font-weight:700;">Clinical Wellness OS</span>
+            </div>
+        </a>
+
+        <ul class="nav-links">
+            <li><a th:href="@{/dashboard}" class="nav-link">Dashboard</a></li>
+            <li><a th:href="@{/workouts}" class="nav-link">Workouts</a></li>
+            <li><a th:href="@{/analytics}" class="nav-link">Analytics</a></li>
+            <li><a th:href="@{/challenges}" class="nav-link active">Arena &amp; Badges</a></li>
+            <li><a th:href="@{/profile}" class="nav-link">Profile</a></li>
+            <li th:if="${isAdmin}"><a th:href="@{/admin/dashboard}" class="nav-link" style="color:#0D9488;">Admin Control</a></li>
+        </ul>
+
+        <div style="font-size:0.8rem; font-weight:700; color:var(--emerald-primary);">Trophy Cabinet: 3 Unlocked</div>
+    </header>
+
+    <main class="layout-container">
+        <div style="border-bottom: 1px solid var(--border-light); padding-bottom: 1.5rem; margin-bottom: 2rem;">
+            <h1 style="font-size:1.85rem; font-weight:900; letter-spacing:-0.025em;">Endurance Challenges &amp; Holographic Medals</h1>
+            <p style="color:var(--text-secondary); font-size:0.875rem; margin-top:0.4rem; line-height:1.6;">
+                Achieve physiological targets and unlock holographic medals for your permanent trophy cabinet.
+            </p>
+        </div>
+
+        <div class="challenge-grid">
+            <!-- Challenge 1 -->
+            <div class="clinical-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div class="badge-icon">🔥</div>
+                    <span style="font-size:0.7rem; font-weight:800; background:var(--emerald-light); color:#065F46; padding:0.2rem 0.5rem; border-radius:0.4rem;">ENROLLED</span>
+                </div>
+                <h3 style="font-size:1.1rem; font-weight:800; margin-top:1rem;">5000 kcal Metabolic Burn</h3>
+                <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.25rem; line-height:1.4;">
+                    Burn cumulative 5,000 active kilocalories across any high-intensity conditioning sessions.
+                </p>
+                <div style="margin-top:1.25rem;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:700;">
+                        <span>Progress: 3,010 / 5,000 kcal</span>
+                        <span style="color:var(--emerald-primary);">60%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width:60%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Challenge 2 -->
+            <div class="clinical-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div class="badge-icon">🚴</div>
+                    <span style="font-size:0.7rem; font-weight:800; background:#E0F2FE; color:#0369A1; padding:0.2rem 0.5rem; border-radius:0.4rem;">ACHIEVED</span>
+                </div>
+                <h3 style="font-size:1.1rem; font-weight:800; margin-top:1rem;">Century Conditioning Split</h3>
+                <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.25rem; line-height:1.4;">
+                    Log 180 total minutes of high-cadence cycling or rowing endurance.
+                </p>
+                <div style="margin-top:1.25rem;">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; font-weight:700;">
+                        <span>Target Completed (180 mins)</span>
+                        <span style="color:#0284C7;">100%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width:100%; background:linear-gradient(90deg, #0284C7, #38BDF8);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Challenge 3 -->
+            <div class="clinical-card">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                    <div class="badge-icon">👑</div>
+                    <span style="font-size:0.7rem; font-weight:800; background:#FEF3C7; color:#B45309; padding:0.2rem 0.5rem; border-radius:0.4rem;">AVAILABLE</span>
+                </div>
+                <h3 style="font-size:1.1rem; font-weight:800; margin-top:1rem;">14-Day Consistency Master</h3>
+                <p style="color:var(--text-muted); font-size:0.8rem; margin-top:0.25rem; line-height:1.4;">
+                    Complete at least 10 logged sessions over a 14-day rolling training cycle.
+                </p>
+                <div style="margin-top:1.25rem;">
+                    <button class="btn-primary" style="width:100%;">Enroll Challenge</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Persistent Floating Interactive Taskbar / Dock -->
+    <nav class="floating-dock-container">
+        <a th:href="@{/dashboard}" class="dock-item" title="Dashboard">
+            <span>⚡</span>
+            <span class="dock-tooltip">Dashboard</span>
+        </a>
+
+        <a th:href="@{/workouts}" class="dock-item" title="Workouts">
+            <span>📋</span>
+            <span class="dock-tooltip">Workouts</span>
+        </a>
+
+        <button class="dock-action-btn" onclick="location.href='/workouts'" title="Log Workout">
+            <span>+</span>
+        </button>
+
+        <a th:href="@{/analytics}" class="dock-item" title="Analytics">
+            <span>📊</span>
+            <span class="dock-tooltip">Analytics</span>
+        </a>
+
+        <a th:href="@{/challenges}" class="dock-item active" title="Challenges">
+            <span>🏆</span>
+            <span class="dock-tooltip">Arena</span>
+        </a>
+
+        <a th:href="@{/profile}" class="dock-item" title="Profile">
+            <span>👤</span>
+            <span class="dock-tooltip">Profile</span>
+        </a>
+
+        <div class="dock-status-badge">
+            <span class="status-ping"></span>
+            <span>3 Medals Earned</span>
+        </div>
+    </nav>
+</body>
+</html>

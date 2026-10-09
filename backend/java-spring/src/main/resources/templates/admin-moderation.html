@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitPulse Admin — Content Moderation Queue</title>
+    <link rel="stylesheet" th:href="@{/css/clinical-mint.css}">
+    <style>
+      .layout-container { max-width: 1280px; margin: 0 auto; padding: 2rem 1.5rem; }
+      .moderation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      @media (max-width: 868px) { .moderation-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="clinical-navbar">
+        <a th:href="@{/admin/dashboard}" class="clinical-brand">
+            <div class="brand-icon" style="background: linear-gradient(135deg, #0D9488 0%, #115E59 100%);">🛡️</div>
+            <div>
+                FitPulse Admin
+                <span style="display:block; font-size:9px; text-transform:uppercase; color:#0D9488; margin-top:-3px;">Cluster Governance OS</span>
+            </div>
+        </a>
+
+        <ul class="nav-links">
+            <li><a th:href="@{/admin/dashboard}" class="nav-link">Overview</a></li>
+            <li><a th:href="@{/admin/users}" class="nav-link">Users Directory</a></li>
+            <li><a th:href="@{/admin/moderation}" class="nav-link active">Moderation Queue</a></li>
+            <li><a th:href="@{/admin/settings}" class="nav-link">System Settings</a></li>
+            <li><a th:href="@{/dashboard}" class="nav-link" style="color:var(--emerald-primary);">Athlete View</a></li>
+        </ul>
+
+        <span style="font-size:0.75rem; font-weight:700; color:#0F766E; background:#CCFBF1; padding:0.35rem 0.75rem; border-radius:999px;">
+            ROLE_ADMIN
+        </span>
+    </header>
+
+    <main class="layout-container">
+        <div style="border-bottom: 1px solid var(--border-light); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h1 style="font-size:1.6rem; font-weight:900; letter-spacing:-0.02em;">Content Approval Queue</h1>
+            <p style="color:var(--text-muted); font-size:0.825rem; margin-top:0.25rem;">
+                Split-screen preview of athlete-submitted conditioning guides and nutritional protocols.
+            </p>
+        </div>
+
+        <div class="moderation-grid">
+            <div class="clinical-card">
+                <span style="font-size:0.7rem; font-weight:800; background:#FEF3C7; color:#B45309; padding:0.2rem 0.5rem; border-radius:0.4rem;">PENDING REVIEW</span>
+                <h3 style="font-size:1.1rem; font-weight:800; margin-top:0.75rem;">Science-Backed 4-Day Conditioning Split</h3>
+                <p style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem;">Submitted by Sarah Connor (sarah@fitpulse.com)</p>
+                <div style="margin-top:1rem; font-size:0.825rem; line-height:1.5; color:#374151; background:#F8FAF8; padding:1rem; border-radius:0.75rem; border:1px solid var(--border-light);">
+                    A balanced high-frequency split combining heavy compound lifting with Zone 2 aerobic pacing for maximal VO2 max improvements. Detail warmup sets, work sets, target RPE, and post-session nutrition...
+                </div>
+                <div style="margin-top:1.25rem; display:flex; gap:0.75rem;">
+                    <button class="btn-primary" style="background:#059669;" onclick="alert('Guide approved!')">Approve Guide</button>
+                    <button class="btn-secondary" style="color:#DC2626; border-color:#FCA5A5;" onclick="alert('Guide rejected.')">Reject Submission</button>
+                </div>
+            </div>
+
+            <div class="clinical-card" style="background:#F9FAF9; border-style:dashed;">
+                <h4 style="font-size:0.9rem; font-weight:800; color:#64748B;">Audit Checklist</h4>
+                <ul style="margin-top:0.75rem; padding-left:1.25rem; font-size:0.8rem; color:#4B5563; line-height:1.6;">
+                    <li>Verified scientific references for training splits</li>
+                    <li>No promotional spam or unverified pharmaceutical endorsements</li>
+                    <li>Proper recovery guidance and safety parameters included</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,324 @@
+/* FitPulse Clinical Wellness & Biometric Telemetry OS - Theme Tokens */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --canvas-bg: #F8FAF8;
+  --card-bg: #FFFFFF;
+  --text-primary: #1F2937;
+  --text-secondary: #4B5563;
+  --text-muted: #64748B;
+  --border-light: rgba(209, 231, 221, 0.75);
+  --border-hover: rgba(52, 211, 153, 0.6);
+  --emerald-primary: #10B981;
+  --emerald-accent: #34D399;
+  --emerald-light: #ECFDF5;
+  --emerald-dark: #065F46;
+  --shadow-subtle: 0 4px 24px -2px rgba(16, 185, 129, 0.06), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 16px 36px -4px rgba(16, 185, 129, 0.12), 0 6px 16px -2px rgba(0, 0, 0, 0.03);
+  --shadow-dock: 0 20px 48px -8px rgba(16, 185, 129, 0.15), 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--canvas-bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  padding-bottom: 7rem; /* Breathing room for persistent floating dock */
+}
+
+/* Spacious Container */
+.spacious-container {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+/* Glassmorphic Top Brand Bar */
+.clinical-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-light);
+  padding: 1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.clinical-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  color: inherit;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+}
+
+.brand-icon {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.28);
+}
+
+/* Spacious Clinical Cards */
+.spacious-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  border-radius: 1.75rem;
+  box-shadow: var(--shadow-subtle);
+  padding: 2.25rem; /* Large card padding p-8/p-9 equivalent */
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spacious-card:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Interactive Floating Taskbar / Dock */
+.floating-dock-container {
+  position: fixed;
+  bottom: 1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(209, 231, 221, 0.85);
+  box-shadow: var(--shadow-dock);
+  border-radius: 999px;
+  padding: 0.55rem 0.85rem;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.floating-dock-container:hover {
+  box-shadow: 0 24px 54px -6px rgba(16, 185, 129, 0.2), 0 10px 28px -4px rgba(0, 0, 0, 0.08);
+}
+
+/* Dock Item with Magnetic Hover Scaling */
+.dock-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 999px;
+  color: #4B5563;
+  text-decoration: none;
+  font-size: 1.25rem;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  background: transparent;
+}
+
+.dock-item:hover {
+  transform: scale(1.22) translateY(-6px);
+  color: var(--emerald-dark);
+  background: #F0FDF4;
+}
+
+.dock-item.active {
+  background: var(--emerald-light);
+  color: #065F46;
+  border: 1px solid rgba(52, 211, 153, 0.6);
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+}
+
+/* Active Dot Indicator beneath dock icon */
+.dock-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0.25rem;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--emerald-primary);
+}
+
+/* Floating Dock Tooltip Pill */
+.dock-tooltip {
+  position: absolute;
+  top: -2.4rem;
+  background: #111827;
+  color: #FFFFFF;
+  padding: 0.25rem 0.65rem;
+  border-radius: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  pointer-events: none;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: all 0.15s ease;
+}
+
+.dock-item:hover .dock-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Primary Quick-Action Trigger in Dock */
+.dock-action-btn {
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dock-action-btn:hover {
+  transform: scale(1.22) translateY(-6px);
+  box-shadow: 0 10px 24px rgba(16, 185, 129, 0.45);
+}
+
+/* Live Status Pill in Dock */
+.dock-status-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  background: #FAFCFA;
+  border: 1px solid var(--border-light);
+  font-size: 0.725rem;
+  font-weight: 800;
+  color: #374151;
+  margin-left: 0.25rem;
+}
+
+.status-ping {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3);
+  animation: pulse-ring 2s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* Canvas Containers */
+.canvas-container {
+  width: 100%;
+  height: 440px;
+  position: relative;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F9FAF9 100%);
+  border: 1px solid var(--border-light);
+}
+
+/* 2D Tooltip rendered over canvas */
+.three-tooltip {
+  position: absolute;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(52, 211, 153, 0.6);
+  border-radius: 1.25rem;
+  padding: 0.85rem 1.15rem;
+  box-shadow: 0 12px 30px -4px rgba(16, 185, 129, 0.2);
+  font-size: 0.775rem;
+  display: none;
+  z-index: 100;
+  transform: translate(-50%, -100%);
+  margin-top: -12px;
+}
+
+/* Form Inputs */
+input, select, textarea {
+  font-family: inherit;
+  width: 100%;
+  padding: 0.75rem 1.15rem;
+  border-radius: 0.95rem;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--emerald-primary);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  background: #FFFFFF;
+  color: #374151;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: 1px solid #E5E7EB;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: #F9FAFB;
+  border-color: #D1D5DB;
+}
