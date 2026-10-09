@@ -292,7 +292,20 @@ class ApiClient {
   private getToken(): string | null {
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       try {
-        return localStorage.getItem('fitpulse_token');
+        const token = localStorage.getItem('fitpulse_token');
+        if (
+          !token ||
+          token === 'undefined' ||
+          token === 'null' ||
+          token.trim() === '' ||
+          token.startsWith('demo_jwt_token_')
+        ) {
+          if (token && (token.startsWith('demo_jwt_token_') || token === 'undefined' || token === 'null')) {
+            localStorage.removeItem('fitpulse_token');
+          }
+          return null;
+        }
+        return token.trim();
       } catch {
         return null;
       }
@@ -789,7 +802,7 @@ class ApiClient {
       ...(options.headers as Record<string, string>),
     };
 
-    if (token) {
+    if (token && token !== 'undefined' && token !== 'null') {
       headers['Authorization'] = `Bearer ${token}`;
     }
 
@@ -798,6 +811,28 @@ class ApiClient {
         ...options,
         headers,
       });
+
+      // 401 Unauthorized Interceptor: purge stale/expired credentials and notify UI
+      if (response.status === 401) {
+        const isAuthEndpoint =
+          endpoint.startsWith('/auth/login') || endpoint.startsWith('/auth/register');
+
+        if (!isAuthEndpoint) {
+          console.warn(`[FitPulse API 401 Interceptor] Unauthorized request to ${endpoint}. Purging session credentials.`);
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('fitpulse_token');
+            localStorage.removeItem('fitpulse_demo_role');
+            window.dispatchEvent(
+              new CustomEvent('fitpulse_auth_unauthorized', {
+                detail: {
+                  endpoint,
+                  message: 'Session expired or invalid credentials. Please log in again.',
+                },
+              })
+            );
+          }
+        }
+      }
 
       // Handle non-JSON responses from Vercel static routing (e.g. 404 HTML or SPA redirects)
       const contentType = response.headers.get('content-type') || '';

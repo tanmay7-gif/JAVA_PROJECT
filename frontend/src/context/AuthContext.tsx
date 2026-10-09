@@ -1,27 +1,7 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { User, Role } from '../types';
 import { api } from '../services/api';
 import { useToast } from './ToastContext';
-
-const DEMO_ATHLETE_USER: User = {
-  id: '54429127-f8e3-495b-87e7-da9b5b584546',
-  name: 'Sarah Connor',
-  email: 'sarah@fitpulse.com',
-  role: 'USER',
-  is_active: true,
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-};
-
-const DEMO_ADMIN_USER: User = {
-  id: '88124930-a9e1-419b-81d2-[#9841893]',
-  name: 'Marcus Vance',
-  email: 'admin@fitpulse.com',
-  role: 'ADMIN',
-  is_active: true,
-  created_at: new Date().toISOString(),
-  updated_at: new Date().toISOString(),
-};
 
 interface AuthContextType {
   user: User | null;
@@ -38,100 +18,179 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(() => {
-    const savedRole = localStorage.getItem('fitpulse_demo_role');
-    const savedToken = localStorage.getItem('fitpulse_token');
-    if (savedToken) {
-      return savedRole === 'ADMIN' ? DEMO_ADMIN_USER : DEMO_ATHLETE_USER;
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const saved = localStorage.getItem('fitpulse_token');
+    if (!saved || saved === 'undefined' || saved === 'null' || saved.startsWith('demo_jwt_token_')) {
+      return null;
     }
-    return null;
+    return saved.trim();
   });
-
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem('fitpulse_token'));
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { showToast } = useToast();
 
-  useEffect(() => {
-    const savedToken = localStorage.getItem('fitpulse_token');
-    const savedRole = localStorage.getItem('fitpulse_demo_role');
-    if (savedToken && !user) {
-      setUser(savedRole === 'ADMIN' ? DEMO_ADMIN_USER : DEMO_ATHLETE_USER);
+  const logout = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('fitpulse_token');
+      localStorage.removeItem('fitpulse_demo_role');
     }
-  }, []);
-
-  const login = async (email: string, password = 'User123!') => {
-    setIsLoading(true);
-    try {
-      // Try backend first; fallback to demo instant login seamlessly
-      try {
-        const res = await api.login({ email, password });
-        if (res.success && res.data) {
-          localStorage.setItem('fitpulse_token', res.data.token);
-          localStorage.setItem('fitpulse_demo_role', res.data.user.role);
-          setToken(res.data.token);
-          setUser(res.data.user);
-          showToast(`Welcome back, ${res.data.user.name}!`, 'success');
-          return;
-        }
-      } catch {
-        // Backend not reachable or error -> fallback to mock demo user
-      }
-
-      const targetUser = email.toLowerCase().includes('admin') ? DEMO_ADMIN_USER : DEMO_ATHLETE_USER;
-      const fakeToken = `demo_jwt_token_${Date.now()}`;
-      localStorage.setItem('fitpulse_token', fakeToken);
-      localStorage.setItem('fitpulse_demo_role', targetUser.role);
-      setToken(fakeToken);
-      setUser(targetUser);
-      showToast(`Welcome to Portal, ${targetUser.name}!`, 'success');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const register = async (name: string, email: string, password = 'User123!', role: Role = 'USER') => {
-    setIsLoading(true);
-    try {
-      const newUser: User = {
-        id: `user_${Date.now()}`,
-        name: name || 'Sarah Connor',
-        email,
-        role,
-        is_active: true,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      };
-      const fakeToken = `demo_jwt_token_${Date.now()}`;
-      localStorage.setItem('fitpulse_token', fakeToken);
-      localStorage.setItem('fitpulse_demo_role', role);
-      setToken(fakeToken);
-      setUser(newUser);
-      showToast(`Account created! Welcome, ${newUser.name}.`, 'success');
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const logout = () => {
-    localStorage.removeItem('fitpulse_token');
-    localStorage.removeItem('fitpulse_demo_role');
     setToken(null);
     setUser(null);
     showToast('You have been safely signed out.', 'info');
+  }, [showToast]);
+
+  // 1. Listen for global 401 Unauthorized Interceptor events
+  useEffect(() => {
+    const handleUnauthorized = (event: any) => {
+      console.warn('[AuthContext] 401 Unauthorized Interceptor triggered.');
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('fitpulse_token');
+        localStorage.removeItem('fitpulse_demo_role');
+      }
+      setToken(null);
+      setUser(null);
+      const msg = event?.detail?.message || 'Your session has expired. Please sign in again.';
+      showToast(msg, 'error');
+    };
+
+    window.addEventListener('fitpulse_auth_unauthorized', handleUnauthorized);
+    return () => {
+      window.removeEventListener('fitpulse_auth_unauthorized', handleUnauthorized);
+    };
+  }, [showToast]);
+
+  // 2. Validate token on initial mount via /api/auth/me
+  useEffect(() => {
+    let isMounted = true;
+    const savedToken = localStorage.getItem('fitpulse_token');
+
+    // Clean up malformed or legacy mock tokens immediately
+    if (
+      !savedToken ||
+      savedToken === 'undefined' ||
+      savedToken === 'null' ||
+      savedToken.startsWith('demo_jwt_token_')
+    ) {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('fitpulse_token');
+        localStorage.removeItem('fitpulse_demo_role');
+      }
+      if (isMounted) {
+        setToken(null);
+        setUser(null);
+        setIsLoading(false);
+      }
+      return;
+    }
+
+    // Verify cryptographic validity with backend
+    api.getMe()
+      .then((res) => {
+        if (isMounted && res.success && res.data) {
+          setUser(res.data);
+          setToken(savedToken.trim());
+          localStorage.setItem('fitpulse_demo_role', res.data.role);
+        }
+      })
+      .catch((err) => {
+        console.warn('[AuthContext] Initial token validation failed. Purging stale session.', err);
+        if (isMounted) {
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('fitpulse_token');
+            localStorage.removeItem('fitpulse_demo_role');
+          }
+          setToken(null);
+          setUser(null);
+        }
+      })
+      .finally(() => {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  // 3. Authenticate with real backend credentials
+  const login = async (email: string, password = 'User123!') => {
+    setIsLoading(true);
+    try {
+      const res = await api.login({ email, password });
+      if (res.success && res.data?.token) {
+        const cleanToken = res.data.token.trim();
+        localStorage.setItem('fitpulse_token', cleanToken);
+        localStorage.setItem('fitpulse_demo_role', res.data.user.role);
+        setToken(cleanToken);
+        setUser(res.data.user);
+        showToast(`Welcome back, ${res.data.user.name}!`, 'success');
+        return;
+      }
+      throw new Error(res.message || 'Authentication failed.');
+    } catch (err: any) {
+      console.error('[AuthContext] Login error:', err);
+      showToast(err.message || 'Invalid credentials. Please verify email and password.', 'error');
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // 4. Register new athlete in database
+  const register = async (name: string, email: string, password = 'User123!', role: Role = 'USER') => {
+    setIsLoading(true);
+    try {
+      const res = await api.register({ name, email, password, role });
+      if (res.success && res.data?.token) {
+        const cleanToken = res.data.token.trim();
+        localStorage.setItem('fitpulse_token', cleanToken);
+        localStorage.setItem('fitpulse_demo_role', res.data.user.role || role);
+        setToken(cleanToken);
+        setUser(res.data.user);
+        showToast(`Account created! Welcome, ${res.data.user.name}.`, 'success');
+        return;
+      }
+      throw new Error(res.message || 'Registration failed.');
+    } catch (err: any) {
+      console.error('[AuthContext] Registration error:', err);
+      showToast(err.message || 'Could not register account.', 'error');
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const updateUser = (updates: Partial<User>) => {
     setUser((prev) => (prev ? { ...prev, ...updates } : null));
   };
 
+  // 5. Seamlessly switch between authenticated demo personas using valid backend credentials
   const switchDemoUser = async (targetRole: Role) => {
-    const targetUser = targetRole === 'ADMIN' ? DEMO_ADMIN_USER : DEMO_ATHLETE_USER;
-    const fakeToken = `demo_jwt_token_${Date.now()}`;
-    localStorage.setItem('fitpulse_token', fakeToken);
-    localStorage.setItem('fitpulse_demo_role', targetRole);
-    setToken(fakeToken);
-    setUser(targetUser);
-    showToast(`Switched to ${targetUser.name} (${targetRole})`, 'success');
+    setIsLoading(true);
+    try {
+      const email = targetRole === 'ADMIN' ? 'admin@fitpulse.com' : 'sarah@fitpulse.com';
+      const password = targetRole === 'ADMIN' ? 'Admin123!' : 'User123!';
+
+      const res = await api.login({ email, password });
+      if (res.success && res.data?.token) {
+        const cleanToken = res.data.token.trim();
+        localStorage.setItem('fitpulse_token', cleanToken);
+        localStorage.setItem('fitpulse_demo_role', targetRole);
+        setToken(cleanToken);
+        setUser(res.data.user);
+        showToast(`Switched to ${res.data.user.name} (${targetRole})`, 'success');
+        return;
+      }
+      throw new Error('Failed to obtain authenticated token for demo persona.');
+    } catch (err: any) {
+      console.error('[AuthContext] switchDemoUser error:', err);
+      showToast('Could not switch demo user: ' + (err.message || ''), 'error');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

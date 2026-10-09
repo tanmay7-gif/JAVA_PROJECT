@@ -1,7 +1,11 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-const JWT_SECRET: string = process.env.JWT_SECRET || 'fitpulse_fallback_secret_key_2026';
-const JWT_EXPIRES_IN: string = process.env.JWT_EXPIRES_IN || '7d';
+// Ensure environment variables are loaded even if this module is imported before index.ts
+dotenv.config();
+
+export const JWT_SECRET: string = process.env.JWT_SECRET || 'fitpulse_super_secure_jwt_secret_key_2026_xyz!';
+export const JWT_EXPIRES_IN: string = process.env.JWT_EXPIRES_IN || '7d';
 
 export interface JwtPayload {
   userId: string;
@@ -11,7 +15,7 @@ export interface JwtPayload {
 
 export const signJwt = (payload: JwtPayload): string => {
   return jwt.sign(payload, JWT_SECRET, {
-    expiresIn: JWT_EXPIRES_IN as any,
+    expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as any,
   });
 };
 

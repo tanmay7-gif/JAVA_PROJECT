@@ -913,6 +913,61 @@ async function runTests() {
   });
   assert(badContentModerateRes.status === 404, 'Admin Content Negative: Moderating non-existent content rejected (404 Not Found)');
 
+  // 16s. Auth Header: Bearer undefined rejection (401 Unauthorized)
+  const bearerUndefinedRes = await fetch(`${BASE_URL}/auth/me`, {
+    headers: { Authorization: 'Bearer undefined' },
+  });
+  const bearerUndefinedData: any = await bearerUndefinedRes.json();
+  assert(
+    bearerUndefinedRes.status === 401 && bearerUndefinedData.message === 'Token is undefined or null. Please log in again.',
+    'Auth Extraction: "Bearer undefined" normalized and rejected (401)'
+  );
+
+  // 16t. Auth Header: Bearer null rejection (401 Unauthorized)
+  const bearerNullRes = await fetch(`${BASE_URL}/auth/me`, {
+    headers: { Authorization: 'Bearer null' },
+  });
+  const bearerNullData: any = await bearerNullRes.json();
+  assert(
+    bearerNullRes.status === 401 && bearerNullData.message === 'Token is undefined or null. Please log in again.',
+    'Auth Extraction: "Bearer null" normalized and rejected (401)'
+  );
+
+  // 16u. Auth Header: Non-Bearer format rejection (401 Unauthorized)
+  const nonBearerRes = await fetch(`${BASE_URL}/auth/me`, {
+    headers: { Authorization: 'Token abc123xyz' },
+  });
+  const nonBearerData: any = await nonBearerRes.json();
+  assert(
+    nonBearerRes.status === 401 && nonBearerData.message === 'Authentication token missing or invalid format.',
+    'Auth Extraction: Invalid auth header format rejected (401)'
+  );
+
+  // 16v. Auth Header: Malformed JWT token rejection (401 Unauthorized)
+  const malformedJwtRes = await fetch(`${BASE_URL}/auth/me`, {
+    headers: { Authorization: 'Bearer invalid.token.payload' },
+  });
+  const malformedJwtData: any = await malformedJwtRes.json();
+  assert(
+    malformedJwtRes.status === 401 && malformedJwtData.message === 'Invalid, malformed, or expired token. Authentication failed.',
+    'Auth Extraction: Malformed/tampered JWT rejected (401)'
+  );
+
+  // 16w. Auth Profile: Authenticated PATCH /api/auth/profile updates profile settings
+  const updateProfileRes = await fetch(`${BASE_URL}/auth/profile`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${sarahToken}`,
+    },
+    body: JSON.stringify({ name: 'Sarah Connor (Verified Elite)' }),
+  });
+  const updateProfileData: any = await updateProfileRes.json();
+  assert(
+    updateProfileRes.status === 200 && updateProfileData.success && updateProfileData.data.name === 'Sarah Connor (Verified Elite)',
+    'Athlete Profile: Update settings with valid JWT (PATCH /api/auth/profile)'
+  );
+
   console.log(`\n===============================================`);
   console.log(`📊 Verification Summary: ${passed} Passed, ${failed} Failed`);
   console.log(`===============================================`);

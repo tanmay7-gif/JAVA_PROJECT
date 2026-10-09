@@ -8,12 +8,19 @@ export interface AuthenticatedRequest extends Request {
 
 export const authenticateToken = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.startsWith('Bearer ') ? authHeader.split(' ')[1] : null;
-
-  if (!token) {
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
     res.status(401).json({
       success: false,
-      message: 'Authentication token required. Please sign in.',
+      message: 'Authentication token missing or invalid format.',
+    });
+    return;
+  }
+
+  const token = authHeader.split(' ')[1]?.trim();
+  if (!token || token === 'undefined' || token === 'null') {
+    res.status(401).json({
+      success: false,
+      message: 'Token is undefined or null. Please log in again.',
     });
     return;
   }
@@ -22,7 +29,7 @@ export const authenticateToken = (req: AuthenticatedRequest, res: Response, next
     const decoded = verifyJwt(token);
     req.user = decoded;
     next();
-  } catch (error) {
+  } catch (err: any) {
     res.status(401).json({
       success: false,
       message: 'Invalid, malformed, or expired token. Authentication failed.',
