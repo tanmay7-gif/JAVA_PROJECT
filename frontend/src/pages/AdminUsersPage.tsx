@@ -1,12 +1,8 @@
 import React from 'react';
-import { UsersDirectory } from './UsersDirectory';
+import { AdminDashboardPage } from './AdminDashboardPage';
 
 export const AdminUsersPage: React.FC = () => {
-  return (
-    <div className="animate-in fade-in duration-300">
-      <UsersDirectory />
-    </div>
-  );
+  return <AdminDashboardPage initialTab="users" />;
 };
 
 export default AdminUsersPage;

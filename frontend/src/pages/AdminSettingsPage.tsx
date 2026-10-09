@@ -1,10 +1,8 @@
 import React from 'react';
-import { AdminSystemSettings } from '../components/admin/AdminSystemSettings';
+import { AdminDashboardPage } from './AdminDashboardPage';
 
 export const AdminSettingsPage: React.FC = () => {
-  return (
-    <div className="space-y-6 animate-in fade-in duration-300">
-      <AdminSystemSettings />
-    </div>
-  );
+  return <AdminDashboardPage initialTab="settings" />;
 };
+
+export default AdminSettingsPage;

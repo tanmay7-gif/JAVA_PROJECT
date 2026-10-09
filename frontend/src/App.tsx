@@ -95,6 +95,17 @@ const AppShell: React.FC = () => {
     '/profile',
   ].some((p) => location.pathname === p || location.pathname.startsWith(p));
 
+  const isAdminRoute = [
+    '/admin',
+    '/admin/dashboard',
+    '/admin/users',
+    '/admin/challenges',
+    '/admin/moderation',
+    '/admin/settings',
+    '/admin/activity',
+    '/admin/audit',
+  ].some((p) => location.pathname === p || location.pathname.startsWith(p));
+
   const AthleteShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <AthleteAppLayout
       onOpenLogWorkout={handleOpenLogWorkout}
@@ -150,16 +161,18 @@ const AppShell: React.FC = () => {
       className={
         isAthleteRoute
           ? 'min-h-screen bg-[#0B131E] text-slate-100 flex flex-col'
+          : isAdminRoute
+          ? 'min-h-screen bg-[#080D17] text-slate-100 flex flex-col'
           : 'min-h-screen bg-[#F8FAF8] text-gray-900 flex flex-col selection:bg-emerald-500 selection:text-white'
       }
     >
-      {/* Persistent Light-Glass Navigation Header (hidden on athlete telemetry routes) */}
-      {user && !isAthleteRoute && <Navbar onOpenLogWorkout={handleOpenLogWorkout} />}
+      {/* Persistent Light-Glass Navigation Header (hidden on athlete telemetry & admin routes) */}
+      {user && !isAthleteRoute && !isAdminRoute && <Navbar onOpenLogWorkout={handleOpenLogWorkout} />}
 
       {/* Main Content Area */}
       <main
         className={
-          isAthleteRoute
+          isAthleteRoute || isAdminRoute
             ? 'w-full flex-1'
             : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8'
         }
@@ -272,22 +285,22 @@ const AppShell: React.FC = () => {
           />
 
           {/* ================= ADMIN SPACE ROUTES ================= */}
-          {/* 1. /admin/dashboard — Platform Overview & 3D Mesh */}
+          {/* 1. /admin/dashboard — Platform Overview & Telemetry */}
           <Route
             path="/admin/dashboard"
             element={
               <ProtectedAdminRoute>
-                <AdminDashboardPage />
+                <AdminDashboardPage initialTab="overview" />
               </ProtectedAdminRoute>
             }
           />
 
-          {/* 2. /admin/users — Paginated User Directory */}
+          {/* 2. /admin/users — Paginated User Directory & Roles */}
           <Route
             path="/admin/users"
             element={
               <ProtectedAdminRoute>
-                <AdminUsersPage />
+                <AdminDashboardPage initialTab="users" />
               </ProtectedAdminRoute>
             }
           />
@@ -297,7 +310,7 @@ const AppShell: React.FC = () => {
             path="/admin/moderation"
             element={
               <ProtectedAdminRoute>
-                <AdminModerationPage />
+                <AdminDashboardPage initialTab="moderation" />
               </ProtectedAdminRoute>
             }
           />
@@ -307,7 +320,35 @@ const AppShell: React.FC = () => {
             path="/admin/settings"
             element={
               <ProtectedAdminRoute>
-                <AdminSettingsPage />
+                <AdminDashboardPage initialTab="settings" />
+              </ProtectedAdminRoute>
+            }
+          />
+
+          {/* 5. /admin/challenges — Quest Management */}
+          <Route
+            path="/admin/challenges"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardPage initialTab="challenges" />
+              </ProtectedAdminRoute>
+            }
+          />
+
+          {/* 6. /admin/activity & /admin/audit — Security Audit Trail */}
+          <Route
+            path="/admin/activity"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardPage initialTab="activity" />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/audit"
+            element={
+              <ProtectedAdminRoute>
+                <AdminDashboardPage initialTab="activity" />
               </ProtectedAdminRoute>
             }
           />
