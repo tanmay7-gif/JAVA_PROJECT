@@ -14,7 +14,6 @@ export interface PieCategorySlice {
 
 const DEFAULT_CATEGORIES: PieCategorySlice[] = [];
 
-
 interface ExtrudedSliceMeshProps {
   slice: PieCategorySlice;
   thetaStart: number;
@@ -38,13 +37,13 @@ const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
   const midAngle = thetaStart + thetaLength / 2;
 
   // Compute slight outwards push direction when hovered
-  const pushX = Math.cos(midAngle) * 0.15;
-  const pushZ = -Math.sin(midAngle) * 0.15;
+  const pushX = Math.cos(midAngle) * 0.16;
+  const pushZ = -Math.sin(midAngle) * 0.16;
 
   useFrame((_, delta) => {
     if (meshRef.current) {
       // Smooth lerp for y-elevation and outward displacement
-      const targetY = isHovered ? 0.35 : 0;
+      const targetY = isHovered ? 0.38 : 0;
       const targetX = isHovered ? pushX : 0;
       const targetZ = isHovered ? pushZ : 0;
 
@@ -88,28 +87,38 @@ const ExtrudedSliceMesh: React.FC<ExtrudedSliceMeshProps> = ({
         <meshPhysicalMaterial
           color={slice.color}
           emissive={slice.emissiveColor}
-          emissiveIntensity={isHovered ? 0.85 : 0.15}
-          roughness={0.15}
-          metalness={0.1}
-          clearcoat={0.8}
-          clearcoatRoughness={0.1}
-          reflectivity={0.9}
+          emissiveIntensity={isHovered ? 1.0 : 0.25}
+          roughness={0.12}
+          metalness={0.25}
+          clearcoat={1.0}
+          clearcoatRoughness={0.08}
+          reflectivity={0.95}
         />
 
-        {/* Floating Tooltip Pill right above slice when hovered */}
+        {/* Compact Tooltip Pill right above slice when hovered */}
         {isHovered && (
           <Html position={[0, height + 0.35, 0]} center distanceFactor={7}>
-            <div className="bg-white/95 backdrop-blur-md border border-emerald-200 px-3 py-1.5 rounded-xl shadow-lg pointer-events-none whitespace-nowrap text-left animate-in fade-in zoom-in-90 duration-150">
-              <div className="flex items-center gap-1.5">
-                <span
-                  className="w-2.5 h-2.5 rounded-full inline-block"
-                  style={{ backgroundColor: slice.color }}
-                />
-                <span className="text-xs font-bold text-gray-900">{slice.name}</span>
-                <span className="text-xs font-extrabold text-emerald-700 ml-1">{slice.value}%</span>
+            <div className="rounded-lg border border-slate-700/80 bg-[#0b101c]/95 p-2 px-3 shadow-2xl backdrop-blur-md max-w-[210px] text-left pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100">
+              <div className="flex items-center justify-between gap-3 mb-1">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
+                  Discipline
+                </span>
+                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
+                  {slice.value}%
+                </span>
               </div>
-              <div className="text-[10px] text-gray-500 font-semibold mt-0.5">
-                {slice.sessionsCount} Recorded Sessions
+              <div className="flex items-center justify-between gap-3">
+                <span className="flex items-center gap-1.5 text-[11px] text-slate-300">
+                  <span
+                    className="h-1.5 w-1.5 rounded-full shrink-0 shadow-[0_0_6px_currentColor]"
+                    style={{ backgroundColor: slice.color }}
+                  />
+                  <span>{slice.name}</span>
+                </span>
+                <span className="text-xs font-bold text-slate-100">
+                  {slice.sessionsCount}{' '}
+                  <span className="text-[10px] font-normal text-slate-400">sessions</span>
+                </span>
               </div>
             </div>
           </Html>
@@ -136,12 +145,12 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
 
   if (!data || data.length === 0 || totalValue === 0) {
     return (
-      <div className={`relative w-full ${heightClass} flex flex-col items-center justify-center border border-dashed border-emerald-200/80 rounded-2xl bg-emerald-50/20 p-6 text-center`}>
-        <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-emerald-100 flex items-center justify-center text-emerald-600 mb-3">
+      <div className={`relative w-full ${heightClass} flex flex-col items-center justify-center border border-dashed border-slate-800 rounded-2xl bg-[#0B131E]/40 p-6 text-center`}>
+        <div className="w-12 h-12 rounded-2xl bg-[#131E2D] shadow-inner border border-slate-700/60 flex items-center justify-center text-cyan-400 mb-3">
           <Layers className="w-6 h-6" />
         </div>
-        <p className="text-sm font-bold text-gray-800">No Discipline Data Yet</p>
-        <p className="text-xs text-gray-500 mt-1 max-w-xs leading-relaxed">
+        <p className="text-sm font-bold text-slate-200">No Discipline Telemetry Yet</p>
+        <p className="text-xs text-slate-400 mt-1 max-w-xs leading-relaxed">
           Log workout sessions across Cardio, Strength, or HIIT to generate real 3D volumetric category distribution.
         </p>
       </div>
@@ -169,8 +178,8 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
       <div className="absolute inset-0">
         <Suspense
           fallback={
-            <div className="w-full h-full flex items-center justify-center text-xs text-emerald-600 font-semibold animate-pulse">
-              Generating 3D Extruded Donut Geometry...
+            <div className="w-full h-full flex items-center justify-center text-xs text-cyan-400 font-semibold animate-pulse">
+              Synthesizing 3D Extruded Donut Geometry...
             </div>
           }
         >
@@ -179,10 +188,10 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
             gl={{ antialias: true, alpha: true }}
             dpr={[1, 2]}
           >
-            <ambientLight intensity={0.9} />
-            <directionalLight position={[4, 5, 4]} intensity={1.3} color="#FFFFFF" />
-            <directionalLight position={[-3, 2, -2]} intensity={0.5} color="#A7F3D0" />
-            <pointLight position={[0, -1, 1]} intensity={0.3} color="#34D399" />
+            <ambientLight intensity={0.8} />
+            <directionalLight position={[4, 5, 4]} intensity={1.5} color="#FFFFFF" />
+            <directionalLight position={[-3, 2, -2]} intensity={0.7} color="#22D3EE" />
+            <pointLight position={[0, -1, 1]} intensity={0.4} color="#10B981" />
 
             <Float speed={1.2} rotationIntensity={0.15} floatIntensity={0.2}>
               <group position={[0, -0.2, 0]}>
@@ -198,20 +207,30 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
                   />
                 ))}
 
-                {/* Inner White Porcelain Core Disc (creates Donut hole effect) */}
+                {/* Inner Dark Telemetry Core Disc (creates Donut hole effect) */}
                 <mesh position={[0, 0.05, 0]}>
                   <cylinderGeometry args={[0.62, 0.62, 0.48, 32]} />
                   <meshStandardMaterial
-                    color="#FFFFFF"
-                    roughness={0.1}
-                    metalness={0.05}
+                    color="#0B131E"
+                    roughness={0.2}
+                    metalness={0.4}
                   />
+                </mesh>
+
+                {/* Glowing Core Rim Ring */}
+                <mesh position={[0, 0.295, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                  <ringGeometry args={[0.59, 0.62, 48]} />
+                  <meshBasicMaterial color="#06B6D4" transparent opacity={0.6} />
                 </mesh>
 
                 {/* Pedestal Ground Ring */}
                 <mesh position={[0, -0.26, 0]}>
                   <cylinderGeometry args={[1.65, 1.7, 0.04, 36]} />
-                  <meshStandardMaterial color="#F1F5F9" roughness={0.3} />
+                  <meshStandardMaterial color="#070D18" roughness={0.5} metalness={0.2} />
+                </mesh>
+                <mesh position={[0, -0.238, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                  <ringGeometry args={[1.63, 1.66, 48]} />
+                  <meshBasicMaterial color="#06B6D4" transparent opacity={0.3} />
                 </mesh>
               </group>
             </Float>
@@ -229,7 +248,7 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
       </div>
 
       {/* Floating Interactive Badge Legend */}
-      <div className="relative z-10 mt-auto pb-1 flex items-center justify-center gap-2 flex-wrap pointer-events-auto">
+      <div className="relative z-10 mt-auto pb-1 flex items-center justify-center gap-1.5 flex-wrap pointer-events-auto">
         {data.map((cat) => {
           const isHovered = hoveredSlice === cat.name;
           return (
@@ -240,16 +259,16 @@ export const ThreePieChart: React.FC<ThreePieChartProps> = ({
               onMouseLeave={() => setHoveredSlice(null)}
               className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1.5 ${
                 isHovered
-                  ? 'bg-white shadow-md border-emerald-300 ring-2 ring-emerald-400 text-gray-900 scale-105'
-                  : 'bg-white/80 hover:bg-white text-gray-700 border border-emerald-100 shadow-sm'
+                  ? 'bg-slate-800 text-white border border-cyan-400/60 ring-1 ring-cyan-400/50 shadow-[0_0_12px_rgba(6,182,212,0.25)] scale-105'
+                  : 'bg-[#0B131E]/80 hover:bg-[#131E2D] text-slate-300 border border-slate-800/80 shadow-sm'
               }`}
             >
               <span
-                className="w-2.5 h-2.5 rounded-full inline-block"
+                className="w-2 h-2 rounded-full inline-block shadow-[0_0_6px_currentColor]"
                 style={{ backgroundColor: cat.color }}
               />
               <span>{cat.name}</span>
-              <span className="text-emerald-700 font-extrabold">{cat.value}%</span>
+              <span className="text-[10px] text-slate-400 ml-0.5">{cat.value}%</span>
             </button>
           );
         })}

@@ -29,7 +29,6 @@ const buildEmptyWeek = (): DailyTelemetryPoint[] => {
   return points;
 };
 
-
 interface VolumetricBarProps {
   point: DailyTelemetryPoint;
   index: number;
@@ -61,6 +60,12 @@ const VolumetricBar: React.FC<VolumetricBarProps> = ({
   const value = activeMetric === 'calories' ? point.calories : point.duration;
   const targetHeight = Math.max(0.2, (value / maxVal) * 2.0);
 
+  // High-frequency color palette
+  const baseColor = activeMetric === 'calories' ? '#06B6D4' : '#10B981';
+  const hoverColor = activeMetric === 'calories' ? '#38BDF8' : '#34D399';
+  const emissiveColor = activeMetric === 'calories' ? '#0284C7' : '#059669';
+  const hoverEmissive = activeMetric === 'calories' ? '#06B6D4' : '#10B981';
+
   useFrame((_, delta) => {
     if (meshRef.current) {
       // Smooth height animation lerp
@@ -74,7 +79,7 @@ const VolumetricBar: React.FC<VolumetricBarProps> = ({
     }
 
     if (shadowRef.current) {
-      const shadowScale = isHovered ? 1.4 : 1.0;
+      const shadowScale = isHovered ? 1.45 : 1.0;
       shadowRef.current.scale.x = THREE.MathUtils.lerp(
         shadowRef.current.scale.x,
         shadowScale,
@@ -90,7 +95,7 @@ const VolumetricBar: React.FC<VolumetricBarProps> = ({
 
   return (
     <group position={[posX, 0, 0]}>
-      {/* Soft Contact Shadow beneath bar */}
+      {/* 3D Contact Shadow beneath bar with subtle high-frequency tint */}
       <mesh
         ref={shadowRef}
         rotation={[-Math.PI / 2, 0, 0]}
@@ -98,13 +103,13 @@ const VolumetricBar: React.FC<VolumetricBarProps> = ({
       >
         <planeGeometry args={[0.42, 0.42]} />
         <meshBasicMaterial
-          color="#064E3B"
+          color="#01121E"
           transparent
-          opacity={isHovered ? 0.35 : 0.12}
+          opacity={isHovered ? 0.65 : 0.3}
         />
       </mesh>
 
-      {/* 3D Volumetric Column Mesh */}
+      {/* 3D Volumetric Extruded Column */}
       <mesh
         ref={meshRef}
         position={[0, targetHeight / 2, 0]}
@@ -125,37 +130,61 @@ const VolumetricBar: React.FC<VolumetricBarProps> = ({
       >
         <boxGeometry args={[0.34, 1, 0.34]} />
         <meshPhysicalMaterial
-          color={isHovered ? '#10B981' : '#34D399'}
-          emissive={isHovered ? '#10B981' : '#059669'}
-          emissiveIntensity={isHovered ? 0.9 : 0.25}
+          color={isHovered ? hoverColor : baseColor}
+          emissive={isHovered ? hoverEmissive : emissiveColor}
+          emissiveIntensity={isHovered ? 1.1 : 0.35}
           roughness={0.12}
-          metalness={0.15}
-          clearcoat={0.9}
-          clearcoatRoughness={0.1}
+          metalness={0.3}
+          clearcoat={1.0}
+          clearcoatRoughness={0.08}
+          reflectivity={0.95}
           transparent
-          opacity={0.95}
+          opacity={0.96}
         />
 
-        {/* Hover Drei <Html> Tooltip Pin */}
+        {/* 3D Bevel Top Edge Cap */}
+        <mesh position={[0, 0.505, 0]}>
+          <boxGeometry args={[0.345, 0.015, 0.345]} />
+          <meshStandardMaterial
+            color={isHovered ? '#E0F2FE' : '#A7F3D0'}
+            emissive={isHovered ? '#38BDF8' : '#34D399'}
+            emissiveIntensity={isHovered ? 1.4 : 0.6}
+            roughness={0.1}
+          />
+        </mesh>
+
+        {/* Compact Hover Drei <Html> Tooltip Pin */}
         {isHovered && (
-          <Html position={[0, 0.6, 0]} center distanceFactor={7}>
-            <div className="bg-white/95 backdrop-blur-md border border-emerald-200 px-3.5 py-2 rounded-2xl shadow-xl whitespace-nowrap text-left animate-in fade-in zoom-in-95 duration-150">
-              <div className="flex items-center justify-between gap-3 border-b border-gray-100 pb-1 mb-1.5">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-gray-400">
+          <Html position={[0, 0.65, 0]} center distanceFactor={7}>
+            <div className="rounded-lg border border-slate-700/80 bg-[#0b101c]/95 p-2 px-3 shadow-2xl backdrop-blur-md max-w-[210px] text-left pointer-events-none whitespace-nowrap animate-in fade-in zoom-in-95 duration-100">
+              <div className="flex items-center justify-between gap-3 mb-1">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
                   {point.date}
                 </span>
-                <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded-md border border-emerald-200">
+                <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
                   {point.day}
                 </span>
               </div>
-              <div className="space-y-1 text-xs">
-                <div className="font-bold text-gray-900 flex items-center gap-1.5">
-                  <Flame className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>{point.calories} kcal burned</span>
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="flex items-center gap-1.5 text-[11px] text-slate-300">
+                    <Flame className="w-3 h-3 text-cyan-400 shrink-0" />
+                    <span>Calories</span>
+                  </span>
+                  <span className="text-xs font-bold text-slate-100">
+                    {point.calories.toLocaleString()}{' '}
+                    <span className="text-[10px] font-normal text-slate-400">kcal</span>
+                  </span>
                 </div>
-                <div className="font-semibold text-gray-600 flex items-center gap-1.5 text-[11px]">
-                  <Clock className="w-3.5 h-3.5 text-teal-600" />
-                  <span>{point.duration} minutes active</span>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="flex items-center gap-1.5 text-[11px] text-slate-300">
+                    <Clock className="w-3 h-3 text-emerald-400 shrink-0" />
+                    <span>Duration</span>
+                  </span>
+                  <span className="text-xs font-bold text-slate-100">
+                    {point.duration}{' '}
+                    <span className="text-[10px] font-normal text-slate-400">mins</span>
+                  </span>
                 </div>
               </div>
             </div>
@@ -195,8 +224,8 @@ export const ThreeBarChart: React.FC<ThreeBarChartProps> = ({
       <div className="absolute inset-0">
         <Suspense
           fallback={
-            <div className="w-full h-full flex items-center justify-center text-xs text-emerald-600 font-semibold animate-pulse">
-              Rendering Volumetric 3D Data Bars...
+            <div className="w-full h-full flex items-center justify-center text-xs text-cyan-400 font-semibold animate-pulse">
+              Synthesizing 3D High-Frequency Bar Geometry...
             </div>
           }
         >
@@ -205,26 +234,30 @@ export const ThreeBarChart: React.FC<ThreeBarChartProps> = ({
             gl={{ antialias: true, alpha: true }}
             dpr={[1, 2]}
           >
-            <ambientLight intensity={1.1} />
-            <directionalLight position={[4, 5, 4]} intensity={1.4} color="#FFFFFF" />
-            <directionalLight position={[-4, 3, -2]} intensity={0.6} color="#A7F3D0" />
-            <pointLight position={[0, -0.5, 1]} intensity={0.4} color="#34D399" />
+            <ambientLight intensity={0.9} />
+            <directionalLight position={[4, 5, 4]} intensity={1.5} color="#FFFFFF" />
+            <directionalLight position={[-4, 3, -2]} intensity={0.8} color="#22D3EE" />
+            <pointLight position={[0, -0.5, 1.5]} intensity={0.5} color="#10B981" />
 
             <group position={[0, -0.55, 0]}>
-              {/* Floor Plate / Laboratory Grid */}
+              {/* Floor Plate / Laboratory Telemetry Grid */}
               <mesh position={[0, -0.01, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                <planeGeometry args={[4.8, 1.6]} />
+                <planeGeometry args={[4.8, 1.8]} />
                 <meshStandardMaterial
-                  color="#FAFCFA"
-                  roughness={0.4}
-                  metalness={0.05}
+                  color="#0B131E"
+                  roughness={0.5}
+                  metalness={0.3}
                 />
               </mesh>
 
-              {/* Grid Border Lines */}
+              {/* High-frequency glowing concentric grid rings */}
               <mesh position={[0, -0.005, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                <ringGeometry args={[2.2, 2.22, 4]} />
-                <meshBasicMaterial color="#E2E8F0" transparent opacity={0.4} />
+                <ringGeometry args={[2.2, 2.22, 64]} />
+                <meshBasicMaterial color="#06B6D4" transparent opacity={0.35} />
+              </mesh>
+              <mesh position={[0, -0.007, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                <ringGeometry args={[2.35, 2.36, 64]} />
+                <meshBasicMaterial color="#10B981" transparent opacity={0.2} />
               </mesh>
 
               {/* Bars */}
@@ -254,7 +287,7 @@ export const ThreeBarChart: React.FC<ThreeBarChartProps> = ({
       </div>
 
       {/* Metric Toggle & Days Strip on bottom */}
-      <div className="relative z-10 mt-auto flex items-center justify-between px-2 pt-2 gap-2 border-t border-emerald-100/60 bg-white/70 backdrop-blur-sm rounded-b-2xl">
+      <div className="relative z-10 mt-auto flex items-center justify-between px-3 py-2 gap-2 border-t border-slate-800/80 bg-[#0B131E]/90 backdrop-blur-md rounded-b-2xl">
         {/* Day Pills */}
         <div className="flex items-center gap-1 sm:gap-2">
           {chartData.map((d) => (
@@ -263,8 +296,8 @@ export const ThreeBarChart: React.FC<ThreeBarChartProps> = ({
               onClick={() => setHoveredDay(hoveredDay === d.day ? null : d.day)}
               className={`px-2 py-0.5 rounded-md text-[10px] font-bold transition-all ${
                 hoveredDay === d.day
-                  ? 'bg-emerald-500 text-white shadow-sm'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-100'
+                  ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-md shadow-cyan-500/25'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               {d.day}
@@ -274,23 +307,23 @@ export const ThreeBarChart: React.FC<ThreeBarChartProps> = ({
 
         {/* Metric Selector Toggle */}
         {onMetricToggle && (
-          <div className="flex items-center bg-[#F3F6F3] p-0.5 rounded-lg border border-emerald-100 text-[10px]">
+          <div className="flex items-center bg-[#070D18] p-0.5 rounded-lg border border-slate-700/60 text-[10px]">
             <button
               onClick={() => onMetricToggle('calories')}
-              className={`px-2 py-0.5 rounded-md font-bold transition-all ${
+              className={`px-2.5 py-0.5 rounded-md font-bold transition-all ${
                 activeMetric === 'calories'
-                  ? 'bg-white text-emerald-700 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-900'
+                  ? 'bg-slate-800 text-cyan-300 shadow-sm border border-cyan-500/30'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               Calories
             </button>
             <button
               onClick={() => onMetricToggle('duration')}
-              className={`px-2 py-0.5 rounded-md font-bold transition-all ${
+              className={`px-2.5 py-0.5 rounded-md font-bold transition-all ${
                 activeMetric === 'duration'
-                  ? 'bg-white text-teal-700 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-900'
+                  ? 'bg-slate-800 text-emerald-300 shadow-sm border border-emerald-500/30'
+                  : 'text-slate-400 hover:text-slate-200'
               }`}
             >
               Minutes

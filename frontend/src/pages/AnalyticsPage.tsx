@@ -4,6 +4,7 @@ import { AnalyticsSummary } from '../types';
 import { useToast } from '../context/ToastContext';
 import { ThreeBarChart } from '../components/three/ThreeBarChart';
 import { ThreePieChart, PieCategorySlice } from '../components/three/ThreePieChart';
+import { CompactChartTooltip } from '../components/analytics/CompactChartTooltip';
 import {
   Flame,
   Clock,
@@ -90,15 +91,15 @@ export const AnalyticsPage: React.FC = () => {
     });
   }, [data]);
 
-  // Transform backend workout type breakdown for 3D Pie Chart - empty array if none
+  // Transform backend workout type breakdown for 3D Pie Chart with high-frequency neon colors
   const formattedPieData: PieCategorySlice[] = React.useMemo(() => {
     if (!data?.typeBreakdown || data.typeBreakdown.length === 0) {
       return [];
     }
 
     const totalCount = data.typeBreakdown.reduce((sum, item) => sum + item.count, 0) || 1;
-    const colors = ['#10B981', '#059669', '#14B8A6', '#38BDF8', '#8B5CF6'];
-    const emissiveColors = ['#34D399', '#10B981', '#2DD4BF', '#7DD3FC', '#A78BFA'];
+    const colors = ['#06B6D4', '#10B981', '#8B5CF6', '#F59E0B', '#F43F5E'];
+    const emissiveColors = ['#22D3EE', '#34D399', '#A78BFA', '#FBBF24', '#FB7185'];
 
     return data.typeBreakdown.map((t, idx) => ({
       name: t.name,
@@ -131,9 +132,9 @@ export const AnalyticsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="py-28 flex flex-col items-center justify-center gap-3 text-emerald-800">
-        <div className="w-10 h-10 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-        <p className="text-xs font-bold uppercase tracking-wider text-emerald-600">
+      <div className="py-28 flex flex-col items-center justify-center gap-3 text-cyan-400">
+        <div className="w-10 h-10 border-2 border-cyan-500 border-t-transparent rounded-full animate-spin" />
+        <p className="text-xs font-bold uppercase tracking-wider text-cyan-400">
           Synthesizing 3D Telemetry Laboratory...
         </p>
       </div>
@@ -143,31 +144,31 @@ export const AnalyticsPage: React.FC = () => {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       {/* Header & Controls Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-emerald-100 pb-5">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800/80 pb-5">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-800 text-[10px] font-bold uppercase tracking-wider">
-            <Sparkles className="w-3 h-3 text-emerald-600" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-cyan-400 text-[10px] font-bold uppercase tracking-wider shadow-[0_0_15px_rgba(6,182,212,0.15)]">
+            <Sparkles className="w-3 h-3 text-cyan-400" />
             3D Biometric Telemetry & Analytics Laboratory
           </div>
-          <h1 className="text-2xl font-black text-gray-900 tracking-tight mt-1.5">
+          <h1 className="text-2xl font-black text-white tracking-tight mt-1.5">
             Biometric Performance Matrix
           </h1>
-          <p className="text-xs text-gray-500 mt-0.5">
+          <p className="text-xs text-slate-400 mt-0.5">
             Interactive WebGL 3D volumetric metrics, energy burn acceleration, and multi-discipline distribution.
           </p>
         </div>
 
         {/* Time Window Selectors */}
         <div className="flex items-center gap-2 self-start md:self-auto">
-          <div className="flex items-center bg-white p-1 rounded-xl border border-emerald-100 shadow-sm">
+          <div className="flex items-center bg-[#0B131E]/90 p-1 rounded-xl border border-slate-700/60 shadow-inner">
             {(['Week', 'Month', 'Year', 'All-Time'] as TimeWindow[]).map((w) => (
               <button
                 key={w}
                 onClick={() => setTimeWindow(w)}
                 className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                   timeWindow === w
-                    ? 'bg-emerald-500 text-white shadow-sm shadow-emerald-500/30'
-                    : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                    ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white shadow-md shadow-cyan-500/25'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
                 }`}
               >
                 {w}
@@ -177,7 +178,7 @@ export const AnalyticsPage: React.FC = () => {
 
           <button
             onClick={() => showToast('Exporting clinical biometric telemetry report (CSV)...', 'info')}
-            className="p-2 rounded-xl bg-white border border-emerald-100 hover:bg-gray-50 text-gray-600 hover:text-emerald-700 shadow-sm transition-all"
+            className="p-2 rounded-xl bg-[#131C2E] border border-slate-700/60 hover:bg-slate-800 text-slate-300 hover:text-cyan-400 shadow-sm transition-all"
             title="Export Report"
           >
             <Download className="w-4 h-4" />
@@ -188,87 +189,87 @@ export const AnalyticsPage: React.FC = () => {
       {/* KPI Cards Row */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Weekly Active Volume */}
-        <div className="clinical-card p-5">
+        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 hover:border-slate-700/80 transition-all">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               Active Duration
             </span>
-            <div className="w-8 h-8 rounded-xl bg-teal-50 border border-teal-200/60 flex items-center justify-center text-teal-600">
+            <div className="w-8 h-8 rounded-xl bg-teal-950/60 border border-teal-500/30 flex items-center justify-center text-teal-400 shadow-[0_0_10px_rgba(20,184,166,0.2)]">
               <Clock className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-gray-900">
+            <span className="text-2xl sm:text-3xl font-black text-white">
               {summary.weeklyWorkoutHours}
             </span>
-            <span className="text-xs font-semibold text-gray-500">hours (7d)</span>
+            <span className="text-xs font-semibold text-slate-400">hours (7d)</span>
           </div>
-          <p className="text-[11px] text-emerald-600 font-semibold mt-2 flex items-center gap-1">
+          <p className="text-[11px] text-emerald-400 font-semibold mt-2 flex items-center gap-1">
             <TrendingUp className="w-3 h-3" />
             Monthly: {summary.monthlyWorkoutHours} hrs
           </p>
         </div>
 
         {/* Energy Output */}
-        <div className="clinical-card p-5">
+        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 hover:border-slate-700/80 transition-all">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               Metabolic Output
             </span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-600">
+            <div className="w-8 h-8 rounded-xl bg-emerald-950/60 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.2)]">
               <Flame className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-gray-900">
+            <span className="text-2xl sm:text-3xl font-black text-white">
               {summary.weeklyCaloriesBurned.toLocaleString()}
             </span>
-            <span className="text-xs font-semibold text-gray-500">kcal (7d)</span>
+            <span className="text-xs font-semibold text-slate-400">kcal (7d)</span>
           </div>
-          <p className="text-[11px] text-gray-500 mt-2">
+          <p className="text-[11px] text-slate-400 mt-2">
             Monthly: {summary.monthlyCaloriesBurned.toLocaleString()} kcal
           </p>
         </div>
 
         {/* Efficiency Index */}
-        <div className="clinical-card p-5">
+        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 hover:border-slate-700/80 transition-all">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               Burn Velocity
             </span>
-            <div className="w-8 h-8 rounded-xl bg-amber-50 border border-amber-200/60 flex items-center justify-center text-amber-600">
+            <div className="w-8 h-8 rounded-xl bg-amber-950/60 border border-amber-500/30 flex items-center justify-center text-amber-400 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
               <Zap className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-gray-900">
+            <span className="text-2xl sm:text-3xl font-black text-white">
               {burnVelocity}
             </span>
-            <span className="text-xs font-semibold text-gray-500">kcal / min</span>
+            <span className="text-xs font-semibold text-slate-400">kcal / min</span>
           </div>
-          <p className="text-[11px] text-emerald-600 font-semibold mt-2">
+          <p className="text-[11px] text-emerald-400 font-semibold mt-2">
             {burnVelocity > 0 ? 'Active metabolic burn rate' : 'No active volume'}
           </p>
         </div>
 
         {/* Lifetime Logged */}
-        <div className="clinical-card p-5">
+        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 hover:border-slate-700/80 transition-all">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-400">
               Audited Sessions
             </span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 border border-emerald-200/60 flex items-center justify-center text-emerald-700">
+            <div className="w-8 h-8 rounded-xl bg-cyan-950/60 border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
               <Layers className="w-4 h-4" />
             </div>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl sm:text-3xl font-black text-gray-900">
+            <span className="text-2xl sm:text-3xl font-black text-white">
               {summary.totalLifetimeWorkouts}
             </span>
-            <span className="text-xs font-semibold text-gray-500">sessions</span>
+            <span className="text-xs font-semibold text-slate-400">sessions</span>
           </div>
-          <p className="text-[11px] text-gray-500 mt-2">
-            {summary.totalLifetimeHours} lifetime hours • {summary.totalLifetimeCalories.toLocaleString()} kcal
+          <p className="text-[11px] text-slate-400 mt-2 truncate">
+            {summary.totalLifetimeHours} lifetime hrs • {summary.totalLifetimeCalories.toLocaleString()} kcal
           </p>
         </div>
       </div>
@@ -276,163 +277,162 @@ export const AnalyticsPage: React.FC = () => {
       {/* Progress Tracking Matrices: Weekly/Monthly Activity, Goal Progress, Challenge Progress */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {/* Weekly & Monthly Activity Card */}
-        <div className="clinical-card p-5 flex flex-col justify-between">
+        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-emerald-600" /> Activity Horizons
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 text-cyan-400" /> Activity Horizons
               </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
                 Live Data
               </span>
             </div>
-            <h4 className="text-sm font-black text-gray-900">Weekly vs Monthly Activity</h4>
+            <h4 className="text-sm font-black text-white">Weekly vs Monthly Activity</h4>
             <div className="mt-3 space-y-3">
-              <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                <div className="flex items-center justify-between text-xs font-bold text-gray-700">
+              <div className="bg-[#0B131E]/70 p-3 rounded-xl border border-slate-800/80">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-200">
                   <span>Last 7 Days (Weekly)</span>
-                  <span className="text-emerald-700 font-extrabold">{summary.weeklyWorkoutsCount} workouts</span>
+                  <span className="text-cyan-400 font-extrabold">{summary.weeklyWorkoutsCount} workouts</span>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-gray-500 mt-1">
+                <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1">
                   <span>{summary.weeklyWorkoutHours} hrs duration</span>
-                  <span>{summary.weeklyCaloriesBurned} kcal burned</span>
+                  <span>{summary.weeklyCaloriesBurned.toLocaleString()} kcal</span>
                 </div>
               </div>
 
-              <div className="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                <div className="flex items-center justify-between text-xs font-bold text-gray-700">
+              <div className="bg-[#0B131E]/70 p-3 rounded-xl border border-slate-800/80">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-200">
                   <span>Last 30 Days (Monthly)</span>
-                  <span className="text-teal-700 font-extrabold">{summary.monthlyWorkoutsCount} workouts</span>
+                  <span className="text-teal-400 font-extrabold">{summary.monthlyWorkoutsCount} workouts</span>
                 </div>
-                <div className="flex items-center justify-between text-[11px] text-gray-500 mt-1">
+                <div className="flex items-center justify-between text-[11px] text-slate-400 mt-1">
                   <span>{summary.monthlyWorkoutHours} hrs duration</span>
-                  <span>{summary.monthlyCaloriesBurned} kcal burned</span>
+                  <span>{summary.monthlyCaloriesBurned.toLocaleString()} kcal</span>
                 </div>
               </div>
             </div>
           </div>
-          <div className="pt-3 mt-3 border-t border-gray-100 text-[11px] text-gray-500 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+          <div className="pt-3 mt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
             <span>Audited directly against database workout logs</span>
           </div>
         </div>
 
         {/* Goal Progress Card */}
-        <div className="clinical-card p-5 flex flex-col justify-between">
+        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
-                <Target className="w-3.5 h-3.5 text-emerald-600" /> Goal Mastery
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                <Target className="w-3.5 h-3.5 text-emerald-400" /> Goal Mastery
               </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-100">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                 {data?.goalProgress?.activeGoals ?? 0} Active
               </span>
             </div>
-            <h4 className="text-sm font-black text-gray-900">Fitness Goals Progress</h4>
+            <h4 className="text-sm font-black text-white">Fitness Goals Progress</h4>
             <div className="mt-3 space-y-3">
               <div className="flex items-baseline justify-between">
-                <span className="text-2xl font-black text-gray-900">
+                <span className="text-2xl font-black text-white">
                   {Math.round(data?.goalProgress?.averageCompletionPercentage ?? 0)}%
                 </span>
-                <span className="text-xs text-gray-500 font-semibold">Avg Completion</span>
+                <span className="text-xs text-slate-400 font-semibold">Avg Completion</span>
               </div>
               
-              {/* Progress Bar */}
-              <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+              {/* Progress Bar with High-Frequency Neon Glow */}
+              <div className="w-full bg-[#0B131E] rounded-full h-2.5 overflow-hidden border border-slate-800">
                 <div
-                  className="bg-gradient-to-r from-emerald-500 to-teal-500 h-2.5 rounded-full transition-all duration-700"
+                  className="bg-gradient-to-r from-cyan-500 via-teal-400 to-emerald-400 h-2.5 rounded-full transition-all duration-700 shadow-[0_0_12px_rgba(6,182,212,0.4)]"
                   style={{ width: `${Math.min(100, Math.max(0, data?.goalProgress?.averageCompletionPercentage ?? 0))}%` }}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-center pt-1">
-                <div className="p-2 rounded-xl bg-emerald-50/60 border border-emerald-100/80">
-                  <div className="text-xs font-black text-emerald-800">{data?.goalProgress?.activeGoals ?? 0}</div>
-                  <div className="text-[10px] text-gray-500 font-semibold">Active Goals</div>
+                <div className="p-2 rounded-xl bg-[#0B131E]/70 border border-slate-800">
+                  <div className="text-xs font-black text-cyan-400">{data?.goalProgress?.activeGoals ?? 0}</div>
+                  <div className="text-[10px] text-slate-400 font-semibold">Active Goals</div>
                 </div>
-                <div className="p-2 rounded-xl bg-teal-50/60 border border-teal-100/80">
-                  <div className="text-xs font-black text-teal-800">{data?.goalProgress?.completedGoals ?? 0}</div>
-                  <div className="text-[10px] text-gray-500 font-semibold">Completed</div>
+                <div className="p-2 rounded-xl bg-[#0B131E]/70 border border-slate-800">
+                  <div className="text-xs font-black text-emerald-400">{data?.goalProgress?.completedGoals ?? 0}</div>
+                  <div className="text-[10px] text-slate-400 font-semibold">Completed</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="pt-3 mt-3 border-t border-gray-100 text-[11px] text-gray-500 flex items-center gap-1">
-            <Info className="w-3.5 h-3.5 text-teal-600" />
+          <div className="pt-3 mt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1">
+            <Info className="w-3.5 h-3.5 text-cyan-400" />
             <span>Target milestones calibrated in Athlete Profile</span>
           </div>
         </div>
 
         {/* Challenge Progress Card */}
-        <div className="clinical-card p-5 flex flex-col justify-between">
+        <div className="bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-5 shadow-xl text-slate-100 flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between mb-3">
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-500 flex items-center gap-1.5">
-                <Trophy className="w-3.5 h-3.5 text-amber-500" /> Arena Progress
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                <Trophy className="w-3.5 h-3.5 text-amber-400" /> Arena Progress
               </span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-100">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">
                 {data?.challengeProgress?.enrolledChallenges ?? 0} Enrolled
               </span>
             </div>
-            <h4 className="text-sm font-black text-gray-900">Challenges & Arena Completion</h4>
+            <h4 className="text-sm font-black text-white">Challenges & Arena Completion</h4>
             <div className="mt-3 space-y-3">
               <div className="flex items-baseline justify-between">
-                <span className="text-2xl font-black text-gray-900">
+                <span className="text-2xl font-black text-white">
                   {Math.round(data?.challengeProgress?.completionRate ?? 0)}%
                 </span>
-                <span className="text-xs text-gray-500 font-semibold">Completion Rate</span>
+                <span className="text-xs text-slate-400 font-semibold">Completion Rate</span>
               </div>
 
-              {/* Progress Bar */}
-              <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+              {/* Progress Bar with High-Frequency Amber Glow */}
+              <div className="w-full bg-[#0B131E] rounded-full h-2.5 overflow-hidden border border-slate-800">
                 <div
-                  className="bg-gradient-to-r from-amber-400 to-emerald-500 h-2.5 rounded-full transition-all duration-700"
+                  className="bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 h-2.5 rounded-full transition-all duration-700 shadow-[0_0_12px_rgba(245,158,11,0.4)]"
                   style={{ width: `${Math.min(100, Math.max(0, data?.challengeProgress?.completionRate ?? 0))}%` }}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-2 text-center pt-1">
-                <div className="p-2 rounded-xl bg-amber-50/60 border border-amber-100/80">
-                  <div className="text-xs font-black text-amber-800">{data?.challengeProgress?.enrolledChallenges ?? 0}</div>
-                  <div className="text-[10px] text-gray-500 font-semibold">Total Joined</div>
+                <div className="p-2 rounded-xl bg-[#0B131E]/70 border border-slate-800">
+                  <div className="text-xs font-black text-amber-400">{data?.challengeProgress?.enrolledChallenges ?? 0}</div>
+                  <div className="text-[10px] text-slate-400 font-semibold">Total Joined</div>
                 </div>
-                <div className="p-2 rounded-xl bg-emerald-50/60 border border-emerald-100/80">
-                  <div className="text-xs font-black text-emerald-800">{data?.challengeProgress?.completedChallenges ?? 0}</div>
-                  <div className="text-[10px] text-gray-500 font-semibold">Completed</div>
+                <div className="p-2 rounded-xl bg-[#0B131E]/70 border border-slate-800">
+                  <div className="text-xs font-black text-emerald-400">{data?.challengeProgress?.completedChallenges ?? 0}</div>
+                  <div className="text-[10px] text-slate-400 font-semibold">Completed</div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="pt-3 mt-3 border-t border-gray-100 text-[11px] text-gray-500 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5 text-amber-600" />
+          <div className="pt-3 mt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5 text-amber-400" />
             <span>Badge rewards deposited into athletic trophy case</span>
           </div>
         </div>
       </div>
 
-
       {/* Primary 3D Visualizations Dual Laboratory */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* 3D Volumetric Bar Chart (7 cols) */}
-        <div className="lg:col-span-7 clinical-card p-6 flex flex-col justify-between">
+        <div className="lg:col-span-7 bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-xl text-slate-100 flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between mb-3">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 text-[10px] font-bold uppercase tracking-wider border border-emerald-100">
-                  <Activity className="w-3 h-3 text-emerald-600" />
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-cyan-950/60 text-cyan-400 text-[10px] font-bold uppercase tracking-wider border border-cyan-500/30">
+                  <Activity className="w-3 h-3 text-cyan-400" />
                   3D Volumetric Telemetry
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mt-1">
+                <h3 className="text-base font-bold text-white mt-1">
                   Daily Volume & Caloric Load
                 </h3>
-                <p className="text-xs text-gray-500">
-                  Interactive 3D raycast bars. Hover to inspect day metrics or rotate view.
+                <p className="text-xs text-slate-400">
+                  Interactive 3D raycast bars with extruded bevel rims. Hover to inspect metrics.
                 </p>
               </div>
 
               <div className="text-right">
-                <span className="text-[10px] font-semibold text-gray-400 block">Active Mode</span>
-                <span className="text-xs font-bold text-emerald-700 capitalize">
+                <span className="text-[10px] font-semibold text-slate-400 block">Active Mode</span>
+                <span className="text-xs font-bold text-cyan-400 capitalize">
                   {activeBarMetric}
                 </span>
               </div>
@@ -447,29 +447,29 @@ export const AnalyticsPage: React.FC = () => {
             />
           </div>
 
-          <div className="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-500 flex items-center justify-between">
+          <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between">
             <span className="flex items-center gap-1">
-              <Info className="w-3.5 h-3.5 text-emerald-600" />
+              <Info className="w-3.5 h-3.5 text-cyan-400" />
               Dynamic height transitions calibrated to daily totals
             </span>
-            <span className="text-emerald-700 font-bold">WebGL Shaded</span>
+            <span className="text-cyan-400 font-bold">WebGL Shaded</span>
           </div>
         </div>
 
         {/* 3D Extruded Donut / Pie Chart (5 cols) */}
-        <div className="lg:col-span-5 clinical-card p-6 flex flex-col justify-between">
+        <div className="lg:col-span-5 bg-[#131C2E]/80 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-xl text-slate-100 flex flex-col justify-between">
           <div>
             <div className="flex items-start justify-between mb-3">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-teal-50 text-teal-800 text-[10px] font-bold uppercase tracking-wider border border-teal-100">
-                  <Layers className="w-3 h-3 text-teal-600" />
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-950/60 text-emerald-400 text-[10px] font-bold uppercase tracking-wider border border-emerald-500/30">
+                  <Layers className="w-3 h-3 text-emerald-400" />
                   3D Extruded Geometry
                 </div>
-                <h3 className="text-base font-bold text-gray-900 mt-1">
+                <h3 className="text-base font-bold text-white mt-1">
                   Discipline Distribution
                 </h3>
-                <p className="text-xs text-gray-500">
-                  Hover slices to raise on Y-axis with emissive mint radiance.
+                <p className="text-xs text-slate-400">
+                  Hover slices to raise on Y-axis with emissive specular radiance.
                 </p>
               </div>
             </div>
@@ -478,63 +478,81 @@ export const AnalyticsPage: React.FC = () => {
             <ThreePieChart data={formattedPieData} heightClass="h-80" />
           </div>
 
-          <div className="mt-4 pt-3 border-t border-gray-100 text-[11px] text-gray-500 flex items-center justify-between">
-            <span>Hover lift: +0.35 Y-offset</span>
-            <span className="text-teal-700 font-bold">Chamfered Cylinders</span>
+          <div className="mt-4 pt-3 border-t border-slate-800/80 text-[11px] text-slate-400 flex items-center justify-between">
+            <span>Hover lift: +0.38 Y-offset</span>
+            <span className="text-emerald-400 font-bold">Chamfered Cylinders</span>
           </div>
         </div>
       </div>
 
-      {/* Secondary 2D Curved Volumetric Area Trend Line */}
-      <div className="clinical-card p-6">
-        <div className="flex items-center justify-between mb-4">
+      {/* Secondary 2D Curved Volumetric Area Trend Line with High-Frequency 3D Shading */}
+      <div className="bg-[#131C2E]/85 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 shadow-2xl relative overflow-hidden text-slate-100">
+        {/* Subtle background glow spheres */}
+        <div className="absolute -top-24 -right-24 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="flex items-center justify-between mb-4 relative z-10">
           <div>
-            <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-emerald-600" />
+            <h3 className="text-base font-bold text-white flex items-center gap-2">
+              <TrendingUp className="w-4 h-4 text-cyan-400" />
               Volumetric Energy Expenditure Curve
             </h3>
-            <p className="text-xs text-gray-500 mt-0.5">
-              Curved gradient telemetry detailing continuous energy pacing across selected time-window.
+            <p className="text-xs text-slate-400 mt-0.5">
+              High-frequency multi-stop gradient telemetry detailing continuous energy pacing across selected time-window.
             </p>
           </div>
-          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.15)]">
             {timeWindow} Window
           </span>
         </div>
 
-        <div className="h-64 w-full">
+        <div className="h-64 w-full relative z-10">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={data?.dailyTrend || []}
               margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
             >
               <defs>
-                <linearGradient id="clinicalEmeraldCurve" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#10B981" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.0} />
+                {/* Vibrant High-Frequency Multi-Stop Linear Gradient */}
+                <linearGradient id="neonCyanEmeraldGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#06B6D4" stopOpacity={0.85} />
+                  <stop offset="35%" stopColor="#10B981" stopOpacity={0.45} />
+                  <stop offset="75%" stopColor="#059669" stopOpacity={0.12} />
+                  <stop offset="100%" stopColor="#0B131E" stopOpacity={0.0} />
                 </linearGradient>
+
+                {/* SVG Filter for Glowing Extruded Stroke */}
+                <filter id="neonGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="4" stdDeviation="4" floodColor="#06B6D4" floodOpacity="0.5" />
+                </filter>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
-              <XAxis dataKey="date" stroke="#94A3B8" fontSize={11} tickLine={false} />
-              <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} />
+
+              <CartesianGrid strokeDasharray="3 3" stroke="#1E293B" opacity={0.7} vertical={false} />
+              <XAxis dataKey="date" stroke="#64748B" fontSize={11} tickLine={false} axisLine={{ stroke: '#334155' }} />
+              <YAxis stroke="#64748B" fontSize={11} tickLine={false} axisLine={{ stroke: '#334155' }} />
+              
+              {/* Compact Tooltip Chip with coordinate offset */}
               <Tooltip
-                contentStyle={{
-                  backgroundColor: '#FFFFFF',
-                  borderColor: '#D1E7DD',
-                  borderRadius: '1rem',
-                  color: '#111827',
-                  fontSize: '12px',
-                  boxShadow: '0 4px 20px -2px rgba(16, 185, 129, 0.15)',
-                }}
-                formatter={(val: any) => [`${val} kcal`, 'Expenditure']}
+                content={<CompactChartTooltip unit="kcal" />}
+                offset={12}
+                cursor={{ stroke: 'rgba(6, 182, 212, 0.45)', strokeWidth: 1.5, strokeDasharray: '4 4' }}
               />
+
               <Area
                 type="monotone"
                 dataKey="calories"
-                stroke="#10B981"
+                name="Caloric Burn"
+                stroke="#06B6D4"
                 strokeWidth={3}
                 fillOpacity={1}
-                fill="url(#clinicalEmeraldCurve)"
+                fill="url(#neonCyanEmeraldGradient)"
+                filter="url(#neonGlowFilter)"
+                activeDot={{
+                  r: 6,
+                  fill: '#06B6D4',
+                  stroke: '#FFFFFF',
+                  strokeWidth: 2,
+                }}
               />
             </AreaChart>
           </ResponsiveContainer>

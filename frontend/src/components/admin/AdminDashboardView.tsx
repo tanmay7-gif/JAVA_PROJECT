@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Server,
 } from 'lucide-react';
+import { CompactChartTooltip } from '../analytics/CompactChartTooltip';
 import {
   ResponsiveContainer,
   BarChart,
@@ -203,18 +204,26 @@ export const AdminDashboardView: React.FC<{
             <div className="h-72 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={engagementTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="adminBarWorkouts" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#34D399" />
+                      <stop offset="100%" stopColor="#059669" />
+                    </linearGradient>
+                    <linearGradient id="adminBarUsers" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#38BDF8" />
+                      <stop offset="100%" stopColor="#0284C7" />
+                    </linearGradient>
+                    <filter id="adminBarShadow" x="-10%" y="-10%" width="120%" height="130%">
+                      <feDropShadow dx="0" dy="3" stdDeviation="3" floodColor="#06B6D4" floodOpacity="0.3" />
+                    </filter>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" vertical={false} />
                   <XAxis dataKey="day" stroke="#94A3B8" fontSize={11} tickLine={false} />
                   <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} />
                   <Tooltip
-                    contentStyle={{
-                      backgroundColor: '#FFFFFF',
-                      borderColor: '#D1E7DD',
-                      borderRadius: '1rem',
-                      color: '#111827',
-                      fontSize: '12px',
-                      boxShadow: '0 4px 20px -2px rgba(16, 185, 129, 0.15)',
-                    }}
+                    content={<CompactChartTooltip />}
+                    offset={12}
+                    cursor={{ fill: 'rgba(0, 0, 0, 0.04)' }}
                   />
                   <Legend
                     verticalAlign="top"
@@ -222,8 +231,8 @@ export const AdminDashboardView: React.FC<{
                     iconSize={8}
                     formatter={(val) => <span className="text-xs text-gray-700 font-bold">{val}</span>}
                   />
-                  <Bar dataKey="workouts" name="Workouts Logged" fill="#10B981" radius={[6, 6, 0, 0]} />
-                  <Bar dataKey="activeUsers" name="Active Athletes" fill="#0D9488" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="workouts" name="Workouts Logged" fill="url(#adminBarWorkouts)" radius={[6, 6, 0, 0]} filter="url(#adminBarShadow)" />
+                  <Bar dataKey="activeUsers" name="Active Athletes" fill="url(#adminBarUsers)" radius={[6, 6, 0, 0]} filter="url(#adminBarShadow)" />
                 </BarChart>
               </ResponsiveContainer>
             </div>
