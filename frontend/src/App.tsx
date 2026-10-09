@@ -21,6 +21,7 @@ import { AnalyticsPage } from './pages/AnalyticsPage';
 import { ChallengesPage } from './pages/ChallengesPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { CommunityGuidesPage } from './pages/CommunityGuidesPage';
+import { AthleteAppLayout } from './components/layout/AthleteAppLayout';
 
 // Admin Space Pages
 import { AdminDashboardPage } from './pages/AdminDashboardPage';
@@ -84,7 +85,24 @@ const AppShell: React.FC = () => {
   const [editingWorkout, setEditingWorkout] = useState<WorkoutLog | null>(null);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
 
-  const isAthleteDashboard = location.pathname === '/dashboard';
+  const isAthleteRoute = [
+    '/dashboard',
+    '/workouts',
+    '/analytics',
+    '/challenges',
+    '/community',
+    '/guides',
+    '/profile',
+  ].some((p) => location.pathname === p || location.pathname.startsWith(p));
+
+  const AthleteShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <AthleteAppLayout
+      onOpenLogWorkout={handleOpenLogWorkout}
+      refreshTrigger={refreshTrigger}
+    >
+      {children}
+    </AthleteAppLayout>
+  );
 
   if (isLoading) {
     return (
@@ -130,18 +148,18 @@ const AppShell: React.FC = () => {
   return (
     <div
       className={
-        isAthleteDashboard
+        isAthleteRoute
           ? 'min-h-screen bg-[#0B131E] text-slate-100 flex flex-col'
           : 'min-h-screen bg-[#F8FAF8] text-gray-900 flex flex-col selection:bg-emerald-500 selection:text-white'
       }
     >
-      {/* Persistent Light-Glass Navigation Header (hidden on standalone Biomechanics Dashboard view) */}
-      {user && !isAthleteDashboard && <Navbar onOpenLogWorkout={handleOpenLogWorkout} />}
+      {/* Persistent Light-Glass Navigation Header (hidden on athlete telemetry routes) */}
+      {user && !isAthleteRoute && <Navbar onOpenLogWorkout={handleOpenLogWorkout} />}
 
       {/* Main Content Area */}
       <main
         className={
-          isAthleteDashboard
+          isAthleteRoute
             ? 'w-full flex-1'
             : 'flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8'
         }
@@ -168,11 +186,13 @@ const AppShell: React.FC = () => {
             path="/dashboard"
             element={
               <ProtectedUserRoute>
-                <DashboardPage
-                  onOpenLogWorkout={handleOpenLogWorkout}
-                  onNavigateTab={handleNavigateTab}
-                  refreshTrigger={refreshTrigger}
-                />
+                <AthleteShell>
+                  <DashboardPage
+                    onOpenLogWorkout={handleOpenLogWorkout}
+                    onNavigateTab={handleNavigateTab}
+                    refreshTrigger={refreshTrigger}
+                  />
+                </AthleteShell>
               </ProtectedUserRoute>
             }
           />
@@ -182,11 +202,13 @@ const AppShell: React.FC = () => {
             path="/workouts"
             element={
               <ProtectedUserRoute>
-                <WorkoutsPage
-                  onOpenLogWorkout={handleOpenLogWorkout}
-                  onEditWorkout={handleEditWorkout}
-                  refreshTrigger={refreshTrigger}
-                />
+                <AthleteShell>
+                  <WorkoutsPage
+                    onOpenLogWorkout={handleOpenLogWorkout}
+                    onEditWorkout={handleEditWorkout}
+                    refreshTrigger={refreshTrigger}
+                  />
+                </AthleteShell>
               </ProtectedUserRoute>
             }
           />
@@ -196,7 +218,9 @@ const AppShell: React.FC = () => {
             path="/analytics"
             element={
               <ProtectedUserRoute>
-                <AnalyticsPage />
+                <AthleteShell>
+                  <AnalyticsPage />
+                </AthleteShell>
               </ProtectedUserRoute>
             }
           />
@@ -206,9 +230,11 @@ const AppShell: React.FC = () => {
             path="/challenges"
             element={
               <ProtectedUserRoute>
-                <ChallengesPage
-                  onChallengeJoined={() => setRefreshTrigger((prev) => prev + 1)}
-                />
+                <AthleteShell>
+                  <ChallengesPage
+                    onChallengeJoined={() => setRefreshTrigger((prev) => prev + 1)}
+                  />
+                </AthleteShell>
               </ProtectedUserRoute>
             }
           />
@@ -218,7 +244,9 @@ const AppShell: React.FC = () => {
             path="/profile"
             element={
               <ProtectedUserRoute>
-                <ProfilePage />
+                <AthleteShell>
+                  <ProfilePage />
+                </AthleteShell>
               </ProtectedUserRoute>
             }
           />
@@ -228,7 +256,9 @@ const AppShell: React.FC = () => {
             path="/community"
             element={
               <ProtectedUserRoute>
-                <CommunityGuidesPage />
+                <AthleteShell>
+                  <CommunityGuidesPage />
+                </AthleteShell>
               </ProtectedUserRoute>
             }
           />
