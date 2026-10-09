@@ -12,6 +12,7 @@ import {
   PlusCircle,
   Database,
   Lock,
+} from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 interface AdminLeftTelemetryDeckProps {
